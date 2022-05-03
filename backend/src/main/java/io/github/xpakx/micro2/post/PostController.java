@@ -22,4 +22,13 @@ public class PostController {
                 HttpStatus.CREATED
         );
     }
+
+    @DeleteMapping("/{postId}")
+    @PreAuthorize("#username == authentication.principal.username")
+    public ResponseEntity<?> deletePost(@PathVariable String username, @PathVariable Long postId) {
+        service.deletePost(postId, username);
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
 }
