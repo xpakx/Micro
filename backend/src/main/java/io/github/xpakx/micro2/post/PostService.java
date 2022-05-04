@@ -52,4 +52,11 @@ public class PostService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
+
+    public Page<PostDetails> getPostsByUsername(Integer page, String username) {
+        return postRepository.getAllByUserUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
 }
