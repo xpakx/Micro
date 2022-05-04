@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,4 +26,7 @@ public class Post {
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     UserAccount user;
+
+    LocalDateTime createdAt;
+    boolean edited;
 }

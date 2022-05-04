@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @AllArgsConstructor
 public class PostService {
@@ -21,6 +23,8 @@ public class PostService {
         newPost.setUser(userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Not such user!"))
         );
+        newPost.setEdited(false);
+        newPost.setCreatedAt(LocalDateTime.now());
         return PostDto.fromPost(postRepository.save(newPost));
     }
 
@@ -35,6 +39,7 @@ public class PostService {
         Post toUpdate = postRepository.findByIdAndUserUsername(postId, username)
                 .orElseThrow(PostNotFoundException::new);
         toUpdate.setContent(request.getMessage());
+        toUpdate.setEdited(true);
         return PostDto.fromPost(postRepository.save(toUpdate));
     }
 }
