@@ -6,6 +6,9 @@ import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,5 +44,11 @@ public class PostService {
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
         return PostDto.fromPost(postRepository.save(toUpdate));
+    }
+
+    public Page<Post> getTimelinePage(Integer page) {
+        return postRepository.getAll(
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
     }
 }
