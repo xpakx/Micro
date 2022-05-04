@@ -30,4 +30,11 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
         postRepository.delete(toDelete); //TODO: maybe weak deletion? not sure
     }
+
+    public PostDto updatePost(PostRequest request, Long postId, String username) {
+        Post toUpdate = postRepository.findByIdAndUserUsername(postId, username)
+                .orElseThrow(PostNotFoundException::new);
+        toUpdate.setContent(request.getMessage());
+        return PostDto.fromPost(postRepository.save(toUpdate));
+    }
 }
