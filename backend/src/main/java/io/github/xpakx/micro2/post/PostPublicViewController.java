@@ -29,4 +29,20 @@ public class PostPublicViewController {
                 service.getPosts(page), HttpStatus.OK
         );
     }
+
+    @GetMapping("/user/{username}/posts")
+    public ResponseEntity<Page<PostDetails>> getAllPostsByUsername(@PathVariable String username)
+    {
+        return new ResponseEntity<>(
+                service.getPostsByUsername(0, username), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/user/{username}/posts/{page}")
+    public ResponseEntity<Page<PostDetails>> getAllPostsByUsername(@PathVariable Integer page, @PathVariable String username)
+    {
+        return new ResponseEntity<>(
+                service.getPostsByUsername(page,username), HttpStatus.OK
+        );
+    }
 }
