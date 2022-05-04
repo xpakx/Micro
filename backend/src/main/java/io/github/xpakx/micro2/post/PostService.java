@@ -47,7 +47,7 @@ public class PostService {
         return PostDto.fromPost(postRepository.save(toUpdate));
     }
 
-    public Page<PostDetails> getTimelinePage(Integer page) {
+    public Page<PostDetails> getPosts(Integer page) {
         return postRepository.getAll(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
