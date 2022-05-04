@@ -31,4 +31,13 @@ public class PostController {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping("/{postId}")
+    @PreAuthorize("#username == authentication.principal.username")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostRequest request, @PathVariable String username, @PathVariable Long postId) {
+        return new ResponseEntity<>(
+                service.updatePost(request, postId, username),
+                HttpStatus.OK
+        );
+    }
 }
