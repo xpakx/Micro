@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -46,7 +47,7 @@ public class PostService {
         return PostDto.fromPost(postRepository.save(toUpdate));
     }
 
-    public Page<Post> getTimelinePage(Integer page) {
+    public Page<PostDetails> getTimelinePage(Integer page) {
         return postRepository.getAll(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );

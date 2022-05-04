@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.post.dto.PostDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -10,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByIdAndUserUsername(Long id, String username);
-    Page<Post> getAll(Pageable pageable);
+    Page<PostDetails> getAll(Pageable pageable);
 }
