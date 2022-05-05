@@ -48,7 +48,7 @@ public class PostService {
     }
 
     public Page<PostDetails> getPosts(Integer page) {
-        return postRepository.getAll(
+        return postRepository.findAllBy(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByIdAndUserUsername(Long id, String username);
-    Page<PostDetails> getAll(Pageable pageable);
+    Page<PostDetails> findAllBy(Pageable pageable);
     Page<PostDetails> getAllByUserUsername(String username, Pageable pageable);
 }
