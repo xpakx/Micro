@@ -34,17 +34,25 @@ export class RegisterFormComponent implements OnInit {
         passwordRe: this.form.controls['passwordRe'].value,
       }).subscribe(
         (response: Token) => {
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("username", response.username);
+          this.saveToken(response);
         },
         (error: HttpErrorResponse) => {
-          this.message = error.error.message;
-          this.invalid = true;
+          this.showError(error);
         }
       )
     } else {
       this.message = "Fields cannot be empty!";
       this.invalid = true;
     }
+  }
+
+  private showError(error: HttpErrorResponse) {
+    this.message = error.error.message;
+    this.invalid = true;
+  }
+
+  private saveToken(response: Token) {
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("username", response.username);
   }
 }
