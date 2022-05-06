@@ -33,12 +33,8 @@ export class RegisterFormComponent implements OnInit {
         password: this.form.controls['password'].value,
         passwordRe: this.form.controls['passwordRe'].value,
       }).subscribe(
-        (response: Token) => {
-          this.saveToken(response);
-        },
-        (error: HttpErrorResponse) => {
-          this.showError(error);
-        }
+        (response: Token) => this.saveToken(response),
+        (error: HttpErrorResponse) => this.showError(error)
       )
     } else {
       this.message = "Fields cannot be empty!";

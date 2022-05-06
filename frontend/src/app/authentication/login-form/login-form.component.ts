@@ -31,18 +31,22 @@ export class LoginFormComponent implements OnInit {
         username: this.form.controls['username'].value,
         password: this.form.controls['password'].value
       }).subscribe(
-        (response: Token) => {
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("username", response.username);
-        },
-        (error: HttpErrorResponse) => {
-          this.message = error.error.message;
-          this.invalid = true;
-        }
+        (response: Token) => this.saveToken(response),
+        (error: HttpErrorResponse) => this.showError(error)
       )
     } else {
       this.message = "Fields cannot be empty!";
       this.invalid = true;
     }
+  }
+
+  private showError(error: HttpErrorResponse) {
+    this.message = error.error.message;
+    this.invalid = true;
+  }
+
+  private saveToken(response: Token) {
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("username", response.username);
   }
 }
