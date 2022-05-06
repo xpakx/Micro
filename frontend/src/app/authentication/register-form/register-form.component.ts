@@ -20,7 +20,7 @@ export class RegisterFormComponent implements OnInit {
       password: ['', Validators.required],
       passwordRe: ['', Validators.required]
     });
-   }
+  }
 
   ngOnInit(): void {
   }
@@ -32,10 +32,10 @@ export class RegisterFormComponent implements OnInit {
         username: this.form.controls['username'].value,
         password: this.form.controls['password'].value,
         passwordRe: this.form.controls['passwordRe'].value,
-      }).subscribe(
-        (response: Token) => this.saveToken(response),
-        (error: HttpErrorResponse) => this.showError(error)
-      )
+      }).subscribe({
+        next: (response: Token) => this.saveToken(response),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      })
     } else {
       this.message = "Fields cannot be empty!";
       this.invalid = true;

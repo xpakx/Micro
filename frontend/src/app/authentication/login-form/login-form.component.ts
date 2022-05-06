@@ -19,7 +19,7 @@ export class LoginFormComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-   }
+  }
 
   ngOnInit(): void {
   }
@@ -30,10 +30,10 @@ export class LoginFormComponent implements OnInit {
       this.service.authenticate({
         username: this.form.controls['username'].value,
         password: this.form.controls['password'].value
-      }).subscribe(
-        (response: Token) => this.saveToken(response),
-        (error: HttpErrorResponse) => this.showError(error)
-      )
+      }).subscribe({
+        next: (response: Token) => this.saveToken(response),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      })
     } else {
       this.message = "Fields cannot be empty!";
       this.invalid = true;
