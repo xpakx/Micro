@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './authentication/login-form/login-form.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { PostComponent } from './post/post/post.component';
+import { GeneralPostListComponent } from './post/general-post-list/general-post-list.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -19,7 +20,8 @@ export function tokenGetter() {
     AppComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    PostComponent
+    PostComponent,
+    GeneralPostListComponent
   ],
   imports: [
     BrowserModule,

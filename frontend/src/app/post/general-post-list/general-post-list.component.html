@@ -1,0 +1,5 @@
+<div class="post-list-container" *ngIf="posts">
+    <div class="post-elem"*ngFor="let post of posts.content">
+        <app-post [post]='post'></app-post>
+    </div>
+</div>
