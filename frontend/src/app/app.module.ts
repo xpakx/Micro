@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './authentication/login-form/login-form.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
+import { PostComponent } from './post/post/post.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -17,7 +18,8 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginFormComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
