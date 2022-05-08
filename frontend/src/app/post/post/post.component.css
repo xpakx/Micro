@@ -1,0 +1,23 @@
+.post-container {
+    border: #ecf1f5 solid 1px;
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+}
+
+.author-bar {
+    display: flex;
+    font-size: 14px;
+}
+
+.author-name {
+    color: #56bf83;
+    font-weight: 600;
+    margin-right: 7px;
+}
+
+.post-date {
+    color: #cdd2d9;
+}

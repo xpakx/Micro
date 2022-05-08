@@ -3,7 +3,7 @@
         <div class="avatar"></div>
         <div class="author-name">{{post.user.username}}</div>
         <div class="confirmed-user"></div>
-        <div class="post-date">{{post.createdAt}}</div>
+        <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         <div class="edited" *ngIf="post.edited">edited</div>
     </div>
 
