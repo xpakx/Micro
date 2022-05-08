@@ -10,6 +10,7 @@ import { LoginFormComponent } from './authentication/login-form/login-form.compo
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { PostComponent } from './post/post/post.component';
 import { GeneralPostListComponent } from './post/general-post-list/general-post-list.component';
+import { MainComponent } from './main-view/main/main.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -21,7 +22,8 @@ export function tokenGetter() {
     LoginFormComponent,
     RegisterFormComponent,
     PostComponent,
-    GeneralPostListComponent
+    GeneralPostListComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
