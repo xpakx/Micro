@@ -1,6 +1,8 @@
 <div class="post-container" *ngIf="post">
     <div class="author-bar">
-        <div class="avatar"></div>
+        <div class="avatar" style="color:pink">
+            <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
+        </div>
         <div class="author-name">{{post.user.username}}</div>
         <div class="confirmed-user"></div>
         <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
