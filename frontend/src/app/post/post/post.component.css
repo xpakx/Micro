@@ -9,9 +9,11 @@
 
 .author-bar {
     display: flex;
+    align-items: center;
     font-size: 14px;
     color: #cdd2d9;
     margin: 0 15px;
+    margin-bottom: 7px;
 }
 
 .avatar {
@@ -46,6 +48,19 @@
 }
 
 .quick-response {
+    display: flex;
+    align-items: center;
     background-color: #f6f8fa;
-    padding: 0 15px;
+    padding: 5px 15px;
+}
+
+.quick-response .avatar {
+    opacity: 0.4;
+}
+
+.quick-response-input {
+    border: none;
+    background-color: #f6f8fa;
+    color: gray;
+    flex-grow: 1;
 }
