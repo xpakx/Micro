@@ -76,8 +76,8 @@
 }
 
 .like-counter {
-    width: 70px;
-    margin: 2px 0;
+    min-width: 64px;
+    margin: 2px 3px;
     font-size: 12px;
     display: flex;
     align-items: center;
