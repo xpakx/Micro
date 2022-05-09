@@ -34,6 +34,10 @@
     margin: 0;
 }
 
+.confirmed-user {
+    margin-right: 3px;
+}
+
 .author-name {
     color: #56bf83;
     font-weight: 600;
@@ -65,6 +69,7 @@
 .option-bar {
     display: flex;
     margin: 5px 15px;
+    margin-top: 15px;
 }
 
 .likes {
@@ -95,4 +100,24 @@ button {
 .plus-button {
     color: #64c48c;
     font-weight: 600;
+}
+
+.response-options {
+    display: flex;
+}
+
+.send-button {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: #bbd4f6;
+    color: white;
+}
+
+.option-button {
+    color: #a1aab7;
 }

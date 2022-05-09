@@ -4,7 +4,7 @@
             <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
         </div>
         <div class="author-name">{{post.user.username}}</div>
-        <div class="confirmed-user"></div>
+        <div class="confirmed-user"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
         <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         <div class="edited" *ngIf="post.edited">edited</div>
     </div>
@@ -14,10 +14,10 @@
     <div class="option-bar">
         <div class="likes">
             <div class="like-counter">+50</div>
-            <button class="plus-button">+</button>
+            <button class="plus-button"><fa-icon [icon]="faPlus"></fa-icon></button>
         </div>
         <div class="options">
-
+            <button class="option-button"><fa-icon [icon]="faStar"></fa-icon></button>
         </div>
     </div>
 
@@ -27,7 +27,9 @@
         </div>
         <input class="quick-response-input" placeholder="Write response to {{post.user.username}}"/>
         <div class="response-options">
-
+            <button class="option-button"><fa-icon [icon]="faAttach"></fa-icon></button>
+            <button class="option-button"><fa-icon [icon]="faSmile"></fa-icon></button>
+            <button class="send-button"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
     </div>
 </div>
