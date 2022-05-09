@@ -11,6 +11,7 @@ import { RegisterFormComponent } from './authentication/register-form/register-f
 import { PostComponent } from './post/post/post.component';
 import { GeneralPostListComponent } from './post/general-post-list/general-post-list.component';
 import { MainComponent } from './main-view/main/main.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -36,7 +37,8 @@ export function tokenGetter() {
         tokenGetter: tokenGetter,
         allowedDomains: ['localhost:8080', '192.168.50.118:8080'],
       }
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
