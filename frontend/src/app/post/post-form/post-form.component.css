@@ -24,6 +24,10 @@
     border: none;
     background-color: #f6f8fa;
     color: #b1b9c4;
+    width: 100%;
+}
+
+.quick-post-form {
     flex-grow: 1;
 }
 
