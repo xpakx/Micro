@@ -75,6 +75,8 @@ public class AuthenticationService {
         userToAdd.setUsername(request.getUsername());
         userToAdd.setRoles(roles);
         userToAdd = userRepository.save(userToAdd);
+        userToAdd.setGender("");
+        userToAdd.setAvatarUrl("");
         return userToAdd;
     }
 }
