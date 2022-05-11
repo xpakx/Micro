@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.comment;
 
+import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
@@ -8,6 +9,9 @@ import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +51,12 @@ public class CommentService {
         Comment toDelete = commentRepository.findByIdAndUserUsername(id, username)
                 .orElseThrow(CommentNotFoundException::new);
         commentRepository.delete(toDelete);
+    }
+
+    public Page<CommentDetails> getCommentsForPost(Integer page, Long postId) {
+        return commentRepository.getAllByPostId(
+                postId,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
     }
 }
