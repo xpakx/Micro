@@ -9,6 +9,7 @@ import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -39,5 +40,12 @@ public class CommentService {
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
         return CommentDto.fromComment(commentRepository.save(toUpdate));
+    }
+
+    @Transactional
+    public void deleteComment(Long id, String username) {
+        Comment toDelete = commentRepository.findByIdAndUserUsername(id, username)
+                .orElseThrow(CommentNotFoundException::new);
+        commentRepository.delete(toDelete);
     }
 }
