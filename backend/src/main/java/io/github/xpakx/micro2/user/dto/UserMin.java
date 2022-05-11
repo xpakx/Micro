@@ -4,4 +4,5 @@ public interface UserMin {
     String getUsername();
     String getGender();
     String getAvatarUrl();
+    boolean getConfirmed();
 }

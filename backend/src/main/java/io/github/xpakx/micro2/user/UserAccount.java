@@ -25,6 +25,7 @@ public class UserAccount {
 
     private String gender;
     private String avatarUrl;
+    private boolean confirmed;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_roles",
