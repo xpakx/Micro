@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -32,4 +33,11 @@ public class CommentService {
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 
+    public CommentDto updateComment(CommentRequest request, Long commentId, String username) {
+        Comment toUpdate = commentRepository.findByIdAndUserUsername(commentId, username)
+                .orElseThrow(CommentNotFoundException::new);
+        toUpdate.setContent(request.getMessage());
+        toUpdate.setEdited(true);
+        return CommentDto.fromComment(commentRepository.save(toUpdate));
+    }
 }
