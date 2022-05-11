@@ -30,6 +30,8 @@ public class Post {
     @JoinColumn(name="user_id", nullable = false)
     UserAccount user;
 
+    Integer likeCount;
+
     LocalDateTime createdAt;
     boolean edited;
 

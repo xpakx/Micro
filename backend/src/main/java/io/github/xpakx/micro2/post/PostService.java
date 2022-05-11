@@ -29,6 +29,7 @@ public class PostService {
         );
         newPost.setEdited(false);
         newPost.setCreatedAt(LocalDateTime.now());
+        newPost.setLikeCount(0);
         return PostDto.fromPost(postRepository.save(newPost));
     }
 
