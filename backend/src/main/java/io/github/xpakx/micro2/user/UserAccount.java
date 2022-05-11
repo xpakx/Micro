@@ -23,6 +23,9 @@ public class UserAccount {
     @JsonIgnore
     private String password;
 
+    private String gender;
+    private String avatarUrl;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_roles",
             joinColumns = {
