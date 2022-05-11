@@ -23,11 +23,20 @@ public class CommentController {
         );
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/comments/{commentId}")
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<CommentDto> updatePost(@RequestBody CommentRequest request, @PathVariable String username, @PathVariable Long commentId) {
         return new ResponseEntity<>(
                 service.updateComment(request, commentId, username),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    @PreAuthorize("#username == authentication.principal.username")
+    public ResponseEntity<?> deletePost(@PathVariable String username, @PathVariable Long commentId) {
+        service.deleteComment(commentId, username);
+        return new ResponseEntity<>(
                 HttpStatus.OK
         );
     }
