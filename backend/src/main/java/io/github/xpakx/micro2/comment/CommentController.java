@@ -22,4 +22,13 @@ public class CommentController {
                 HttpStatus.CREATED
         );
     }
+
+    @PutMapping("/{commentId}")
+    @PreAuthorize("#username == authentication.principal.username")
+    public ResponseEntity<CommentDto> updatePost(@RequestBody CommentRequest request, @PathVariable String username, @PathVariable Long commentId) {
+        return new ResponseEntity<>(
+                service.updateComment(request, commentId, username),
+                HttpStatus.OK
+        );
+    }
 }
