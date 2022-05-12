@@ -7,11 +7,17 @@
         <div class="confirmed-user"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
         <div class="post-date">commented at {{comment.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         <div class="edited" *ngIf="comment.edited">edited</div>
+        <div class="left-options">
+            <div class="likes">
+                <div class="like-counter">+50</div>
+                <button class="plus-button"><fa-icon [icon]="faPlus"></fa-icon></button>
+            </div>
+        </div>
     </div>
 
     <div class="comment-content">{{comment.content}}</div>
 
     <div class="option-bar">
-        <div class="reply"></div>
+        <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
     </div>
 </div>

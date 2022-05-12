@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPlus, faReply } from '@fortawesome/free-solid-svg-icons';
 import { CommentDetails } from '../dto/comment-details';
 
 @Component({
@@ -10,6 +10,8 @@ import { CommentDetails } from '../dto/comment-details';
 export class CommentComponent implements OnInit {
   @Input('comment') comment!: CommentDetails;
   faCheck = faCheck;
+  faPlus = faPlus;
+  faReply = faReply;
 
   constructor() { }
 
