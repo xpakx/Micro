@@ -13,6 +13,7 @@ import { GeneralPostListComponent } from './post/general-post-list/general-post-
 import { MainComponent } from './main-view/main/main.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PostFormComponent } from './post/post-form/post-form.component';
+import { CommentComponent } from './comment/comment/comment.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -26,7 +27,8 @@ export function tokenGetter() {
     PostComponent,
     GeneralPostListComponent,
     MainComponent,
-    PostFormComponent
+    PostFormComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,
