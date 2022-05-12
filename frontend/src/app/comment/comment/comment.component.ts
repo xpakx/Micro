@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faCheck, faPlus, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faPlus, faReply } from '@fortawesome/free-solid-svg-icons';
 import { CommentDetails } from '../dto/comment-details';
 
 @Component({
@@ -9,7 +9,7 @@ import { CommentDetails } from '../dto/comment-details';
 })
 export class CommentComponent implements OnInit {
   @Input('comment') comment!: CommentDetails;
-  faCheck = faCheck;
+  faCheck = faCheckCircle;
   faPlus = faPlus;
   faReply = faReply;
 
