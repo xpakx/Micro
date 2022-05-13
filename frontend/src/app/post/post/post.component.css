@@ -122,6 +122,10 @@ button {
     color: white;
 }
 
+.disabled-button {
+    background-color: grey;
+}
+
 .option-button {
     color: #a1aab7;
 }

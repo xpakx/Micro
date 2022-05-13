@@ -27,13 +27,13 @@
         </div>
 
         <form class="quick-response-form" id="form" [formGroup]="quickReply">
-            <input class="quick-response-input" placeholder="Write response to {{post.user.username}}"/>
+            <input class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>
         </form>
 
         <div class="response-options">
             <button class="option-button"><fa-icon [icon]="faAttach"></fa-icon></button>
             <button class="option-button"><fa-icon [icon]="faSmile"></fa-icon></button>
-            <button class="send-button" (click)="reply()"><fa-icon [icon]="faSend"></fa-icon></button>
+            <button class="send-button" (click)="reply()" [class.disabled-button]="quickReply.invalid"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
     </div>
 
