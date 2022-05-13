@@ -38,5 +38,12 @@ button {
 }
 
 .btn {
-
+    width: 50%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: #bbd4f6;
+    color: white;
 }
