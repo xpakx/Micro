@@ -1,3 +1,6 @@
 export interface PostAuthor {
-    username: String
+    username: String;
+    gender: String;
+    avatarUrl: String;
+    confirmed: boolean;
 }

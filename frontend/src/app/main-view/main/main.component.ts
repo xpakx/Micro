@@ -36,7 +36,7 @@ export class MainComponent implements OnInit {
 
   test(): void {
     this.postList = {
-      content: [{id: 0, content: "post", edited: false, createdAt: new Date(), user: {username: "Test"} }],
+      content: [{id: 0, content: "post", edited: false, createdAt: new Date(), user: {username: "Test", gender: "male", confirmed: true, avatarUrl: ""} }],
       pageable: {
           sort: {
               sorted: true,
