@@ -20,8 +20,9 @@ export class PostFormComponent implements OnInit {
 
   constructor(private service: PostService, private fb: FormBuilder) {
     this.form = this.fb.group({
-    content: ['', Validators.required]
-  }); }
+      content: ['', Validators.required]
+    }); 
+  }
 
   ngOnInit(): void {
   }

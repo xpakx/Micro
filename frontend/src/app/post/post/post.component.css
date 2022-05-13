@@ -63,6 +63,10 @@
     border: none;
     background-color: #f6f8fa;
     color: #b1b9c4;
+    width: 100%;
+}
+
+.quick-response-form {
     flex-grow: 1;
 }
 

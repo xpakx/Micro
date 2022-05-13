@@ -1,6 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar } from '@fortawesome/free-solid-svg-icons';
+import { CommentService } from 'src/app/comment/comment.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
+import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
 import { PostDetails } from '../dto/post-details';
 
@@ -18,11 +22,37 @@ export class PostComponent implements OnInit {
   faAttach = faPaperclip;
   faSend = faPaperPlane;
   comments?: Page<CommentDetails>;
+  quickReply: FormGroup;
+  message: String = "";
+  invalid: boolean = false;
 
-  constructor() { }
+  constructor(private commentService: CommentService, private fb: FormBuilder) {
+    this.quickReply = this.fb.group({
+      content: ['', Validators.required]
+    }); 
+   }
 
   ngOnInit(): void {
     this.test();
+  }
+
+  reply(): void {
+    if(this.quickReply.valid && this.post) {
+      this.commentService.newComment({message: this.quickReply.controls['content'].value}, this.post.id)
+      .subscribe({
+        next: (response: UpdatedComment) => this.refresh(response),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      });
+    }
+  }
+
+  showError(error: HttpErrorResponse): void {
+    this.message = error.error.message;
+    this.invalid = true;
+  }
+
+  refresh(response: UpdatedComment): void {
+    
   }
 
   test(): void {
