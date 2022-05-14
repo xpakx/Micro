@@ -15,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PostFormComponent } from './post/post-form/post-form.component';
 import { CommentComponent } from './comment/comment/comment.component';
 import { GeneralCommentListComponent } from './comment/general-comment-list/general-comment-list.component';
+import { LogoutComponent } from './authentication/logout/logout.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -30,7 +31,8 @@ export function tokenGetter() {
     MainComponent,
     PostFormComponent,
     CommentComponent,
-    GeneralCommentListComponent
+    GeneralCommentListComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
