@@ -16,6 +16,7 @@ import { PostFormComponent } from './post/post-form/post-form.component';
 import { CommentComponent } from './comment/comment/comment.component';
 import { GeneralCommentListComponent } from './comment/general-comment-list/general-comment-list.component';
 import { LogoutComponent } from './authentication/logout/logout.component';
+import { SinglePostComponent } from './main-view/single-post/single-post.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -32,7 +33,8 @@ export function tokenGetter() {
     PostFormComponent,
     CommentComponent,
     GeneralCommentListComponent,
-    LogoutComponent
+    LogoutComponent,
+    SinglePostComponent
   ],
   imports: [
     BrowserModule,

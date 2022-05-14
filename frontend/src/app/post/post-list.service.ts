@@ -20,4 +20,8 @@ export class PostListService {
   public getUserPosts(username: String, page?: number | undefined):  Observable<Page<PostDetails>> {
     return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
   }
+
+  public getPost(id: number):  Observable<PostDetails> {
+    return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}`);
+  }
 }
