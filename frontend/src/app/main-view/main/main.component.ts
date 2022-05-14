@@ -17,6 +17,10 @@ export class MainComponent implements OnInit {
   constructor(private postService: PostListService) { }
 
   ngOnInit(): void {
+    this.getPosts();
+  }
+
+  getPosts(): void {
     this.postService.getPosts().subscribe({
       next: (response: Page<PostDetails>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
