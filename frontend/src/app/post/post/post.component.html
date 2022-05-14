@@ -39,5 +39,5 @@
 
     <app-general-comment-list [comments]="comments"></app-general-comment-list>
 
-    <div class="more-comments" *ngIf="minimal">{{ comments ? 'Read all comments' : 'More' }}</div>
+    <button class="more-comments" *ngIf="minimal" (click)="toPost(post.id)">{{ comments ? 'Read all comments' : 'More' }}</button>
 </div>

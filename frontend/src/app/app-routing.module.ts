@@ -4,12 +4,14 @@ import { LoginFormComponent } from './authentication/login-form/login-form.compo
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { MainComponent } from './main-view/main/main.component';
+import { SinglePostComponent } from './main-view/single-post/single-post.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
   { path: 'register', component: RegisterFormComponent },
   { path: 'login', component: LoginFormComponent },
-  { path: 'logout', component: LogoutComponent }
+  { path: 'logout', component: LogoutComponent },
+  { path: 'post/:id', component: SinglePostComponent }
 ];
 
 @NgModule({

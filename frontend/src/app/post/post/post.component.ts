@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar } from '@fortawesome/free-solid-svg-icons';
 import { CommentService } from 'src/app/comment/comment.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
@@ -27,7 +28,7 @@ export class PostComponent implements OnInit {
   message: String = "";
   invalid: boolean = false;
 
-  constructor(private commentService: CommentService, private fb: FormBuilder) {
+  constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]
     }); 
@@ -54,6 +55,10 @@ export class PostComponent implements OnInit {
 
   refresh(response: UpdatedComment): void {
     
+  }
+
+  toPost(id: number) {
+    this.router.navigate([`post/${id}`])
   }
 
   test(): void {
