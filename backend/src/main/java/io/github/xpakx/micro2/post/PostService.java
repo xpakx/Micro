@@ -60,4 +60,9 @@ public class PostService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
+
+    public PostDetails getSinglePost(Long postId) {
+        return postRepository.findByIdProjected(postId)
+                .orElseThrow(PostNotFoundException::new);
+    }
 }

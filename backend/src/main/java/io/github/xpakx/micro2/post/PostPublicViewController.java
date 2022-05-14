@@ -45,4 +45,12 @@ public class PostPublicViewController {
                 service.getPostsByUsername(page,username), HttpStatus.OK
         );
     }
+
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<PostDetails> getSinglePosts(@PathVariable Long postId)
+    {
+        return new ResponseEntity<>(
+                service.getSinglePost(postId), HttpStatus.OK
+        );
+    }
 }
