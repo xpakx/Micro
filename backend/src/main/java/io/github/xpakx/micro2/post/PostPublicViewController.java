@@ -46,7 +46,7 @@ public class PostPublicViewController {
         );
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/post/{postId}")
     public ResponseEntity<PostDetails> getSinglePosts(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
