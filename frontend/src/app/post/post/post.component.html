@@ -39,5 +39,5 @@
 
     <app-general-comment-list [comments]="comments"></app-general-comment-list>
 
-    <div class="more-comments"></div>
+    <div class="more-comments" *ngIf="minimal">{{ comments ? 'Read all comments' : 'More' }}</div>
 </div>

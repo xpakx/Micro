@@ -15,6 +15,7 @@ import { PostDetails } from '../dto/post-details';
 })
 export class PostComponent implements OnInit {
   @Input('post') post!: PostDetails;
+  @Input('minimal') minimal: boolean = false;
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faStar = faStar;

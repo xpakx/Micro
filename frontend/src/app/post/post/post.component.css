@@ -129,3 +129,14 @@ button {
 .option-button {
     color: #a1aab7;
 }
+
+.more-comments {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f8fa;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #b1b9c4;
+}
