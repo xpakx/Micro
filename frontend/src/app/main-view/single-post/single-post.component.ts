@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommentListService } from 'src/app/comment/comment-list.service';
 import { PostDetails } from 'src/app/post/dto/post-details';
 import { PostListService } from 'src/app/post/post-list.service';
 
@@ -12,7 +13,7 @@ import { PostListService } from 'src/app/post/post-list.service';
 export class SinglePostComponent implements OnInit {
   post?: PostDetails;
 
-  constructor(private route: ActivatedRoute, private service: PostListService) { }
+  constructor(private route: ActivatedRoute, private postService: PostListService, private commentService: CommentListService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -21,7 +22,7 @@ export class SinglePostComponent implements OnInit {
   }
 
   loadPost(id: number) {
-    this.service.getPost(id).subscribe({
+    this.postService.getPost(id).subscribe({
       next: (response: PostDetails) => this.savePost(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
