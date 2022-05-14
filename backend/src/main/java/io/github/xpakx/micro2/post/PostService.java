@@ -62,7 +62,7 @@ public class PostService {
     }
 
     public PostDetails getSinglePost(Long postId) {
-        return postRepository.findByIdProjected(postId)
+        return postRepository.findProjectedById(postId)
                 .orElseThrow(PostNotFoundException::new);
     }
 }
