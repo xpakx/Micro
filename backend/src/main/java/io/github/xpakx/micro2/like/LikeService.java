@@ -25,16 +25,7 @@ public class LikeService {
     public Like likePost(LikeRequest request, Long postId, String username) {
         Optional<Like> like = likeRepository.findByPostIdAndUserUsername(postId, username);
         if(like.isEmpty()) {
-            Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-            post.setLikeCount(post.getLikeCount()+1);
-            Like newLike = new Like();
-            newLike.setPost(post);
-            newLike.setUser(userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UserNotFoundException("Not such user!"))
-            );
-            newLike.setPositive(request.isLike());
-            postRepository.save(post);
-            return likeRepository.save(newLike);
+            return createNewLike(request, postId, username);
         } else if(request.isLike() != like.get().isPositive()) {
             Like toUpdate = like.get();
             toUpdate.setPositive(request.isLike());
@@ -46,5 +37,18 @@ public class LikeService {
         } else {
             return like.get();
         }
+    }
+
+    private Like createNewLike(LikeRequest request, Long postId, String username) {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        post.setLikeCount(post.getLikeCount()+1);
+        Like newLike = new Like();
+        newLike.setPost(post);
+        newLike.setUser(userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Not such user!"))
+        );
+        newLike.setPositive(request.isLike());
+        postRepository.save(post);
+        return likeRepository.save(newLike);
     }
 }
