@@ -34,4 +34,6 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    private boolean positive;
 }

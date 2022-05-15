@@ -31,6 +31,7 @@ public class Post {
     UserAccount user;
 
     Integer likeCount;
+    Integer dislikeCount;
 
     LocalDateTime createdAt;
     boolean edited;

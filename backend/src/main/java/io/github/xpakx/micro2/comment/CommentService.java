@@ -35,6 +35,7 @@ public class CommentService {
         );
         newComment.setEdited(false);
         newComment.setCreatedAt(LocalDateTime.now());
+        newComment.setLikeCount(0);
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 
