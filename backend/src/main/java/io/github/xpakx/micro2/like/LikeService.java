@@ -41,7 +41,8 @@ public class LikeService {
 
     private Like createNewLike(LikeRequest request, Long postId, String username) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        post.setLikeCount(post.getLikeCount()+1);
+        post.setLikeCount(request.isLike() ? post.getLikeCount()+1 : post.getLikeCount());
+        post.setDislikeCount(request.isLike() ? post.getDislikeCount() : post.getDislikeCount()+1);
         Like newLike = new Like();
         newLike.setPost(post);
         newLike.setUser(userRepository.findByUsername(username)
