@@ -55,4 +55,15 @@ public class LikeService {
         postRepository.save(post);
         return likeRepository.save(newLike);
     }
+
+    @Transactional
+    public void unlikePost(Long postId, String username) {
+        Like like = likeRepository.findByPostIdAndUserUsername(postId, username)
+                .orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        post.setLikeCount(like.isPositive() ? post.getLikeCount()-1 : post.getLikeCount());
+        post.setDislikeCount(like.isPositive() ? post.getDislikeCount() : post.getDislikeCount()-1);
+        postRepository.save(post);
+        likeRepository.delete(like);
+    }
 }
