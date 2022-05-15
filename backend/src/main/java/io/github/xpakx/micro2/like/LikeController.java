@@ -1,8 +1,6 @@
 package io.github.xpakx.micro2.like;
 
 import io.github.xpakx.micro2.like.dto.LikeRequest;
-import io.github.xpakx.micro2.post.dto.PostDto;
-import io.github.xpakx.micro2.post.dto.PostRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
