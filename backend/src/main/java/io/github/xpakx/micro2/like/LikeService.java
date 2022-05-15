@@ -27,16 +27,19 @@ public class LikeService {
         if(like.isEmpty()) {
             return createNewLike(request, postId, username);
         } else if(request.isLike() != like.get().isPositive()) {
-            Like toUpdate = like.get();
-            toUpdate.setPositive(request.isLike());
-            Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-            post.setLikeCount(request.isLike() ? post.getLikeCount()+1 : post.getLikeCount()-1);
-            post.setDislikeCount(request.isLike() ? post.getDislikeCount()-1 : post.getDislikeCount()+1);
-            postRepository.save(post);
-            return likeRepository.save(toUpdate);
+            return switchLike(request, postId, like.get());
         } else {
             return like.get();
         }
+    }
+
+    private Like switchLike(LikeRequest request, Long postId, Like toUpdate) {
+        toUpdate.setPositive(request.isLike());
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        post.setLikeCount(request.isLike() ? post.getLikeCount()+1 : post.getLikeCount()-1);
+        post.setDislikeCount(request.isLike() ? post.getDislikeCount()-1 : post.getDislikeCount()+1);
+        postRepository.save(post);
+        return likeRepository.save(toUpdate);
     }
 
     private Like createNewLike(LikeRequest request, Long postId, String username) {
