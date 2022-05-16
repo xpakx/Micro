@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user/{username}")
-public class LikeController {
-    private final LikeService service;
+public class PostLikeController {
+    private final PostLikeService service;
 
     @PostMapping("/posts/{postId}/like")
     @PreAuthorize("#username == authentication.principal.username")
@@ -21,7 +21,6 @@ public class LikeController {
                 HttpStatus.CREATED
         );
     }
-
     @DeleteMapping("/posts/{postId}/like")
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<?> unlikePost(@PathVariable String username, @PathVariable Long postId) {
