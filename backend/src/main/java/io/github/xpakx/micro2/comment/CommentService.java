@@ -60,10 +60,4 @@ public class CommentService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
-
-    public Page<CommentDetails> getComments(Integer page) {
-        return commentRepository.findAllBy(
-                PageRequest.of(page, 20, Sort.by("createdAt").descending())
-        );
-    }
 }
