@@ -6,7 +6,7 @@ import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.like.dto.CommentLikeDto;
 import io.github.xpakx.micro2.like.dto.LikeDetails;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
-import io.github.xpakx.micro2.post.Post;
+import io.github.xpakx.micro2.like.error.LikeNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -60,7 +60,7 @@ public class CommentLikeService {
     @Transactional
     public void unlikeComment(Long commentId, String username) {
         Like like = likeRepository.findByCommentIdAndUserUsername(commentId, username)
-                .orElseThrow();
+                .orElseThrow(LikeNotFoundException::new);
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
         comment.setLikeCount(like.isPositive() ? comment.getLikeCount()-1 : comment.getLikeCount());
         comment.setDislikeCount(like.isPositive() ? comment.getDislikeCount() : comment.getDislikeCount()-1);
@@ -70,6 +70,6 @@ public class CommentLikeService {
 
     public LikeDetails getLike(Long commentId, String username) {
         return likeRepository.findProjectedByCommentIdAndUserUsername(commentId, username, LikeDetails.class)
-                .orElseThrow();
+                .orElseThrow(LikeNotFoundException::new);
     }
 }
