@@ -7,6 +7,8 @@ import { CommentService } from 'src/app/comment/comment.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
+import { PostLike } from 'src/app/like/dto/post-like';
+import { PostLikeService } from 'src/app/like/post-like.service';
 import { PostDetails } from '../dto/post-details';
 
 @Component({
@@ -28,7 +30,8 @@ export class PostComponent implements OnInit {
   message: String = "";
   invalid: boolean = false;
 
-  constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router) {
+  constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
+    private likeService: PostLikeService) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]
     }); 
@@ -59,6 +62,32 @@ export class PostComponent implements OnInit {
 
   toPost(id: number) {
     this.router.navigate([`post/${id}`])
+  }
+
+  plus(vote: boolean) {
+    if(vote) {
+      this.likePost();
+    } else {
+      this.unlikePost();
+    }
+  }
+
+  likePost() {
+    this.likeService.likePost({like: true}, this.post.id).subscribe({
+      next: (response: PostLike) => this.updateLikes(),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  updateLikes(): void {
+
+  }
+
+  unlikePost() {
+    this.likeService.unlikePost(this.post.id).subscribe({
+      next: (response: any) => this.updateLikes(),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
   }
 
   test(): void {

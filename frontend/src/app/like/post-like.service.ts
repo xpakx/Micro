@@ -28,7 +28,7 @@ export class PostLikeService {
     return this.http.delete<any>(`${this.apiServerUrl}/user/${username}/posts/${postId}/like`);
   }
 
-  public getLiekForPost(postId: number):  Observable<LikeDetails> {
+  public getLikeForPost(postId: number):  Observable<LikeDetails> {
     let username = this.getUsername();
     return this.http.get<LikeDetails>(`${this.apiServerUrl}/user/${username}/posts/${postId}/like`);
   }
