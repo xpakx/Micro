@@ -18,7 +18,6 @@ import java.util.Optional;
 public class PostLikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
     @Transactional

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}")
+@RequestMapping("/user/{username}/posts/{postId}/like")
 public class PostLikeController {
     private final PostLikeService service;
 
-    @PostMapping("/posts/{postId}/like")
+    @PostMapping
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<Like> likePost(@RequestBody LikeRequest request, @PathVariable String username, @PathVariable Long postId) {
         return new ResponseEntity<>(
@@ -21,7 +21,7 @@ public class PostLikeController {
                 HttpStatus.CREATED
         );
     }
-    @DeleteMapping("/posts/{postId}/like")
+    @DeleteMapping
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<?> unlikePost(@PathVariable String username, @PathVariable Long postId) {
         service.unlikePost(postId, username);
