@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Table(name = "vote")
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
