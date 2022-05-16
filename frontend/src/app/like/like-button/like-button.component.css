@@ -14,6 +14,7 @@
     align-items: center;
     justify-content: center;
     border-right: #d3eede solid 1px;
+    margin-right: 0;
 }
 
 button {
@@ -26,4 +27,9 @@ button {
 .plus-button {
     color: #64c48c;
     font-weight: 600;
+}
+
+.plus-button.liked {
+    background-color: #64c48c;
+    color: white;
 }

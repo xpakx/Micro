@@ -1,4 +1,4 @@
 <div class="likes">
-    <div class="like-counter">+50</div>
-    <button class="plus-button"><fa-icon [icon]="faPlus"></fa-icon></button>
+    <div class="like-counter">+{{ likes }}</div>
+    <button class="plus-button" [class.liked]="liked" (click)="plus()"><fa-icon [icon]="faPlus"></fa-icon></button>
 </div>
