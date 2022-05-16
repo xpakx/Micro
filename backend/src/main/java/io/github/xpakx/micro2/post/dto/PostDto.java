@@ -14,6 +14,7 @@ public class PostDto {
     private String username;
     private LocalDateTime createdAt;
     private Integer likeCount;
+    private Integer dislikeCount;
 
     public static PostDto fromPost(Post post) {
         PostDto transformed = new PostDto();
@@ -22,6 +23,7 @@ public class PostDto {
         transformed.setUsername(post.getUser().getUsername());
         transformed.setCreatedAt(post.getCreatedAt());
         transformed.setLikeCount(post.getLikeCount());
+        transformed.setDislikeCount(post.getDislikeCount());
         return  transformed;
     }
 }

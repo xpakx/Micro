@@ -15,6 +15,8 @@ public class CommentDto {
     private String message;
     private String username;
     private LocalDateTime createdAt;
+    private Integer likeCount;
+    private Integer dislikeCount;
 
     public static CommentDto fromComment(Comment comm) {
         CommentDto transformed = new CommentDto();
@@ -22,6 +24,8 @@ public class CommentDto {
         transformed.setMessage(comm.getContent());
         transformed.setUsername(comm.getUser().getUsername());
         transformed.setCreatedAt(comm.getCreatedAt());
+        transformed.setLikeCount(comm.getLikeCount());
+        transformed.setDislikeCount(comm.getDislikeCount());
         return transformed;
     }
 }

@@ -10,4 +10,6 @@ public interface CommentDetails {
     UserMin getUser();
     LocalDateTime getCreatedAt();
     boolean isEdited();
+    Integer getLikeCount();
+    Integer getDislikeCount();
 }

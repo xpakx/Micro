@@ -11,4 +11,5 @@ public interface PostDetails {
     LocalDateTime getCreatedAt();
     boolean isEdited();
     Integer getLikeCount();
+    Integer getDislikeCount();
 }
