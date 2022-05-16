@@ -1,0 +1,29 @@
+.likes {
+    display: flex;
+    color: #64c48c;
+    font-weight: 600;
+    border: #d3eede solid 1px;
+    border-radius: 3px;
+}
+
+.like-counter {
+    min-width: 64px;
+    margin: 2px 3px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: #d3eede solid 1px;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+}
+
+.plus-button {
+    color: #64c48c;
+    font-weight: 600;
+}

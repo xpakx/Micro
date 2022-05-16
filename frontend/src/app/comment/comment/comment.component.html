@@ -8,10 +8,7 @@
         <div class="post-date">commented at {{comment.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         <div class="edited" *ngIf="comment.edited">edited</div>
         <div class="left-options">
-            <div class="likes">
-                <div class="like-counter">+50</div>
-                <button class="plus-button"><fa-icon [icon]="faPlus"></fa-icon></button>
-            </div>
+            <app-like-button></app-like-button>
         </div>
     </div>
 

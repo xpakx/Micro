@@ -1,7 +1,6 @@
 package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
-import io.github.xpakx.micro2.post.dto.PostDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

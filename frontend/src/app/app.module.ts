@@ -17,6 +17,7 @@ import { CommentComponent } from './comment/comment/comment.component';
 import { GeneralCommentListComponent } from './comment/general-comment-list/general-comment-list.component';
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
+import { LikeButtonComponent } from './like/like-button/like-button.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -34,7 +35,8 @@ export function tokenGetter() {
     CommentComponent,
     GeneralCommentListComponent,
     LogoutComponent,
-    SinglePostComponent
+    SinglePostComponent,
+    LikeButtonComponent
   ],
   imports: [
     BrowserModule,
