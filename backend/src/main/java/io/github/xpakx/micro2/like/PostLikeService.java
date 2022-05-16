@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.like;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
+import io.github.xpakx.micro2.like.dto.PostLikeDto;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -21,14 +22,14 @@ public class PostLikeService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Like likePost(LikeRequest request, Long postId, String username) {
+    public PostLikeDto likePost(LikeRequest request, Long postId, String username) {
         Optional<Like> like = likeRepository.findByPostIdAndUserUsername(postId, username);
         if(like.isEmpty()) {
-            return createNewLike(request, postId, username);
+            return PostLikeDto.from(createNewLike(request, postId, username));
         } else if(request.isLike() != like.get().isPositive()) {
-            return switchLike(request, postId, like.get());
+            return PostLikeDto.from(switchLike(request, postId, like.get()));
         } else {
-            return like.get();
+            return PostLikeDto.from(like.get());
         }
     }
 
