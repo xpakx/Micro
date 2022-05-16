@@ -11,4 +11,6 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Optional<Comment> findByIdAndUserUsername(Long id, String username);
     Page<CommentDetails> getAllByUserUsername(String username, Pageable pageable);
     Page<CommentDetails> getAllByPostId(Long postId, Pageable pageable);
+
+    Page<CommentDetails> findAllBy(Pageable pageable);
 }
