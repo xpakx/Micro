@@ -65,4 +65,9 @@ public class PostLikeService {
         postRepository.save(post);
         likeRepository.delete(like);
     }
+
+    public Like getLike(Long postId, String username) {
+        return likeRepository.findByPostIdAndUserUsername(postId, username)
+                .orElseThrow();
+    }
 }
