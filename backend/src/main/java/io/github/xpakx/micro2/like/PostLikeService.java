@@ -1,7 +1,7 @@
 package io.github.xpakx.micro2.like;
 
-import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
+import io.github.xpakx.micro2.like.dto.PostLikeDetails;
 import io.github.xpakx.micro2.like.dto.PostLikeDto;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
@@ -67,8 +67,8 @@ public class PostLikeService {
         likeRepository.delete(like);
     }
 
-    public Like getLike(Long postId, String username) {
-        return likeRepository.findByPostIdAndUserUsername(postId, username)
+    public PostLikeDetails getLike(Long postId, String username) {
+        return likeRepository.findProjectedByPostIdAndUserUsername(postId, username, PostLikeDetails.class)
                 .orElseThrow();
     }
 }
