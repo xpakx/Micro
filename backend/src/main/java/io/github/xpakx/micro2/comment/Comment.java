@@ -35,6 +35,7 @@ public class Comment {
     LocalDateTime createdAt;
     boolean edited;
     Integer likeCount;
+    Integer dislikeCount;
 
     @JsonIgnore
     @ManyToOne

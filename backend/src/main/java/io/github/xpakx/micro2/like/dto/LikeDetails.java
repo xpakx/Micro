@@ -1,6 +1,6 @@
 package io.github.xpakx.micro2.like.dto;
 
-public interface PostLikeDetails {
+public interface LikeDetails {
     Long getId();
     boolean getPositive();
 }
