@@ -39,6 +39,7 @@ export class SinglePostComponent implements OnInit {
   savePost(response: PostWithComments): void {
     this.post = response.post;
     this.comments = response.comments;
+    this.comments.content.reverse();
   }
 
 }

@@ -11,7 +11,7 @@ public interface CommentDetails {
     Long getId();
     String getContent();
     UserMin getUser();
-    
+
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
     LocalDateTime getCreatedAt();
