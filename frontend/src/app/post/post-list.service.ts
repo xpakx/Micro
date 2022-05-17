@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { PostDetails } from './dto/post-details';
+import { PostWithComments } from './dto/post-with-comments';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class PostListService {
     return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
   }
 
-  public getPost(id: number):  Observable<PostDetails> {
-    return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}`);
+  public getPost(id: number):  Observable<PostWithComments> {
+    return this.http.get<PostWithComments>(`${this.apiServerUrl}/post/${id}`);
   }
 }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommentListService } from 'src/app/comment/comment-list.service';
 import { PostDetails } from 'src/app/post/dto/post-details';
+import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class SinglePostComponent implements OnInit {
 
   loadPost(id: number) {
     this.postService.getPost(id).subscribe({
-      next: (response: PostDetails) => this.savePost(response),
+      next: (response: PostWithComments) => this.savePost(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
@@ -32,8 +33,8 @@ export class SinglePostComponent implements OnInit {
     
   }
 
-  savePost(response: PostDetails): void {
-    this.post = response;
+  savePost(response: PostWithComments): void {
+    this.post = response.post;
   }
 
 }
