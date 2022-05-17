@@ -11,6 +11,7 @@ public class PostLikeDto {
     private Long postId;
     private boolean voted;
     private boolean positive;
+    private Integer totalLikes;
 
     public static PostLikeDto from(Like like) {
         PostLikeDto transformed = new PostLikeDto();
@@ -18,6 +19,17 @@ public class PostLikeDto {
         transformed.setPositive(like.isPositive());
         transformed.setId(like.getId());
         transformed.setPostId(like.getPost().getId());
+        transformed.setTotalLikes(0);
+        return transformed;
+    }
+
+    public static PostLikeDto from(Like like, Integer totalLikes) {
+        PostLikeDto transformed = new PostLikeDto();
+        transformed.setVoted(true);
+        transformed.setPositive(like.isPositive());
+        transformed.setId(like.getId());
+        transformed.setPostId(like.getPost().getId());
+        transformed.setTotalLikes(totalLikes);
         return transformed;
     }
 
