@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CommentLike } from './dto/comment-like';
 import { LikeDetails } from './dto/like-details';
 import { LikeRequest } from './dto/like-request';
+import { Unlike } from './dto/unlike';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,9 @@ export class CommentLikeService {
     return this.http.post<CommentLike>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`, request);
   }
 
-  public unlikeComment(commentId: number):  Observable<any> {
+  public unlikeComment(commentId: number):  Observable<Unlike> {
     let username = this.getUsername();
-    return this.http.delete<any>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`);
+    return this.http.delete<Unlike>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`);
   }
 
   public getLikeForComment(commentId: number):  Observable<LikeDetails> {

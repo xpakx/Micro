@@ -8,6 +8,7 @@ import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
 import { PostLike } from 'src/app/like/dto/post-like';
+import { Unlike } from 'src/app/like/dto/unlike';
 import { PostLikeService } from 'src/app/like/post-like.service';
 import { PostDetails } from '../dto/post-details';
 
@@ -73,18 +74,18 @@ export class PostComponent implements OnInit {
 
   likePost() {
     this.likeService.likePost({like: true}, this.post.id).subscribe({
-      next: (response: PostLike) => this.updateLikes(),
+      next: (response: PostLike) => this.updateLikes(response.totalLikes),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
-  updateLikes(): void {
-    this.post.likeCount += 1; //TODO
+  updateLikes(totalLikes: number): void {
+    this.post.likeCount = totalLikes;
   }
 
   unlikePost() {
     this.likeService.unlikePost(this.post.id).subscribe({
-      next: (response: any) => this.updateLikes(),
+      next: (response: Unlike) => this.updateLikes(response.totalLikes),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
