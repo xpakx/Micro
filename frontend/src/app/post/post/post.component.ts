@@ -19,13 +19,13 @@ import { PostDetails } from '../dto/post-details';
 export class PostComponent implements OnInit {
   @Input('post') post!: PostDetails;
   @Input('minimal') minimal: boolean = false;
+  @Input('commentsPage') comments?: Page<CommentDetails>;
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faStar = faStar;
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
-  comments?: Page<CommentDetails>;
   quickReply: FormGroup;
   message: String = "";
   invalid: boolean = false;
@@ -38,7 +38,6 @@ export class PostComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.test();
   }
 
   reply(): void {
@@ -88,35 +87,5 @@ export class PostComponent implements OnInit {
       next: (response: any) => this.updateLikes(),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
-  }
-
-  test(): void {
-    this.comments = {
-      content: [{id: 0, content: "comment", edited: false, createdAt: new Date(), user: {username: "Test"} }],
-      pageable: {
-          sort: {
-              sorted: true,
-              unsorted: true,
-              empty: false
-          },
-          offset: 1,
-          pageNumber: 1,
-          pageSize: 1,
-          paged: true,
-          unpaged: true
-      },
-      totalPages: 1,
-      last: true,
-      number: 1,
-      sort: {
-          sorted: true,
-          unsorted: true,
-          empty: false
-      },
-      size: 1,
-      numberOfElements: 1,
-      first: true,
-      empty: false
-  }
   }
 }
