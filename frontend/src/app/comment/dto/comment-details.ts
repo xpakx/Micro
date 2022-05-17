@@ -5,5 +5,7 @@ export interface CommentDetails {
     content: String,
     createdAt: Date,
     edited: boolean,
-    user: CommentAuthor
+    user: CommentAuthor,
+    likeCount: number,
+    dislikeCount: number
 }
