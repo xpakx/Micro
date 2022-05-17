@@ -80,7 +80,7 @@ export class PostComponent implements OnInit {
   }
 
   updateLikes(): void {
-
+    this.post.likeCount += 1; //TODO
   }
 
   unlikePost() {

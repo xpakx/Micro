@@ -5,5 +5,7 @@ export interface PostDetails {
     content: String,
     createdAt: Date,
     edited: boolean,
-    user: PostAuthor
+    user: PostAuthor,
+    likeCount: number,
+    dislikeCount: number
 }
