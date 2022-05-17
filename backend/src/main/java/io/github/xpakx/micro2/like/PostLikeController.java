@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.like;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
 import io.github.xpakx.micro2.like.dto.LikeDetails;
 import io.github.xpakx.micro2.like.dto.PostLikeDto;
+import io.github.xpakx.micro2.like.dto.UnlikeDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,8 @@ public class PostLikeController {
     }
     @DeleteMapping
     @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<?> unlikePost(@PathVariable String username, @PathVariable Long postId) {
-        service.unlikePost(postId, username);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<UnlikeDto> unlikePost(@PathVariable String username, @PathVariable Long postId) {
+        return new ResponseEntity<>(service.unlikePost(postId, username), HttpStatus.OK);
     }
 
     @GetMapping

@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.like;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
 import io.github.xpakx.micro2.like.dto.LikeDetails;
 import io.github.xpakx.micro2.like.dto.PostLikeDto;
+import io.github.xpakx.micro2.like.dto.UnlikeDto;
 import io.github.xpakx.micro2.like.error.LikeNotFoundException;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
@@ -63,7 +64,7 @@ public class PostLikeService {
     }
 
     @Transactional
-    public void unlikePost(Long postId, String username) {
+    public UnlikeDto unlikePost(Long postId, String username) {
         Like like = likeRepository.findByPostIdAndUserUsername(postId, username)
                 .orElseThrow(LikeNotFoundException::new);
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
@@ -71,6 +72,7 @@ public class PostLikeService {
         post.setDislikeCount(like.isPositive() ? post.getDislikeCount() : post.getDislikeCount()-1);
         postRepository.save(post);
         likeRepository.delete(like);
+        return new UnlikeDto(post.getLikeCount());
     }
 
     public LikeDetails getLike(Long postId, String username) {
