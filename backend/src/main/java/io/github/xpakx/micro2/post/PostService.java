@@ -1,8 +1,11 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.comment.CommentRepository;
+import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
+import io.github.xpakx.micro2.post.dto.PostWithComments;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
@@ -19,6 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
     public PostDto addPost(PostRequest request, String username) {
@@ -62,8 +66,13 @@ public class PostService {
         );
     }
 
-    public PostDetails getSinglePost(Long postId) {
-        return postRepository.findProjectedById(postId)
-                .orElseThrow(PostNotFoundException::new);
+    public PostWithComments getSinglePost(Long postId) {
+        return PostWithComments.of(
+            postRepository.findProjectedById(postId)
+                    .orElseThrow(PostNotFoundException::new),
+            commentRepository.getAllByPostId(
+                    postId,
+                    PageRequest.of(0, 20, Sort.by("createdAt").descending()))
+        );
     }
 }

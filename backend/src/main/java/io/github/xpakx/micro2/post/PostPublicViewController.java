@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.post.dto.PostDetails;
+import io.github.xpakx.micro2.post.dto.PostWithComments;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<PostDetails> getSinglePosts(@PathVariable Long postId)
+    public ResponseEntity<PostWithComments> getSinglePosts(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
                 service.getSinglePost(postId), HttpStatus.OK
