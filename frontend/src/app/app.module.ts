@@ -20,6 +20,7 @@ import { SinglePostComponent } from './main-view/single-post/single-post.compone
 import { LikeButtonComponent } from './like/like-button/like-button.component';
 import { FullPostFormComponent } from './post/full-post-form/full-post-form.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
+import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -40,7 +41,8 @@ export function tokenGetter() {
     SinglePostComponent,
     LikeButtonComponent,
     FullPostFormComponent,
-    PostEditViewComponent
+    PostEditViewComponent,
+    TagViewComponent
   ],
   imports: [
     BrowserModule,

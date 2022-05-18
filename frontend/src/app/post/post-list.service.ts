@@ -22,6 +22,10 @@ export class PostListService {
     return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
   }
 
+  public getPostsWithTag(name: String, page?: number | undefined):  Observable<Page<PostDetails>> {
+    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/tags/${name}/posts${page ? '/'+page : ''}`);
+  }
+
   public getPost(id: number):  Observable<PostWithComments> {
     return this.http.get<PostWithComments>(`${this.apiServerUrl}/post/${id}`);
   }
