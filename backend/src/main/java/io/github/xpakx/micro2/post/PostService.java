@@ -6,6 +6,7 @@ import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.post.dto.PostWithComments;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
+import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,9 @@ public class PostService {
     public PostDto updatePost(PostRequest request, Long postId, String username) {
         Post toUpdate = postRepository.findByIdAndUserUsername(postId, username)
                 .orElseThrow(PostNotFoundException::new);
+        if(toUpdate.getCreatedAt().isBefore(LocalDateTime.now().minusHours(24))) {
+            throw new PostTooOldToEditException();
+        }
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
         return PostDto.fromPost(postRepository.save(toUpdate));
