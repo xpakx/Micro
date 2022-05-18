@@ -47,6 +47,22 @@ public class PostPublicViewController {
         );
     }
 
+    @GetMapping("/tags/{name}/posts")
+    public ResponseEntity<Page<PostDetails>> getAllPostsByTag(@PathVariable String name)
+    {
+        return new ResponseEntity<>(
+                service.getPostsByTagName(0, name), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/tags/{name}/posts/{page}")
+    public ResponseEntity<Page<PostDetails>> getAllPostsByTag(@PathVariable Integer page, @PathVariable String name)
+    {
+        return new ResponseEntity<>(
+                service.getPostsByTagName(page,name), HttpStatus.OK
+        );
+    }
+
     @GetMapping("/post/{postId}")
     public ResponseEntity<PostWithComments> getSinglePostWithComments(@PathVariable Long postId)
     {

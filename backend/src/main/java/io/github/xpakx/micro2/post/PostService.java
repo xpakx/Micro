@@ -73,6 +73,13 @@ public class PostService {
         );
     }
 
+    public Page<PostDetails> getPostsByTagName(Integer page, String tag) {
+        return postRepository.findAllByTagsName(
+                tag,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
+
     public PostWithComments getSinglePostWithComments(Long postId) {
         return PostWithComments.of(
             postRepository.findProjectedById(postId)
