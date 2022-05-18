@@ -1,7 +1,6 @@
 package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
-import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
@@ -66,7 +65,7 @@ public class PostService {
         );
     }
 
-    public PostWithComments getSinglePost(Long postId) {
+    public PostWithComments getSinglePostWithComments(Long postId) {
         return PostWithComments.of(
             postRepository.findProjectedById(postId)
                     .orElseThrow(PostNotFoundException::new),
@@ -74,5 +73,10 @@ public class PostService {
                     postId,
                     PageRequest.of(0, 20, Sort.by("createdAt").descending()))
         );
+    }
+
+    public PostDetails getSinglePost(Long postId) {
+        return postRepository.findProjectedById(postId)
+                        .orElseThrow(PostNotFoundException::new);
     }
 }

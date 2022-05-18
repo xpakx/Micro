@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostDetails } from 'src/app/post/dto/post-details';
-import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
 
 @Component({

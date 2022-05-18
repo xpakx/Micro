@@ -48,7 +48,15 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<PostWithComments> getSinglePosts(@PathVariable Long postId)
+    public ResponseEntity<PostWithComments> getSinglePostWithComments(@PathVariable Long postId)
+    {
+        return new ResponseEntity<>(
+                service.getSinglePostWithComments(postId), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/post/{postId}/min")
+    public ResponseEntity<PostDetails> getSinglePost(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
                 service.getSinglePost(postId), HttpStatus.OK
