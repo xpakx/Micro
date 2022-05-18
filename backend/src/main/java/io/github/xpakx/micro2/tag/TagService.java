@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TagService {
     private final TagRepository tagRepository;
+    private static final int MAX_TAGS = 15;
 
     public Set<Tag> addTags(String message) {
         List<String> allMentions = new ArrayList<String>();
@@ -27,6 +28,7 @@ public class TagService {
         Set<Tag> tags = allMentions.stream()
                 .map(String::toLowerCase)
                 .distinct()
+                .limit(MAX_TAGS)
                 .map(this::processTag)
                 .collect(Collectors.toSet());
         tagRepository.saveAll(tags.stream().filter(tag -> tag.getId() == null).collect(Collectors.toList()));
