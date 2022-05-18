@@ -7,6 +7,7 @@ import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.post.dto.PostWithComments;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
+import io.github.xpakx.micro2.tag.TagService;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final TagService tagService;
 
     public PostDto addPost(PostRequest request, String username) {
         Post newPost = new Post();
@@ -35,6 +37,7 @@ public class PostService {
         newPost.setCreatedAt(LocalDateTime.now());
         newPost.setLikeCount(0);
         newPost.setDislikeCount(0);
+        newPost.setTags(tagService.addTags(request.getMessage()));
         return PostDto.fromPost(postRepository.save(newPost));
     }
 
@@ -53,6 +56,7 @@ public class PostService {
         }
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
+        toUpdate.setTags(tagService.addTags(request.getMessage()));
         return PostDto.fromPost(postRepository.save(toUpdate));
     }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class TagService {
     private final TagRepository tagRepository;
 
-    public List<Tag> addTags(String message, String post) {
+    public Set<Tag> addTags(String message) {
         List<String> allMentions = new ArrayList<String>();
         Matcher m = Pattern.compile("(\\s|\\A|>)#(\\w+)")
                 .matcher(message);
@@ -23,11 +24,11 @@ public class TagService {
             allMentions.add(m.group(2));
         }
 
-        List<Tag> tags = allMentions.stream()
+        Set<Tag> tags = allMentions.stream()
                 .map(String::toLowerCase)
                 .distinct()
                 .map(this::processTag)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         tagRepository.saveAll(tags.stream().filter(tag -> tag.getId() != null).collect(Collectors.toList()));
         return tags;
     }
