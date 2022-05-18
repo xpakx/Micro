@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ import { PostLike } from 'src/app/like/dto/post-like';
 import { Unlike } from 'src/app/like/dto/unlike';
 import { PostLikeService } from 'src/app/like/post-like.service';
 import { PostDetails } from '../dto/post-details';
+import { PostService } from '../post.service';
 
 @Component({
   selector: 'app-post',
@@ -33,7 +34,7 @@ export class PostComponent implements OnInit {
   invalid: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
-    private likeService: PostLikeService) {
+    private likeService: PostLikeService, private postService: PostService) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]
     }); 
@@ -94,5 +95,16 @@ export class PostComponent implements OnInit {
   get author(): boolean {
     let username: String | null = localStorage.getItem('username');
     return username != null && username == this.post.user.username;
+  }
+
+  delete(): void {
+    this.postService.deletePost(this.post.id).subscribe({
+      next: (response: any) => this.deletePost(),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  deletePost(): void {
+    //todo
   }
 }
