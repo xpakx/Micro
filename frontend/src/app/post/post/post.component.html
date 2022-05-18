@@ -15,6 +15,7 @@
         <app-like-button [count]="post.likeCount" [liked]="false" (plus)="plus($event)"></app-like-button>
         <div class="options">
             <button class="option-button"><fa-icon [icon]="faStar"></fa-icon></button>
+            <button class="option-button" *ngIf="author"><fa-icon [icon]="faDelete"></fa-icon></button>
         </div>
     </div>
 

@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentService } from 'src/app/comment/comment.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
@@ -27,6 +27,7 @@ export class PostComponent implements OnInit {
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
+  faDelete = faTrashAlt;
   quickReply: FormGroup;
   message: String = "";
   invalid: boolean = false;
@@ -88,5 +89,10 @@ export class PostComponent implements OnInit {
       next: (response: Unlike) => this.updateLikes(response.totalLikes),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
+  }
+
+  get author(): boolean {
+    let username: String | null = localStorage.getItem('username');
+    return username != null && username == this.post.user.username;
   }
 }
