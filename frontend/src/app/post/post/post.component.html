@@ -16,6 +16,7 @@
         <div class="options">
             <button class="option-button"><fa-icon [icon]="faStar"></fa-icon></button>
             <button class="option-button" *ngIf="author" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
+            <button class="option-button" *ngIf="author" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
         </div>
     </div>
 

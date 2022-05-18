@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faCheckCircle, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentService } from 'src/app/comment/comment.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
@@ -29,6 +29,7 @@ export class PostComponent implements OnInit {
   faAttach = faPaperclip;
   faSend = faPaperPlane;
   faDelete = faTrashAlt;
+  faEdit = faEdit;
   quickReply: FormGroup;
   message: String = "";
   invalid: boolean = false;
@@ -106,5 +107,9 @@ export class PostComponent implements OnInit {
 
   deletePost(): void {
     //todo
+  }
+
+  edit(): void {
+    this.router.navigate([`post/${this.post.id}/edit`]);
   }
 }

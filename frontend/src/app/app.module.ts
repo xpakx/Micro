@@ -18,6 +18,8 @@ import { GeneralCommentListComponent } from './comment/general-comment-list/gene
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
 import { LikeButtonComponent } from './like/like-button/like-button.component';
+import { FullPostFormComponent } from './post/full-post-form/full-post-form.component';
+import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -36,7 +38,9 @@ export function tokenGetter() {
     GeneralCommentListComponent,
     LogoutComponent,
     SinglePostComponent,
-    LikeButtonComponent
+    LikeButtonComponent,
+    FullPostFormComponent,
+    PostEditViewComponent
   ],
   imports: [
     BrowserModule,
