@@ -29,7 +29,7 @@ public class TagService {
                 .distinct()
                 .map(this::processTag)
                 .collect(Collectors.toSet());
-        tagRepository.saveAll(tags.stream().filter(tag -> tag.getId() != null).collect(Collectors.toList()));
+        tagRepository.saveAll(tags.stream().filter(tag -> tag.getId() == null).collect(Collectors.toList()));
         return tags;
     }
 
