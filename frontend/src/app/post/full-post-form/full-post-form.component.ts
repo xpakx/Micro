@@ -28,8 +28,8 @@ export class FullPostFormComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.post) {
-      this.form.controls['content'].setValue(this.post.content);
-    }
+      this.form.setValue({ content: this.post.content });
+    } 
   }
 
   buttonAction(): void {
