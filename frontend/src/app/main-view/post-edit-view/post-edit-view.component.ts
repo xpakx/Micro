@@ -22,8 +22,8 @@ export class PostEditViewComponent implements OnInit {
   }
 
   loadPost(id: number) {
-    this.postService.getPost(id).subscribe({
-      next: (response: PostWithComments) => this.savePost(response),
+    this.postService.getPostMin(id).subscribe({
+      next: (response: PostDetails) => this.savePost(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
@@ -32,7 +32,7 @@ export class PostEditViewComponent implements OnInit {
     
   }
 
-  savePost(response: PostWithComments): void {
-    this.post = response.post;
+  savePost(response: PostDetails): void {
+    this.post = response;
   }
 }

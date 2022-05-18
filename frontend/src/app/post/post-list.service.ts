@@ -25,4 +25,8 @@ export class PostListService {
   public getPost(id: number):  Observable<PostWithComments> {
     return this.http.get<PostWithComments>(`${this.apiServerUrl}/post/${id}`);
   }
+
+  public getPostMin(id: number):  Observable<PostDetails> {
+    return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}/min`);
+  }
 }
