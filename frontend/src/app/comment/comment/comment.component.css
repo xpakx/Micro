@@ -1,3 +1,7 @@
+.comment-container {
+    margin: 7px 0;
+}
+
 .author-bar {
     display: flex;
     align-items: center;
