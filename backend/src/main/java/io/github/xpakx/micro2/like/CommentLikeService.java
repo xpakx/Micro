@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.like;
 
 import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.comment.CommentRepository;
+import io.github.xpakx.micro2.comment.error.CommentDeletedException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.like.dto.*;
 import io.github.xpakx.micro2.like.error.LikeNotFoundException;
@@ -40,6 +41,7 @@ public class CommentLikeService {
     private CommentLikeDto switchLike(LikeRequest request, Long commentId, Like toUpdate) {
         toUpdate.setPositive(request.isLike());
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+        if(comment.isDeletedByUser()) { throw new CommentDeletedException(); }
         comment.setLikeCount(request.isLike() ? comment.getLikeCount()+1 : comment.getLikeCount()-1);
         comment.setDislikeCount(request.isLike() ? comment.getDislikeCount()-1 : comment.getDislikeCount()+1);
         commentRepository.save(comment);
@@ -48,6 +50,7 @@ public class CommentLikeService {
 
     private CommentLikeDto createNewLike(LikeRequest request, Long commentId, String username) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+        if(comment.isDeletedByUser()) { throw new CommentDeletedException(); }
         comment.setLikeCount(request.isLike() ? comment.getLikeCount()+1 : comment.getLikeCount());
         comment.setDislikeCount(request.isLike() ? comment.getDislikeCount() : comment.getDislikeCount()+1);
         Like newLike = new Like();
@@ -65,6 +68,7 @@ public class CommentLikeService {
         Like like = likeRepository.findByCommentIdAndUserUsername(commentId, username)
                 .orElseThrow(LikeNotFoundException::new);
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+        if(comment.isDeletedByUser()) { throw new CommentDeletedException(); }
         comment.setLikeCount(like.isPositive() ? comment.getLikeCount()-1 : comment.getLikeCount());
         comment.setDislikeCount(like.isPositive() ? comment.getDislikeCount() : comment.getDislikeCount()-1);
         commentRepository.save(comment);
