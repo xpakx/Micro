@@ -62,3 +62,11 @@ button {
     font-size: 14px;
     color: #cdd2d9;
 }
+
+.deleted {
+    opacity: 0.7;
+}
+
+.deleted .comment-content {
+    color: #cdd2d9;
+}
