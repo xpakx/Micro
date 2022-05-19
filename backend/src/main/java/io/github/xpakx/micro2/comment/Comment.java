@@ -34,6 +34,7 @@ public class Comment {
 
     LocalDateTime createdAt;
     boolean edited;
+    boolean deletedByUser;
     Integer likeCount;
     Integer dislikeCount;
 

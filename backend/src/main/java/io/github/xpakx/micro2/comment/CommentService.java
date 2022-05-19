@@ -37,6 +37,7 @@ public class CommentService {
         newComment.setCreatedAt(LocalDateTime.now());
         newComment.setLikeCount(0);
         newComment.setDislikeCount(0);
+        newComment.setDeletedByUser(false);
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 
@@ -52,7 +53,8 @@ public class CommentService {
     public void deleteComment(Long id, String username) {
         Comment toDelete = commentRepository.findByIdAndUserUsername(id, username)
                 .orElseThrow(CommentNotFoundException::new);
-        commentRepository.delete(toDelete);
+        toDelete.setDeletedByUser(true);
+        commentRepository.save(toDelete);
     }
 
     public Page<CommentDetails> getCommentsForPost(Integer page, Long postId) {
