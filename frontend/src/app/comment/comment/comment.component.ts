@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { faCheckCircle, faPlus, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
+import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
 
 @Component({
@@ -16,8 +17,9 @@ export class CommentComponent implements OnInit {
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faReply = faReply;
+  faDelete = faTrashAlt;
 
-  constructor(private likeService: CommentLikeService) { }
+  constructor(private likeService: CommentLikeService, private commentService: CommentService) { }
 
   ngOnInit(): void {
   }
@@ -49,5 +51,21 @@ export class CommentComponent implements OnInit {
   }
 
   showError(error: HttpErrorResponse): void {
+  }
+
+  get author(): boolean {
+    let username: String | null = localStorage.getItem('username');
+    return username != null && username == this.comment.user.username;
+  }
+
+  delete(): void {
+    this.commentService.deleteComment(this.comment.id).subscribe({
+      next: (response: any) => this.deleteComment(),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  deleteComment(): void {
+    //todo
   }
 }

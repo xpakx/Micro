@@ -16,5 +16,6 @@
 
     <div class="option-bar">
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
+        <button class="option-button" *ngIf="author && !comment.deletedByUser" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
     </div>
 </div>

@@ -70,3 +70,7 @@ button {
 .deleted .comment-content {
     color: #cdd2d9;
 }
+
+.option-button {
+    color: #a1aab7;
+}
