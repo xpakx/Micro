@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { faCheckCircle, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
@@ -19,7 +20,7 @@ export class CommentComponent implements OnInit {
   faReply = faReply;
   faDelete = faTrashAlt;
 
-  constructor(private likeService: CommentLikeService, private commentService: CommentService) { }
+  constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -67,5 +68,9 @@ export class CommentComponent implements OnInit {
 
   deleteComment(): void {
     //todo
+  }
+
+  edit(): void {
+    this.router.navigate([`comment/${this.comment.id}/edit`]);
   }
 }

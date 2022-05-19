@@ -21,6 +21,8 @@ import { LikeButtonComponent } from './like/like-button/like-button.component';
 import { FullPostFormComponent } from './post/full-post-form/full-post-form.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
 import { TagViewComponent } from './main-view/tag-view/tag-view.component';
+import { FullCommentFormComponent } from './comment/full-comment-form/full-comment-form.component';
+import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -42,7 +44,9 @@ export function tokenGetter() {
     LikeButtonComponent,
     FullPostFormComponent,
     PostEditViewComponent,
-    TagViewComponent
+    TagViewComponent,
+    FullCommentFormComponent,
+    CommentEditViewComponent
   ],
   imports: [
     BrowserModule,

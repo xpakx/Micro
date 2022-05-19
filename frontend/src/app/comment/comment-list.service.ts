@@ -16,4 +16,8 @@ export class CommentListService {
   public getComments(postId: number, page?: number | undefined):  Observable<Page<CommentDetails>> {
     return this.http.get<Page<CommentDetails>>(`${this.apiServerUrl}/posts/${postId}/comments${page ? '/'+page : ''}`);
   }
+
+  public getComment(commentId: number): Observable<CommentDetails> {
+    return this.http.get<CommentDetails>(`${this.apiServerUrl}/comments/${commentId}`);
+  }
 }
