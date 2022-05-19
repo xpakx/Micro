@@ -13,10 +13,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByIdAndUserUsername(Long id, String username);
     Page<PostDetails> findAllBy(Pageable pageable);
     Page<PostDetails> getAllByUserUsername(String username, Pageable pageable);
-
     Page<PostDetails> findAllByTagsName(String name, Pageable pageable);
-
-
-
     Optional<PostDetails> findProjectedById(Long id);
 }

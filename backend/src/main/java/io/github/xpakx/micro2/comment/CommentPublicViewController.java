@@ -29,4 +29,12 @@ public class CommentPublicViewController {
                 service.getCommentsForPost(page, postId), HttpStatus.OK
         );
     }
+
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<CommentDetails> getSingleComment(@PathVariable Long commentId)
+    {
+        return new ResponseEntity<>(
+                service.getSingleComment(commentId), HttpStatus.OK
+        );
+    }
 }

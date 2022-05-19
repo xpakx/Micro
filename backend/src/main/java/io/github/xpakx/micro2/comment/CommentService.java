@@ -71,4 +71,9 @@ public class CommentService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
+
+    public CommentDetails getSingleComment(Long commentId) {
+        return commentRepository.findProjectedById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+    }
 }
