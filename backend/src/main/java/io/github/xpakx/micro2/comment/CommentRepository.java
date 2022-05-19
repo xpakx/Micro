@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
@@ -13,4 +14,6 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Page<CommentDetails> getAllByPostId(Long postId, Pageable pageable);
 
     Page<CommentDetails> findAllBy(Pageable pageable);
+
+    boolean existsByCreatedAtIsGreaterThan(LocalDateTime createdAt);
 }

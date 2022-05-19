@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.comment;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
 import io.github.xpakx.micro2.post.PostRepository;
@@ -47,6 +48,9 @@ public class CommentService {
                 .orElseThrow(CommentNotFoundException::new);
         if(toUpdate.getCreatedAt().isBefore(LocalDateTime.now().minusHours(24))) {
             throw new CommentTooOldToEditException();
+        }
+        if(commentRepository.existsByCreatedAtIsGreaterThan(toUpdate.getCreatedAt())) {
+            throw new CommentHasRepliesException();
         }
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
