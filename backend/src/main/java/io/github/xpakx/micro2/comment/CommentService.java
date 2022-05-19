@@ -4,6 +4,7 @@ import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
+import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -44,6 +45,9 @@ public class CommentService {
     public CommentDto updateComment(CommentRequest request, Long commentId, String username) {
         Comment toUpdate = commentRepository.findByIdAndUserUsername(commentId, username)
                 .orElseThrow(CommentNotFoundException::new);
+        if(toUpdate.getCreatedAt().isBefore(LocalDateTime.now().minusHours(24))) {
+            throw new CommentTooOldToEditException();
+        }
         toUpdate.setContent(request.getMessage());
         toUpdate.setEdited(true);
         return CommentDto.fromComment(commentRepository.save(toUpdate));
