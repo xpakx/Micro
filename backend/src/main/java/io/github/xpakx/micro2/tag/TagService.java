@@ -1,8 +1,10 @@
 package io.github.xpakx.micro2.tag;
 
+import io.github.xpakx.micro2.tag.dto.TagDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -44,5 +46,9 @@ public class TagService {
         tag.setName(name);
         tag.setId(null);
         return tag;
+    }
+
+    public List<TagDetails> getTopTags() {
+        return tagRepository.getTopTagsAfterDate(LocalDateTime.now().minusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0));
     }
 }
