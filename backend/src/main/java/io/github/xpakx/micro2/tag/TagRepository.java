@@ -1,8 +1,10 @@
 package io.github.xpakx.micro2.tag;
 
 import io.github.xpakx.micro2.tag.dto.TagDetails;
+import io.github.xpakx.micro2.tag.dto.TagName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -18,4 +20,5 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
             "WHERE tag_id = tag.id AND post.created_at > :date) LIMIT 10",
             nativeQuery = true)
     List<TagDetails> getTopTagsAfterDate(LocalDateTime date);
+    List<TagName> findFirst10ByNameStartsWith(@Param("name") String name);
 }

@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.tag;
 
 import io.github.xpakx.micro2.tag.dto.TagDetails;
+import io.github.xpakx.micro2.tag.dto.TagName;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,9 @@ public class TagService {
 
     public List<TagDetails> getTopTags() {
         return tagRepository.getTopTagsAfterDate(LocalDateTime.now().minusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0));
+    }
+
+    public List<TagName> autocomplete(String start) {
+        return tagRepository.findFirst10ByNameStartsWith(start);
     }
 }
