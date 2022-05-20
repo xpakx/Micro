@@ -8,6 +8,7 @@ import { MainComponent } from './main-view/main/main.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
 import { TagViewComponent } from './main-view/tag-view/tag-view.component';
+import { UserViewComponent } from './main-view/user-view/user-view.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'post/:id', component: SinglePostComponent },
   { path: 'post/:id/edit', component: PostEditViewComponent },
   { path: 'comment/:id/edit', component: CommentEditViewComponent },
-  { path: 'tag/:tag', component: TagViewComponent }
+  { path: 'tag/:tag', component: TagViewComponent },
+  { path: 'user/:name', component: UserViewComponent }
 ];
 
 @NgModule({

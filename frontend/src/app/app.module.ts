@@ -23,6 +23,7 @@ import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view
 import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { FullCommentFormComponent } from './comment/full-comment-form/full-comment-form.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
+import { UserViewComponent } from './main-view/user-view/user-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -46,7 +47,8 @@ export function tokenGetter() {
     PostEditViewComponent,
     TagViewComponent,
     FullCommentFormComponent,
-    CommentEditViewComponent
+    CommentEditViewComponent,
+    UserViewComponent
   ],
   imports: [
     BrowserModule,
