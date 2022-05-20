@@ -1,0 +1,76 @@
+.menu-container {
+    display: flex;
+    margin: 0;
+    margin-bottom: 7px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.menu-logo {
+    margin-left: 15px;
+    width: 250px;
+    padding: 10px 0;
+}
+
+.menu-logo .m-letter {
+    color: navy;
+    font-size: 25px;
+    border-radius: 5px;
+    border: 1px solid navy;
+    padding: 2px 3px;
+    margin-right: 2px;
+    font-weight: 800;
+}
+
+.menu-nav {
+    flex-grow: 1;
+    margin: 0 7px;
+    padding-top: 10px;
+    padding-bottom: 2px;
+}
+
+.menu-nav ul {
+    display: flex;
+    text-align: center;
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-nav ul li {
+    height: 100%;
+    font-weight: 500;
+    font-size: 17px;
+    color: #777777;
+    margin-right: 2.5em;
+}
+
+.menu-nav ul li.active {
+    color: #749bea;
+    border-bottom: 3px solid #749bea;
+}
+
+.menu-actions {
+    display: flex;
+    width: 250px;
+    padding: 10px 0;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+}
+
+.add-button {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #dbe6fe;
+    color: #437ef8;
+    padding: 7px 15px;
+    font-weight: 600;
+}
