@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public interface CommentDetails {
     Long getId();
 
-    @Value("#{target.deletedByUser ? '[comment deleted by author]' : target.content}")
+    @Value("#{target.deletedByUser ? '[comment deleted by author]' : (target.deletedByPostAuthor ? '[comment deleted by post author]' : target.content)}")
     String getContent();
     UserMin getUser();
 
