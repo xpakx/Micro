@@ -15,6 +15,7 @@ import { CommentDetails } from '../dto/comment-details';
 })
 export class CommentComponent implements OnInit {
   @Input('comment') comment!: CommentDetails;
+  @Input('postAuthor') postAuthor: boolean = false;
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faReply = faReply;
@@ -57,7 +58,7 @@ export class CommentComponent implements OnInit {
 
   get author(): boolean {
     let username: String | null = localStorage.getItem('username');
-    return username != null && username == this.comment.user.username;
+    return username != null && (username == this.comment.user.username || this.postAuthor);
   }
 
   delete(): void {

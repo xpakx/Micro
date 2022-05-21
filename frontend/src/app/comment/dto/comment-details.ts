@@ -6,6 +6,7 @@ export interface CommentDetails {
     createdAt: Date,
     edited: boolean,
     deletedByUser: boolean,
+    deletedByPostAuthor: boolean,
     user: CommentAuthor,
     likeCount: number,
     dislikeCount: number

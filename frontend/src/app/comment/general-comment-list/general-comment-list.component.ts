@@ -9,6 +9,7 @@ import { CommentDetails } from '../dto/comment-details';
 })
 export class GeneralCommentListComponent implements OnInit {
   @Input('comments') comments?: Page<CommentDetails>;
+  @Input('postAuthor') postAuthor: boolean = false;
 
   constructor() { }
 

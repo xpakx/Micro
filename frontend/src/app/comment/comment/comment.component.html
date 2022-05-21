@@ -1,4 +1,4 @@
-<div class="comment-container" *ngIf="comment" [class.deleted]="comment.deletedByUser">
+<div class="comment-container" *ngIf="comment" [class.deleted]="comment.deletedByUser || comment.deletedByPostAuthor">
     <div class="author-bar">
         <div class="avatar" style="color:pink">
             <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
@@ -16,7 +16,7 @@
 
     <div class="option-bar">
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
-        <button class="option-button" *ngIf="author && !comment.deletedByUser" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
-        <button class="option-button" *ngIf="author && !comment.deletedByUser" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
+        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
+        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
     </div>
 </div>

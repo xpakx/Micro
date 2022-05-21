@@ -1,5 +1,5 @@
 <div class="comment-list-container" *ngIf="comments">
     <div class="comment-elem"*ngFor="let comment of comments.content">
-        <app-comment [comment]='comment'></app-comment>
+        <app-comment [comment]='comment' [postAuthor]="postAuthor"></app-comment>
     </div>
 </div>
