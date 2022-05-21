@@ -24,6 +24,7 @@ import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { FullCommentFormComponent } from './comment/full-comment-form/full-comment-form.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
+import { ModalDeleteComponent } from './modal/modal-delete/modal-delete.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -48,7 +49,8 @@ export function tokenGetter() {
     TagViewComponent,
     FullCommentFormComponent,
     CommentEditViewComponent,
-    UserViewComponent
+    UserViewComponent,
+    ModalDeleteComponent
   ],
   imports: [
     BrowserModule,
