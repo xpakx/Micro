@@ -42,6 +42,7 @@ public class CommentService {
         newComment.setLikeCount(0);
         newComment.setDislikeCount(0);
         newComment.setDeletedByUser(false);
+        newComment.setDeletedByPostAuthor(false);
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 
