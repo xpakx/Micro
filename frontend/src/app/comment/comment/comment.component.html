@@ -16,7 +16,9 @@
 
     <div class="option-bar">
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
-        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
+        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
         <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
     </div>
 </div>
+
+<app-modal-delete *ngIf="showDeleteModal" text="comment" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>

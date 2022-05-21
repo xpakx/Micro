@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit {
   faReply = faReply;
   faDelete = faTrashAlt;
   faEdit = faEdit;
+  showDeleteModal: boolean = false;
 
   constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router) { }
 
@@ -61,7 +62,16 @@ export class CommentComponent implements OnInit {
     return username != null && (username == this.comment.user.username || this.postAuthor);
   }
 
+  askForDelete(): void {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
+
   delete(): void {
+    this.closeDeleteModal();
     this.commentService.deleteComment(this.comment.id).subscribe({
       next: (response: any) => this.deleteComment(),
       error: (error: HttpErrorResponse) => this.showError(error)
