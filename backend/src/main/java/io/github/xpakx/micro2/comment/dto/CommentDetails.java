@@ -20,6 +20,7 @@ public interface CommentDetails {
     LocalDateTime getCreatedAt();
     boolean isEdited();
     boolean isDeletedByUser();
+    boolean isDeletedByPostAuthor();
     Integer getLikeCount();
     Integer getDislikeCount();
 }
