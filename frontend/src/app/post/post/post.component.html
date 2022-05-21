@@ -15,7 +15,7 @@
         <app-like-button [count]="post.likeCount" [liked]="false" (plus)="plus($event)"></app-like-button>
         <div class="options">
             <button class="option-button"><fa-icon [icon]="faStar"></fa-icon></button>
-            <button class="option-button" *ngIf="author" (click)="delete()"><fa-icon [icon]="faDelete"></fa-icon></button>
+            <button class="option-button" *ngIf="author" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
             <button class="option-button" *ngIf="author" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
         </div>
     </div>
@@ -40,3 +40,5 @@
 
     <button class="more-comments" *ngIf="minimal" (click)="toPost(post.id)">{{ comments ? 'Read all comments' : 'More' }}</button>
 </div>
+
+<app-modal-delete *ngIf="showDeleteModal" text="post" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>

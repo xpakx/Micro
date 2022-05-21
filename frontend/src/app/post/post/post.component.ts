@@ -33,6 +33,7 @@ export class PostComponent implements OnInit {
   quickReply: FormGroup;
   message: String = "";
   invalid: boolean = false;
+  showDeleteModal: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService) {
@@ -97,8 +98,17 @@ export class PostComponent implements OnInit {
     let username: String | null = localStorage.getItem('username');
     return username != null && username == this.post.user.username;
   }
+  
+  askForDelete(): void {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
 
   delete(): void {
+    this.closeDeleteModal();
     this.postService.deletePost(this.post.id).subscribe({
       next: (response: any) => this.deletePost(),
       error: (error: HttpErrorResponse) => this.showError(error)
