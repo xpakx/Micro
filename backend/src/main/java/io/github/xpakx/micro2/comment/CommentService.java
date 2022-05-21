@@ -3,9 +3,11 @@ package io.github.xpakx.micro2.comment;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.error.CannotDeleteCommentException;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
+import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -59,9 +61,18 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long id, String username) {
-        Comment toDelete = commentRepository.findByIdAndUserUsername(id, username)
+        Comment toDelete = commentRepository.findById(id)
                 .orElseThrow(CommentNotFoundException::new);
-        toDelete.setDeletedByUser(true);
+        if(toDelete.getUser().getUsername().equals(username)) {
+            toDelete.setDeletedByUser(true);
+        } else {
+            Post post = postRepository.findByCommentsId(toDelete.getId())
+                    .orElseThrow(PostNotFoundException::new);
+            if(!post.getUser().getUsername().equals(username)) {
+                throw new CannotDeleteCommentException();
+            }
+            toDelete.setDeletedByPostAuthor(true);
+        }
         commentRepository.save(toDelete);
     }
 
