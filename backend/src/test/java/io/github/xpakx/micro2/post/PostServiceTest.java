@@ -1,7 +1,7 @@
 package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
-import io.github.xpakx.micro2.post.dto.PostDto;
+import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
@@ -18,6 +18,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,6 +52,8 @@ class PostServiceTest {
     private TagService tagService;
 
     private PostService service;
+
+    private final ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
 
     @BeforeEach
     void setUp() {
@@ -260,5 +267,56 @@ class PostServiceTest {
         result.setCreatedAt(LocalDateTime.now());
         result.setTags(tag.stream().map(this::getTagWithName).collect(Collectors.toSet()));
         return result;
+    }
+
+    private PostDetails getPostDetails(String content) {
+        Post post = new Post();
+        post.setContent(content);
+        return factory.createProjection(PostDetails.class, post);
+    }
+
+    @Test
+    void shouldReturnPageWithAllPosts() {
+        given(postRepository.findAllBy(ArgumentMatchers.any(PageRequest.class)))
+                .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
+        injectMocks();
+
+        Page<PostDetails> result = service.getPosts(0);
+
+        assertNotNull(result);
+        assertNotNull(result.getContent());
+        assertThat(result.getContent(), hasSize(2));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+    }
+
+    @Test
+    void shouldReturnPageWithUserPosts() {
+        given(postRepository.getAllByUserUsername(anyString(), ArgumentMatchers.any(PageRequest.class)))
+                .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
+        injectMocks();
+
+        Page<PostDetails> result = service.getPostsByUsername(0, "username");
+
+        assertNotNull(result);
+        assertNotNull(result.getContent());
+        assertThat(result.getContent(), hasSize(2));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+    }
+
+    @Test
+    void shouldReturnPageWithTaggedPosts() {
+        given(postRepository.findAllByTagsName(anyString(), ArgumentMatchers.any(PageRequest.class)))
+                .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
+        injectMocks();
+
+        Page<PostDetails> result = service.getPostsByTagName(0, "tag");
+
+        assertNotNull(result);
+        assertNotNull(result.getContent());
+        assertThat(result.getContent(), hasSize(2));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
     }
 }
