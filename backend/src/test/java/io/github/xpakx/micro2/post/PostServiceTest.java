@@ -1,8 +1,10 @@
 package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
+import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostRequest;
+import io.github.xpakx.micro2.post.dto.PostWithComments;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.tag.Tag;
@@ -21,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
@@ -318,5 +321,59 @@ class PostServiceTest {
         assertThat(result.getContent(), hasSize(2));
         assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
         assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+    }
+
+    @Test
+    void shouldReturnSinglePost() {
+        PostDetails post = getPostDetails("post");
+        given(postRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.of(post));
+        injectMocks();
+
+        PostDetails result = service.getSinglePost(1L);
+
+        assertSame(post, result);
+    }
+
+    @Test
+    void shouldThrowExceptionIfPostDoesNotExist() {
+        PostDetails post = getPostDetails("post");
+        given(postRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                PostNotFoundException.class,
+                () -> service.getSinglePost(1L)
+        );
+    }
+
+    @Test
+    void shouldReturnSinglePostWithComments() {
+        PostDetails post = getPostDetails("post");
+        Page<CommentDetails> comments = Page.empty();
+        given(postRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.of(post));
+        given(commentRepository.getAllByPostId(anyLong(), ArgumentMatchers.any(Pageable.class)))
+                .willReturn(comments);
+        injectMocks();
+
+        PostWithComments result = service.getSinglePostWithComments(1L);
+
+        assertSame(post, result.getPost());
+        assertSame(comments, result.getComments());
+    }
+
+    @Test
+    void shouldThrowExceptionIfPostDoesNotExistWhileLoadingPostWithComments() {
+        PostDetails post = getPostDetails("post");
+        given(postRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                PostNotFoundException.class,
+                () -> service.getSinglePostWithComments(1L)
+        );
     }
 }
