@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.post;
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
+import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.tag.TagService;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -16,7 +17,9 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -105,5 +108,34 @@ class PostServiceTest {
         Post result = new Post();
         result.setUser(getUserWithUsername("username"));
         return result;
+    }
+
+    @Test
+    void shouldAddNewPostWithTags() {
+        given(userRepository.findByUsername(anyString()))
+                .willReturn(Optional.of(getUserWithUsername("username")));
+        given(postRepository.save(ArgumentMatchers.any(Post.class)))
+                .willReturn(getEmptyPost());
+        given(tagService.addTags(anyString()))
+                .willReturn(Set.of(getTagWithName("tag")));
+        injectMocks();
+
+        service.addPost(getPostRequestWithContent("Post #tag"), "username");
+
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        then(postRepository)
+                .should(times(1))
+                .save(postCaptor.capture());
+        Post result = postCaptor.getValue();
+
+        assertNotNull(result.getTags());
+        assertThat(result.getTags(), hasSize(1));
+        assertThat(result.getTags(), contains(hasProperty("name", is("tag"))));
+    }
+
+    private Tag getTagWithName(String name) {
+        Tag tag = new Tag();
+        tag.setName(name);
+        return tag;
     }
 }
