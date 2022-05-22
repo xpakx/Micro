@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.post;
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
+import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.tag.TagService;
 import io.github.xpakx.micro2.user.UserAccount;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -137,5 +139,30 @@ class PostServiceTest {
         Tag tag = new Tag();
         tag.setName(name);
         return tag;
+    }
+
+    @Test
+    void shouldDeletePost() {
+        given(postRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getEmptyPost()));
+        injectMocks();
+
+        service.deletePost(1L, "username");
+
+        then(postRepository)
+                .should(times(1))
+                .delete(ArgumentMatchers.any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhileDeletingNonexistentPost() {
+        given(postRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                PostNotFoundException.class,
+                () -> service.deletePost(1L, "username")
+        );
     }
 }
