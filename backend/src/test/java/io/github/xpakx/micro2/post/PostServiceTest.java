@@ -337,7 +337,6 @@ class PostServiceTest {
 
     @Test
     void shouldThrowExceptionIfPostDoesNotExist() {
-        PostDetails post = getPostDetails("post");
         given(postRepository.findProjectedById(anyLong()))
                 .willReturn(Optional.empty());
         injectMocks();
@@ -366,7 +365,6 @@ class PostServiceTest {
 
     @Test
     void shouldThrowExceptionIfPostDoesNotExistWhileLoadingPostWithComments() {
-        PostDetails post = getPostDetails("post");
         given(postRepository.findProjectedById(anyLong()))
                 .willReturn(Optional.empty());
         injectMocks();
