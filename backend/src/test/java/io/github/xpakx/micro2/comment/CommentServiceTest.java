@@ -18,15 +18,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -165,7 +168,7 @@ class CommentServiceTest {
     void shouldNotUpdateCommentThatHasReplies() {
         given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
                 .willReturn(Optional.of(getNotOutdatedComment()));
-        given(commentRepository.existsByCreatedAtIsGreaterThan(any(LocalDateTime.class)))
+        given(commentRepository.existsByCreatedAtIsGreaterThan(ArgumentMatchers.any(LocalDateTime.class)))
                 .willReturn(true);
         injectMocks();
 
@@ -186,9 +189,9 @@ class CommentServiceTest {
     void shouldUpdateComment() {
         given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
                 .willReturn(Optional.of(getNotOutdatedComment()));
-        given(commentRepository.existsByCreatedAtIsGreaterThan(any(LocalDateTime.class)))
+        given(commentRepository.existsByCreatedAtIsGreaterThan(ArgumentMatchers.any(LocalDateTime.class)))
                 .willReturn(false);
-        given(commentRepository.save(any(Comment.class)))
+        given(commentRepository.save(ArgumentMatchers.any(Comment.class)))
                 .willReturn(getEmptyComment());
         injectMocks();
 
@@ -297,5 +300,20 @@ class CommentServiceTest {
                 CommentNotFoundException.class,
                 () -> service.getSingleComment(1L)
         );
+    }
+
+    @Test
+    void shouldReturnPageWithComments() {
+        given(commentRepository.getAllByPostId(anyLong(), ArgumentMatchers.any(PageRequest.class)))
+                .willReturn(new PageImpl<>(List.of(getCommentDetails("comment1"), getCommentDetails("comment2"))));
+        injectMocks();
+
+        Page<CommentDetails> result = service.getCommentsForPost(0, 1L);
+
+        assertNotNull(result);
+        assertNotNull(result.getContent());
+        assertThat(result.getContent(), hasSize(2));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("comment1"))));
+        assertThat(result.getContent(), hasItem(hasProperty("content", is("comment2"))));
     }
 }
