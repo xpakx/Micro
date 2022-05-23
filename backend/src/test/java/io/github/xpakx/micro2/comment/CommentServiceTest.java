@@ -119,6 +119,7 @@ class CommentServiceTest {
         result.setUser(getUserWithUsername("username"));
         return result;
     }
+
     private Comment getEmptyComment() {
         Comment result = new Comment();
         result.setUser(getUserWithUsername("username"));
@@ -198,5 +199,68 @@ class CommentServiceTest {
         assertThat(result.getUser().getUsername(), is("username"));
         assertThat(result.getContent(), is("update"));
         assertThat(result.isEdited(), is(true));
+    }
+
+    @Test
+    void shouldThrowExceptionWhileDeletingNonexistentComment() {
+        given(commentRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                CommentNotFoundException.class,
+                () -> service.deleteComment(1L, "username")
+        );
+    }
+
+    @Test
+    void shouldDeleteCommentWhenRequestedByCommentAuthor() {
+        given(commentRepository.findById(anyLong()))
+                .willReturn(Optional.of(getCommentByUser("username")));
+        injectMocks();
+
+        service.deleteComment(1L, "username");
+
+        ArgumentCaptor<Comment> commentCaptor = ArgumentCaptor.forClass(Comment.class);
+        then(commentRepository)
+                .should(times(1))
+                .save(commentCaptor.capture());
+        Comment result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertTrue(result.isDeletedByUser());
+    }
+
+    private Comment getCommentByUser(String username) {
+        Comment result = new Comment();
+        result.setUser(getUserWithUsername(username));
+        result.setId(1L);
+        return result;
+    }
+
+    @Test
+    void shouldDeleteCommentWhenRequestedByPostAuthor() {
+        given(commentRepository.findById(anyLong()))
+                .willReturn(Optional.of(getCommentByUser("user2")));
+        given(postRepository.findByCommentsId(anyLong()))
+                .willReturn(Optional.of(getPostByUser("user1")));
+        injectMocks();
+
+        service.deleteComment(1L, "user1");
+
+        ArgumentCaptor<Comment> commentCaptor = ArgumentCaptor.forClass(Comment.class);
+        then(commentRepository)
+                .should(times(1))
+                .save(commentCaptor.capture());
+        Comment result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertTrue(result.isDeletedByPostAuthor());
+    }
+
+    private Post getPostByUser(String username) {
+        Post result = new Post();
+        result.setUser(getUserWithUsername(username));
+        return result;
     }
 }
