@@ -94,4 +94,58 @@ class TagServiceTest {
         result.setName(name);
         return result;
     }
+
+    @Test
+    void shouldNotAddTagWithLetterBefore() {
+        injectMocks();
+
+        service.addTags("#tag1 a#tag2");
+
+        ArgumentCaptor<List<Tag>> commentCaptor = ArgumentCaptor.forClass(List.class);
+        then(tagRepository)
+                .should(times(1))
+                .saveAll(commentCaptor.capture());
+        List<Tag> result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result, hasSize(1));
+        assertThat(result, hasItem(hasProperty("name", is("tag1"))));
+        assertThat(result, not(hasItem(hasProperty("name", is("tag2")))));
+    }
+
+    @Test
+    void shouldNotAddSecondTagOfTwoGluedTogether() {
+        injectMocks();
+
+        service.addTags("#tag1#tag2");
+
+        ArgumentCaptor<List<Tag>> commentCaptor = ArgumentCaptor.forClass(List.class);
+        then(tagRepository)
+                .should(times(1))
+                .saveAll(commentCaptor.capture());
+        List<Tag> result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result, hasSize(1));
+        assertThat(result, hasItem(hasProperty("name", is("tag1"))));
+        assertThat(result, not(hasItem(hasProperty("name", is("tag2")))));
+    }
+
+    @Test
+    void shouldNotAddMoreThanFirst15TagsToPost() {
+        injectMocks();
+
+        service.addTags("#tag1 #tag2 #tag3 #tag4 #tag5 #tag6 #tag7 " +
+                "#tag8 #tag9 #tag10 #tag11 #tag12 #tag13 #tag14 #tag15 #tag17");
+
+        ArgumentCaptor<List<Tag>> commentCaptor = ArgumentCaptor.forClass(List.class);
+        then(tagRepository)
+                .should(times(1))
+                .saveAll(commentCaptor.capture());
+        List<Tag> result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result, hasSize(15));
+        assertThat(result, not(hasItem(hasProperty("name", is("tag16")))));
+    }
 }
