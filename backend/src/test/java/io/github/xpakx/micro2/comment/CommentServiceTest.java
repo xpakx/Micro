@@ -1,6 +1,9 @@
 package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
+import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
+import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -15,14 +18,14 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -120,5 +123,80 @@ class CommentServiceTest {
         Comment result = new Comment();
         result.setUser(getUserWithUsername("username"));
         return result;
+    }
+
+    @Test
+    void shouldThrowExceptionWhileUpdatingNonexistentComment() {
+        given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                CommentNotFoundException.class,
+                () -> service.updateComment(getCommentRequestWithContent("edited comment"), 1L, "username")
+        );
+    }
+
+    @Test
+    void shouldNotUpdateCommentOlderThan24h() {
+        given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getOutdatedComment()));
+        injectMocks();
+
+        assertThrows(
+                CommentTooOldToEditException.class,
+                () -> service.updateComment(getCommentRequestWithContent("edited comment"), 1L, "username")
+        );
+    }
+
+    private Comment getOutdatedComment() {
+        Comment result = new Comment();
+        result.setUser(getUserWithUsername("username"));
+        result.setCreatedAt(LocalDateTime.now().minusDays(2));
+        return result;
+    }
+    @Test
+    void shouldNotUpdateCommentThatHasReplies() {
+        given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getNotOutdatedComment()));
+        given(commentRepository.existsByCreatedAtIsGreaterThan(any(LocalDateTime.class)))
+                .willReturn(true);
+        injectMocks();
+
+        assertThrows(
+                CommentHasRepliesException.class,
+                () -> service.updateComment(getCommentRequestWithContent("edited comment"), 1L, "username")
+        );
+    }
+
+    private Comment getNotOutdatedComment() {
+        Comment result = new Comment();
+        result.setUser(getUserWithUsername("username"));
+        result.setCreatedAt(LocalDateTime.now());
+        return result;
+    }
+
+    @Test
+    void shouldUpdateComment() {
+        given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getNotOutdatedComment()));
+        given(commentRepository.existsByCreatedAtIsGreaterThan(any(LocalDateTime.class)))
+                .willReturn(false);
+        given(commentRepository.save(any(Comment.class)))
+                .willReturn(getEmptyComment());
+        injectMocks();
+
+        service.updateComment(getCommentRequestWithContent("update"), 1L,"username");
+
+        ArgumentCaptor<Comment> commentCaptor = ArgumentCaptor.forClass(Comment.class);
+        then(commentRepository)
+                .should(times(1))
+                .save(commentCaptor.capture());
+        Comment result = commentCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getUser().getUsername(), is("username"));
+        assertThat(result.getContent(), is("update"));
+        assertThat(result.isEdited(), is(true));
     }
 }
