@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.comment;
 
+import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
@@ -17,6 +18,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -40,6 +43,8 @@ class CommentServiceTest {
     private PostRepository postRepository;
 
     private CommentService service;
+
+    private final ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
 
     @BeforeEach
     void setUp() {
@@ -262,5 +267,35 @@ class CommentServiceTest {
         Post result = new Post();
         result.setUser(getUserWithUsername(username));
         return result;
+    }
+
+    @Test
+    void shouldReturnSingleComment() {
+        CommentDetails comment = getCommentDetails("comment");
+        given(commentRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.of(comment));
+        injectMocks();
+
+        CommentDetails result = service.getSingleComment(1L);
+
+        assertSame(comment, result);
+    }
+
+    private CommentDetails getCommentDetails(String content) {
+        Comment comment = new Comment();
+        comment.setContent(content);
+        return factory.createProjection(CommentDetails.class, comment);
+    }
+
+    @Test
+    void shouldThrowExceptionIfCommentDoesNotExist() {
+        given(commentRepository.findProjectedById(anyLong()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                CommentNotFoundException.class,
+                () -> service.getSingleComment(1L)
+        );
     }
 }
