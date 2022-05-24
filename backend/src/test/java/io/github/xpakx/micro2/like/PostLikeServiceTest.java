@@ -1,7 +1,9 @@
 package io.github.xpakx.micro2.like;
 
 import io.github.xpakx.micro2.comment.Comment;
+import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
+import io.github.xpakx.micro2.like.error.LikeNotFoundException;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -22,8 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -262,5 +263,53 @@ class PostLikeServiceTest {
         assertNotNull(result);
         assertThat(result.getLikeCount(), is(equalTo(4)));
         assertThat(result.getDislikeCount(), is(equalTo(7)));
+    }
+
+    @Test
+    void shouldThrowExceptionWhileDeletingNonexistentLike() {
+        given(likeRepository.findByPostIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                LikeNotFoundException.class,
+                () -> service.unlikePost(1L, "username")
+        );
+    }
+
+    @Test
+    void shouldUnlikePost() {
+        given(likeRepository.findByPostIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getLike(true)));
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(1, 0)));
+        injectMocks();
+
+        service.unlikePost(1L, "username");
+
+        then(likeRepository)
+                .should(times(1))
+                .delete(any(Like.class));
+    }
+
+    @Test
+    void shouldDecreaseLikeCount() {
+        given(likeRepository.findByPostIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getLike(true)));
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(1, 0)));
+        injectMocks();
+
+        service.unlikePost(1L, "username");
+
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        then(postRepository)
+                .should(times(1))
+                .save(postCaptor.capture());
+        Post result = postCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getLikeCount(), is(equalTo(0)));
+        assertThat(result.getDislikeCount(), is(equalTo(0)));
     }
 }
