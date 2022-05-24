@@ -206,4 +206,61 @@ class PostLikeServiceTest {
         assertThat(result.getLikeCount(), is(equalTo(5)));
         assertThat(result.getDislikeCount(), is(equalTo(7)));
     }
+
+    @Test
+    void shouldSwitchLike() {
+        given(likeRepository.findByPostIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getLike(true)));
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(5, 6)));
+        given(likeRepository.save(ArgumentMatchers.any(Like.class)))
+                .willReturn(getEmptyLike());
+        injectMocks();
+
+        service.likePost(getLikeRequest(false), 1L, "username");
+
+        ArgumentCaptor<Like> likeCaptor = ArgumentCaptor.forClass(Like.class);
+        then(likeRepository)
+                .should(times(1))
+                .save(likeCaptor.capture());
+        Like result = likeCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getUser().getUsername(), is("username"));
+        assertNull(result.getComment());
+        assertNotNull(result.getPost());
+        assertNull(result.getId());
+        assertThat(result.isPositive(), is(false));
+    }
+
+    private Like getLike(boolean positive) {
+        Like result = new Like();
+        result.setPositive(positive);
+        result.setPost(getEmptyPost());
+        result.setUser(getUser());
+        return result;
+    }
+
+    @Test
+    void shouldUpdateLikeCountAfterSwitchingLike() {
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(5, 6)));
+        given(likeRepository.save(ArgumentMatchers.any(Like.class)))
+                .willReturn(getEmptyLike());
+        given(likeRepository.findByPostIdAndUserUsername(anyLong(), anyString()))
+                .willReturn(Optional.of(getLike(true)));
+        injectMocks();
+
+        service.likePost(getLikeRequest(false), 1L, "username");
+
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        then(postRepository)
+                .should(times(1))
+                .save(postCaptor.capture());
+        Post result = postCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getLikeCount(), is(equalTo(4)));
+        assertThat(result.getDislikeCount(), is(equalTo(7)));
+    }
 }
