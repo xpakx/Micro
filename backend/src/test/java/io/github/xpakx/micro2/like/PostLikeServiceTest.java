@@ -152,4 +152,58 @@ class PostLikeServiceTest {
         assertNull(result.getId());
         assertThat(result.isPositive(), is(false));
     }
+
+    @Test
+    void shouldUpdateLikeCount() {
+        given(userRepository.findByUsername(anyString()))
+                .willReturn(Optional.of(getUser()));
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(5, 6)));
+        given(likeRepository.save(ArgumentMatchers.any(Like.class)))
+                .willReturn(getEmptyLike());
+        injectMocks();
+
+        service.likePost(getLikeRequest(true), 1L, "username");
+
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        then(postRepository)
+                .should(times(1))
+                .save(postCaptor.capture());
+        Post result = postCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getLikeCount(), is(equalTo(6)));
+        assertThat(result.getDislikeCount(), is(equalTo(6)));
+    }
+
+    private Post getPostWithLikeCount(int likes, int dislikes) {
+        Post result = new Post();
+        result.setLikeCount(likes);
+        result.setDislikeCount(dislikes);
+        result.setId(1L);
+        return result;
+    }
+
+    @Test
+    void shouldUpdateDislikeCount() {
+        given(userRepository.findByUsername(anyString()))
+                .willReturn(Optional.of(getUser()));
+        given(postRepository.findById(anyLong()))
+                .willReturn(Optional.of(getPostWithLikeCount(5, 6)));
+        given(likeRepository.save(ArgumentMatchers.any(Like.class)))
+                .willReturn(getEmptyLike());
+        injectMocks();
+
+        service.likePost(getLikeRequest(false), 1L, "username");
+
+        ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+        then(postRepository)
+                .should(times(1))
+                .save(postCaptor.capture());
+        Post result = postCaptor.getValue();
+
+        assertNotNull(result);
+        assertThat(result.getLikeCount(), is(equalTo(5)));
+        assertThat(result.getDislikeCount(), is(equalTo(7)));
+    }
 }
