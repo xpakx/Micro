@@ -1,7 +1,6 @@
 package io.github.xpakx.micro2.like;
 
-import io.github.xpakx.micro2.comment.Comment;
-import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
+import io.github.xpakx.micro2.like.dto.LikeDetails;
 import io.github.xpakx.micro2.like.dto.LikeRequest;
 import io.github.xpakx.micro2.like.error.LikeNotFoundException;
 import io.github.xpakx.micro2.post.Post;
@@ -17,6 +16,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 import java.util.Optional;
 
@@ -39,6 +40,8 @@ class PostLikeServiceTest {
     private UserRepository userRepository;
 
     private  PostLikeService service;
+
+    private final ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
 
     @BeforeEach
     void setUp() {
@@ -311,5 +314,36 @@ class PostLikeServiceTest {
         assertNotNull(result);
         assertThat(result.getLikeCount(), is(equalTo(0)));
         assertThat(result.getDislikeCount(), is(equalTo(0)));
+    }
+
+    @Test
+    void shouldThrowExceptionIfLikeDoesNotExist() {
+        given(likeRepository.findProjectedByPostIdAndUserUsername(anyLong(), anyString(), any(Class.class)))
+                .willReturn(Optional.empty());
+        injectMocks();
+
+        assertThrows(
+                LikeNotFoundException.class,
+                () -> service.getLike(1L, "username")
+        );
+    }
+
+    @Test
+    void shouldReturnLike() {
+        LikeDetails like = getLikeDetails(true);
+        given(likeRepository.findProjectedByPostIdAndUserUsername(anyLong(), anyString(), any(Class.class)))
+                .willReturn(Optional.of(like));
+        injectMocks();
+
+        LikeDetails result = service.getLike(1L, "username");
+
+        assertSame(like, result);
+    }
+
+    private LikeDetails getLikeDetails(boolean positive) {
+        Like like = new Like();
+        like.setPositive(positive);
+        like.setId(1L);
+        return factory.createProjection(LikeDetails.class, like);
     }
 }
