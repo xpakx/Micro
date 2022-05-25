@@ -74,10 +74,9 @@ public class AuthenticationService {
         userToAdd.setPassword(passwordEncoder.encode(request.getPassword()));
         userToAdd.setUsername(request.getUsername());
         userToAdd.setRoles(roles);
-        userToAdd = userRepository.save(userToAdd);
         userToAdd.setGender("");
         userToAdd.setAvatarUrl("");
         userToAdd.setConfirmed(false);
-        return userToAdd;
+        return userRepository.save(userToAdd);
     }
 }

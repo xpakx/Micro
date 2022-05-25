@@ -8,9 +8,9 @@ import io.github.xpakx.micro2.user.error.JwtBadCredentialsException;
 import io.github.xpakx.micro2.user.error.UserDisabledException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,9 +26,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
@@ -153,4 +154,33 @@ class AuthenticationServiceTest {
         assertThat(response.getToken(), is("test-token"));
     }
 
+    @Test
+    void shouldSaveNewUser() {
+        given(jwtTokenUtil.generateToken(any(UserDetails.class)))
+                .willReturn("test-token");
+        given(userRepository.save(any(UserAccount.class)))
+                .willReturn(getEmptyUser());
+        given(userService.userAccountToUserDetails(any(UserAccount.class)))
+                .willReturn(getUserWithPassword("password"));
+        given(passwordEncoder.encode("password"))
+                .willReturn("encoded-password");
+        injectMocks();
+
+        service.register(getRegistrationRequest("user", "password", "password"));
+
+        ArgumentCaptor<UserAccount> likeCaptor = ArgumentCaptor.forClass(UserAccount.class);
+        then(userRepository)
+                .should(times(1))
+                .save(likeCaptor.capture());
+        UserAccount result = likeCaptor.getValue();
+
+        assertNotNull(result);
+        assertNull(result.getId());
+        assertThat(result.getUsername(), is("user"));
+        assertThat(result.getPassword(), is("encoded-password"));
+        assertThat(result.getGender(), is(""));
+        assertThat(result.getAvatarUrl(), is(""));
+        assertThat(result.isConfirmed(), is(false));
+
+    }
 }
