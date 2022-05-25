@@ -181,6 +181,5 @@ class AuthenticationServiceTest {
         assertThat(result.getGender(), is(""));
         assertThat(result.getAvatarUrl(), is(""));
         assertThat(result.isConfirmed(), is(false));
-
     }
 }
