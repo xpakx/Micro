@@ -15,14 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerTest {
@@ -119,4 +120,125 @@ class PostControllerTest {
         assertTrue(tagInDb.isPresent());
     }
 
+    @Test
+    void shouldRespondWith401ToUpdatePostIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user1", 1)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotUpdatePostByOtherUser() {
+        Long id = addPostAndReturnId();
+        createUser("user2");
+        PostRequest request = getValidPostRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user2"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user2", id)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    private Long addPostAndReturnId() {
+        Post post = new Post();
+        post.setContent("content");
+        post.setLikeCount(0);
+        post.setDislikeCount(0);
+        post.setUser(userRepository.getById(userId));
+        post.setCreatedAt(LocalDateTime.now());
+        return postRepository.save(post).getId();
+    }
+
+    private void createUser(String username) {
+        UserAccount user = new UserAccount();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRoles(new HashSet<>());
+        userRepository.save(user);
+    }
+
+    @Test
+    void shouldRespondWith404WhileUpdatingNonExistentPost() {
+        PostRequest request = getValidPostRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldNotUpdatePostOlderThan24Hours() {
+        Long id = addOutdatedPostAndReturnId();
+        PostRequest request = getValidPostRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user1", id)
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
+
+    private Long addOutdatedPostAndReturnId() {
+        Post post = new Post();
+        post.setContent("content");
+        post.setLikeCount(0);
+        post.setDislikeCount(0);
+        post.setUser(userRepository.getById(userId));
+        post.setCreatedAt(LocalDateTime.now().minusDays(2));
+        return postRepository.save(post).getId();
+    }
+    @Test
+    void shouldUpdatePost() {
+        Long id = addPostAndReturnId();
+        PostRequest request = getValidPostRequest("updated");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user1", id)
+        .then()
+                .statusCode(OK.value())
+                .body("message", is("updated"));
+    }
+
+    @Test
+    void shouldAddTagWhileUpdatingPost() {
+        Long id = addPostAndReturnId();
+        PostRequest request = getValidPostRequest("updated #tag");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/post/{postId}", "user1", id)
+        .then()
+                .statusCode(OK.value());
+
+        Optional<Tag> tagInDb = tagRepository.findByName("tag");
+        assertTrue(tagInDb.isPresent());
+    }
 }
