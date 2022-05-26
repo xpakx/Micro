@@ -241,4 +241,54 @@ class PostControllerTest {
         Optional<Tag> tagInDb = tagRepository.findByName("tag");
         assertTrue(tagInDb.isPresent());
     }
+
+    @Test
+    void shouldRespondWith401ToDeletePostIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/user/{username}/post/{postId}", "user1", 1)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotDeletePostByOtherUser() {
+        Long id = addPostAndReturnId();
+        createUser("user2");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .delete(baseUrl + "/user/{username}/post/{postId}", "user2", id)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldRespondWith404WhileDeletingNonExistentPost() {
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/post/{postId}", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldDeletePost() {
+        Long id = addPostAndReturnId();
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/post/{postId}", "user1", id)
+        .then()
+                .statusCode(OK.value());
+    }
 }
