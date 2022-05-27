@@ -3,7 +3,6 @@ package io.github.xpakx.micro2.comment;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
-import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -192,5 +191,121 @@ class CommentControllerTest {
                 .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
         .then()
                 .statusCode(OK.value());
+    }
+
+    @Test
+    void shouldRespondWith401ToUpdateCommentIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotUpdateCommentByOtherUser() {
+        Long id = addCommentAndReturnId(addPostAndReturnId());
+        createUser("user2");
+        CommentRequest request = getValidCommentRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user2"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user2", id)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldRespondWith404WhileUpdatingNonExistentComment() {
+        CommentRequest request = getValidCommentRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldNotUpdateCommentOlderThan24Hours() {
+        Long id = addOutdatedCommentAndReturnId(addPostAndReturnId());
+        CommentRequest request = getValidCommentRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
+
+    private Long addOutdatedCommentAndReturnId(Long postId) {
+        Comment comment = new Comment();
+        comment.setContent("content");
+        comment.setLikeCount(0);
+        comment.setDislikeCount(0);
+        comment.setUser(userRepository.getById(userId));
+        comment.setPost(postRepository.findById(postId).get());
+        comment.setCreatedAt(LocalDateTime.now().minusDays(2));
+        return commentRepository.save(comment).getId();
+    }
+
+    @Test
+    void shouldNotUpdateCommentWithResponses() {
+        Long postId = addPostAndReturnId();
+        Long id = addHourOldCommentAndReturnId(postId);
+        addCommentAndReturnId(postId);
+        CommentRequest request = getValidCommentRequest("post");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
+
+    private Long addHourOldCommentAndReturnId(Long postId) {
+        Comment comment = new Comment();
+        comment.setContent("content");
+        comment.setLikeCount(0);
+        comment.setDislikeCount(0);
+        comment.setUser(userRepository.getById(userId));
+        comment.setPost(postRepository.findById(postId).get());
+        comment.setCreatedAt(LocalDateTime.now().minusHours(1));
+        return commentRepository.save(comment).getId();
+    }
+
+    @Test
+    void shouldUpdateComment() {
+        Long id = addCommentAndReturnId(addPostAndReturnId());
+        CommentRequest request = getValidCommentRequest("updated");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+        .then()
+                .statusCode(OK.value())
+                .body("message", is("updated"));
     }
 }
