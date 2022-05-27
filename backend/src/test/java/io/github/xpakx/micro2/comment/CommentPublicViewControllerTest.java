@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -109,5 +110,18 @@ class CommentPublicViewControllerTest {
                 .get(baseUrl + "/comments/{commentId}", maxCommentId+1)
         .then()
                 .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldReturnAllCommentsByPost() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts/{postId}/comments", postId)
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(3))
+                .body("content", not(hasItem(hasProperty("content", equalTo("comment4")))));
     }
 }
