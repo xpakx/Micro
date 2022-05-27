@@ -15,7 +15,7 @@ public class CommentPublicViewController {
     private final CommentService service;
 
     @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<Page<CommentDetails>> getAllPosts(@PathVariable Long postId)
+    public ResponseEntity<Page<CommentDetails>> getAllComments(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
                 service.getCommentsForPost(0, postId), HttpStatus.OK
@@ -23,7 +23,7 @@ public class CommentPublicViewController {
     }
 
     @GetMapping("/posts/{postId}/comments/{page}")
-    public ResponseEntity<Page<CommentDetails>> getAllPosts(@PathVariable Integer page, @PathVariable Long postId)
+    public ResponseEntity<Page<CommentDetails>> getAllComments(@PathVariable Integer page, @PathVariable Long postId)
     {
         return new ResponseEntity<>(
                 service.getCommentsForPost(page, postId), HttpStatus.OK
