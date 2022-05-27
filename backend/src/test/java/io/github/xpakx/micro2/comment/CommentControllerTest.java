@@ -124,4 +124,73 @@ class CommentControllerTest {
         post.setCreatedAt(LocalDateTime.now());
         return postRepository.save(post).getId();
     }
+
+    @Test
+    void shouldRespondWith401ToDeleteCommentIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotDeleteCommentByOtherUser() {
+        Long id = addCommentAndReturnId(addPostAndReturnId());
+        createUser("user2");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user2", id)
+        .then()
+                .statusCode(FORBIDDEN.value());
+    }
+
+    private Long addCommentAndReturnId(Long postId) {
+        Comment comment = new Comment();
+        comment.setContent("content");
+        comment.setLikeCount(0);
+        comment.setDislikeCount(0);
+        comment.setUser(userRepository.getById(userId));
+        comment.setPost(postRepository.findById(postId).get());
+        comment.setCreatedAt(LocalDateTime.now());
+        return commentRepository.save(comment).getId();
+    }
+
+    private void createUser(String username) {
+        UserAccount user = new UserAccount();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRoles(new HashSet<>());
+        userRepository.save(user);
+    }
+
+    @Test
+    void shouldRespondWith404WhileDeletingNonExistentComment() {
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldDeleteComment() {
+        Long id = addCommentAndReturnId(addPostAndReturnId());
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+        .then()
+                .statusCode(OK.value());
+    }
 }
