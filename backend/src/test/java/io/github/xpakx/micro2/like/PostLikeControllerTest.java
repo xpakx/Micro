@@ -20,6 +20,7 @@ import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -220,5 +221,31 @@ class PostLikeControllerTest {
                 .statusCode(OK.value())
                 .body("totalLikes", equalTo(0))
                 .body("totalDislikes", equalTo(0));
+    }
+
+    @Test
+    void shouldRespondWith404IfLikeDoesNotExist() {
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldGetLikeForPost() {
+        Long postId = addLikedPostAndReturnId();
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+        .then()
+                .statusCode(OK.value())
+                .body("positive", is(true));
     }
 }
