@@ -58,6 +58,13 @@ class TagControllerTest {
         }
     }
 
+    private void createTagsForAutocompletion() {
+        addTag("tag");
+        addTag("tag2");
+        addTag("label");
+
+    }
+
     private void addPostsToTag(int n, Long tagId, Long userId) {
         for(int i = 0; i<n; i++) {
             addPost(userId, List.of(tagId));
@@ -99,5 +106,19 @@ class TagControllerTest {
                 .statusCode(OK.value())
                 .body("$", hasSize(10))
                 .body("$", not(hasItem(hasProperty("name", equalTo("tag11")))));
+    }
+
+    @Test
+    void shouldSuggestTagCompletions() {
+        createTagsForAutocompletion();
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/tags/name?start={name}", "ta")
+        .then()
+                .statusCode(OK.value())
+                .body("$", hasSize(2))
+                .body("$", not(hasItem(hasProperty("name", equalTo("label")))));
     }
 }
