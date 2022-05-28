@@ -72,7 +72,7 @@ public class PostLikeService {
         post.setDislikeCount(like.isPositive() ? post.getDislikeCount() : post.getDislikeCount()-1);
         postRepository.save(post);
         likeRepository.delete(like);
-        return new UnlikeDto(post.getLikeCount());
+        return new UnlikeDto(post.getLikeCount(), post.getDislikeCount());
     }
 
     public LikeDetails getLike(Long postId, String username) {

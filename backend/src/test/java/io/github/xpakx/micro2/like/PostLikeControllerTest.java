@@ -183,4 +183,42 @@ class PostLikeControllerTest {
         likeRepository.save(like);
         return postId;
     }
+
+    @Test
+    void shouldRespondWith401ToUnLikeIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotUnlikeIfLikeDoesNotExist() {
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldUnlikePost() {
+        Long postId = addLikedPostAndReturnId();
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+        .then()
+                .statusCode(OK.value())
+                .body("totalLikes", equalTo(0))
+                .body("totalDislikes", equalTo(0));
+    }
 }

@@ -73,7 +73,7 @@ public class CommentLikeService {
         comment.setDislikeCount(like.isPositive() ? comment.getDislikeCount() : comment.getDislikeCount()-1);
         commentRepository.save(comment);
         likeRepository.delete(like);
-        return new UnlikeDto(comment.getLikeCount());
+        return new UnlikeDto(comment.getLikeCount(), comment.getDislikeCount());
     }
 
     public LikeDetails getLike(Long commentId, String username) {

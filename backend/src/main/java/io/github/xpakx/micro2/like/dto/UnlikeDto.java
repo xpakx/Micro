@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UnlikeDto {
     private Integer totalLikes;
+    private Integer totalDislikes;
 }
