@@ -37,7 +37,7 @@ public class PostLikeService {
 
     private PostLikeDto returnExistingLike(Like like, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        return PostLikeDto.from(like, post.getLikeCount());
+        return PostLikeDto.from(like, post.getLikeCount(), post.getDislikeCount());
     }
 
     private PostLikeDto switchLike(LikeRequest request, Long postId, Like toUpdate) {
@@ -46,7 +46,7 @@ public class PostLikeService {
         post.setLikeCount(request.isLike() ? post.getLikeCount()+1 : post.getLikeCount()-1);
         post.setDislikeCount(request.isLike() ? post.getDislikeCount()-1 : post.getDislikeCount()+1);
         postRepository.save(post);
-        return PostLikeDto.from(likeRepository.save(toUpdate), post.getLikeCount());
+        return PostLikeDto.from(likeRepository.save(toUpdate), post.getLikeCount(), post.getDislikeCount());
     }
 
     private PostLikeDto createNewLike(LikeRequest request, Long postId, String username) {
@@ -60,7 +60,7 @@ public class PostLikeService {
         );
         newLike.setPositive(request.isLike());
         postRepository.save(post);
-        return PostLikeDto.from(likeRepository.save(newLike), post.getLikeCount());
+        return PostLikeDto.from(likeRepository.save(newLike), post.getLikeCount(), post.getDislikeCount());
     }
 
     @Transactional
