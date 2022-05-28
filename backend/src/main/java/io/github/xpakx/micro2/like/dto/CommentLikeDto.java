@@ -12,6 +12,7 @@ public class CommentLikeDto {
     private boolean voted;
     private boolean positive;
     private Integer totalLikes;
+    private Integer totalDislikes;
 
     public static CommentLikeDto from(Like like) {
         CommentLikeDto transformed = new CommentLikeDto();
@@ -23,13 +24,14 @@ public class CommentLikeDto {
         return transformed;
     }
 
-    public static CommentLikeDto from(Like like, Integer totalLikes) {
+    public static CommentLikeDto from(Like like, Integer totalLikes, Integer totalDislikes) {
         CommentLikeDto transformed = new CommentLikeDto();
         transformed.setVoted(true);
         transformed.setPositive(like.isPositive());
         transformed.setId(like.getId());
         transformed.setCommentId(like.getComment().getId());
         transformed.setTotalLikes(totalLikes);
+        transformed.setTotalDislikes(totalDislikes);
         return transformed;
     }
 

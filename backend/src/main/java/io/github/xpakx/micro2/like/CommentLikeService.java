@@ -35,7 +35,7 @@ public class CommentLikeService {
 
     private CommentLikeDto returnExistingLike(Like like, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-        return CommentLikeDto.from(like, comment.getLikeCount());
+        return CommentLikeDto.from(like, comment.getLikeCount(), comment.getDislikeCount());
     }
 
     private CommentLikeDto switchLike(LikeRequest request, Long commentId, Like toUpdate) {
@@ -45,7 +45,7 @@ public class CommentLikeService {
         comment.setLikeCount(request.isLike() ? comment.getLikeCount()+1 : comment.getLikeCount()-1);
         comment.setDislikeCount(request.isLike() ? comment.getDislikeCount()-1 : comment.getDislikeCount()+1);
         commentRepository.save(comment);
-        return CommentLikeDto.from(likeRepository.save(toUpdate), comment.getLikeCount());
+        return CommentLikeDto.from(likeRepository.save(toUpdate), comment.getLikeCount(), comment.getDislikeCount());
     }
 
     private CommentLikeDto createNewLike(LikeRequest request, Long commentId, String username) {
@@ -60,7 +60,7 @@ public class CommentLikeService {
         );
         newLike.setPositive(request.isLike());
         commentRepository.save(comment);
-        return CommentLikeDto.from(likeRepository.save(newLike), comment.getLikeCount());
+        return CommentLikeDto.from(likeRepository.save(newLike), comment.getLikeCount(), comment.getDislikeCount());
     }
 
     @Transactional
