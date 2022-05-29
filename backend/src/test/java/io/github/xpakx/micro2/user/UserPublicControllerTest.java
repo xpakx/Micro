@@ -34,7 +34,7 @@ class UserPublicControllerTest {
     void shouldSuggestUserCompletions() {
         createUsersForAutocompletion();
         given()
-                .log() 
+                .log()
                 .uri()
         .when()
                 .get(baseUrl + "/users/name?start={name}", "use")
