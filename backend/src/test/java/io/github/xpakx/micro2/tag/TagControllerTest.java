@@ -62,7 +62,6 @@ class TagControllerTest {
         addTag("tag");
         addTag("tag2");
         addTag("label");
-
     }
 
     private void addPostsToTag(int n, Long tagId, Long userId) {
