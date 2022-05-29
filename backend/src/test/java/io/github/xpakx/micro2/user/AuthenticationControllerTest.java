@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.user;
 
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.user.dto.AuthenticationRequest;
+import io.github.xpakx.micro2.user.dto.RegistrationRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,5 +111,72 @@ class AuthenticationControllerTest {
         .then()
                 .statusCode(UNAUTHORIZED.value())
                 .body("$", not(hasKey("token")));
+    }
+
+    @Test
+    void shouldRegisterUser() {
+        String token = given()
+                .log()
+                .uri()
+                .contentType(ContentType.JSON)
+                .body(getRegistrationRequest("user2", "password", "password"))
+        .when()
+                .post(baseUrl + "/register")
+        .then()
+                .statusCode(CREATED.value())
+                .body("$", hasKey("token"))
+                .extract()
+                .jsonPath()
+                .getString("token");
+
+        given()
+                .auth()
+                .oauth2(token)
+        .when()
+                .post(baseUrl + "/posts")
+        .then()
+                .statusCode(not(UNAUTHORIZED.value()));
+    }
+
+    private RegistrationRequest getRegistrationRequest(String username, String password, String passwordRepeated) {
+        RegistrationRequest request = new RegistrationRequest();
+        request.setUsername(username);
+        request.setPassword(password);
+        request.setPasswordRe(passwordRepeated);
+        return request;
+    }
+
+    @Test
+    void shouldNotRegisterIfPasswordsDoNotMatch() {
+        given()
+                .log()
+                .uri()
+                .contentType(ContentType.JSON)
+                .body(getRegistrationRequest("user2", "password1", "password2"))
+        .when()
+                .post(baseUrl + "/register")
+        .then()
+                .log()
+                .body()
+                .statusCode(BAD_REQUEST.value())
+                .body("$", not(hasKey("token")))
+                .body("message", containsString("don't match"));
+    }
+
+    @Test
+    void shouldNotRegisterIfUsernameAlreadyUsed() {
+        given()
+                .log()
+                .uri()
+                .contentType(ContentType.JSON)
+                .body(getRegistrationRequest("user1", "password", "password"))
+        .when()
+                .post(baseUrl + "/register")
+        .then()
+                .log()
+                .body()
+                .statusCode(BAD_REQUEST.value())
+                .body("$", not(hasKey("token")))
+                .body("message", containsString("exists"));
     }
 }
