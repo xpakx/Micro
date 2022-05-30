@@ -23,7 +23,8 @@
 
 .menu-nav {
     flex-grow: 1;
-    margin: 0 7px;
+    margin: 0;
+    
     padding-top: 10px;
     padding-bottom: 2px;
 }
