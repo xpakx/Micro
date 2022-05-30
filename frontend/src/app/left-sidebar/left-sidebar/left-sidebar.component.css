@@ -1,0 +1,22 @@
+ul.options {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+ul.options li.option {
+	margin-left: 0;
+	padding-left: 20px;
+	cursor: pointer;
+	margin-bottom: 5px;
+    font-size: 14px;
+}
+
+ul.options li.option:hover {
+	color: #749bea;
+    border-left: 3px solid #749bea;
+}
+
+fa-icon {
+    margin-right: 10px;
+}

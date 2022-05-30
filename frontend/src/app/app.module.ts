@@ -25,6 +25,7 @@ import { FullCommentFormComponent } from './comment/full-comment-form/full-comme
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { ModalDeleteComponent } from './modal/modal-delete/modal-delete.component';
+import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -50,7 +51,8 @@ export function tokenGetter() {
     FullCommentFormComponent,
     CommentEditViewComponent,
     UserViewComponent,
-    ModalDeleteComponent
+    ModalDeleteComponent,
+    LeftSidebarComponent
   ],
   imports: [
     BrowserModule,
