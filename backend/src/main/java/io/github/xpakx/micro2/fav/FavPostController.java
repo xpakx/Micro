@@ -15,10 +15,17 @@ public class FavPostController {
 
     @PostMapping
     @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<FavDto> addNewPost(@PathVariable Long postId, @PathVariable String username) {
+    public ResponseEntity<FavDto> addToFav(@PathVariable Long postId, @PathVariable String username) {
         return new ResponseEntity<>(
                 service.addToFav(username, postId),
                 HttpStatus.CREATED
         );
+    }
+
+    @DeleteMapping
+    @PreAuthorize("#username == authentication.principal.username")
+    public ResponseEntity<?> deleteFromFav(@PathVariable Long postId, @PathVariable String username) {
+        service.deleteFromFav(username, postId);
+        return new ResponseEntity<>(                HttpStatus.OK);
     }
 }

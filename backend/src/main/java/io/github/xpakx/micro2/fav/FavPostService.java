@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.fav;
 
 import io.github.xpakx.micro2.fav.dto.FavDto;
 import io.github.xpakx.micro2.fav.error.PostAlreadyFavoriteException;
+import io.github.xpakx.micro2.fav.error.PostNotFavoriteException;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -25,5 +26,11 @@ public class FavPostService {
         toAdd.setUser(userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new));
         favRepository.save(toAdd);
         return new FavDto(postId, username);
+    }
+
+    public void deleteFromFav(String username, Long postId) {
+        FavPost toDelete = favRepository.findByPostIdIdAndUserUsername(postId, username)
+                .orElseThrow(PostNotFavoriteException::new);
+        favRepository.delete(toDelete);
     }
 }
