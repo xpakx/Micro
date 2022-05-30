@@ -18,7 +18,7 @@ public class FavPostService {
     private final UserRepository userRepository;
 
     public FavDto addToFav(String username, Long postId) {
-        if(favRepository.existsByPostIdIdAndUserUsername(postId, username)) {
+        if(favRepository.existsByPostIdAndUserUsername(postId, username)) {
             throw new PostAlreadyFavoriteException();
         }
         FavPost toAdd = new FavPost();
@@ -29,7 +29,7 @@ public class FavPostService {
     }
 
     public void deleteFromFav(String username, Long postId) {
-        FavPost toDelete = favRepository.findByPostIdIdAndUserUsername(postId, username)
+        FavPost toDelete = favRepository.findByPostIdAndUserUsername(postId, username)
                 .orElseThrow(PostNotFavoriteException::new);
         favRepository.delete(toDelete);
     }

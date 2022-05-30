@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface FavPostRepository extends JpaRepository<FavPost, Long> {
-    boolean existsByPostIdIdAndUserUsername(Long postId, String username);
-    Optional<FavPost> findByPostIdIdAndUserUsername(Long postId, String username);
+    boolean existsByPostIdAndUserUsername(Long postId, String username);
+    Optional<FavPost> findByPostIdAndUserUsername(Long postId, String username);
 }
