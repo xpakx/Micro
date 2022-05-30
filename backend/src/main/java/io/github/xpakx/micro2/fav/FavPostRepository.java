@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FavPostRepository extends JpaRepository<FavPost, Long> {
+    boolean existsByPostIdIdAndUserUsername(Long postId, String username);
 }
