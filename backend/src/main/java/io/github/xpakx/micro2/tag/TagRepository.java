@@ -17,7 +17,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query(value = "SELECT * FROM tag GROUP BY tag.id " +
             "ORDER BY (SELECT count(post_id) FROM post LEFT JOIN post_tag ON post.id = post_id " +
-            "WHERE tag_id = tag.id AND post.created_at > :date) LIMIT 10",
+            "WHERE tag_id = tag.id AND post.created_at > :date) DESC LIMIT 10",
             nativeQuery = true)
     List<TagDetails> getTopTagsAfterDate(LocalDateTime date);
     List<TagName> findFirst10ByNameStartsWith(@Param("name") String name);
