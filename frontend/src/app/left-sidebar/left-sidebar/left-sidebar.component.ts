@@ -1,5 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { faFire, faHeart, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { faFire, faHeart, faNewspaper, faTag } from '@fortawesome/free-solid-svg-icons';
+import { TagDetails } from 'src/app/tag/dto/tag-details';
+import { TagService } from 'src/app/tag/tag.service';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -10,10 +14,28 @@ export class LeftSidebarComponent implements OnInit {
   faNew = faNewspaper;
   faHot = faFire;
   faFav = faHeart;
+  faTag = faTag;
+  tags: TagDetails[] = [];
+  showTags: boolean = true;
 
-  constructor() { }
+  constructor(private tagService: TagService, private router: Router) { }
 
   ngOnInit(): void {
+    this.tagService.getTopTags().subscribe({
+      next: (response: TagDetails[]) => this.updateTags(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
   }
 
+  showError(error: HttpErrorResponse): void {
+    this.showTags = false;
+  }
+
+  updateTags(response: TagDetails[]): void {
+    this.tags = response;
+  }
+
+  toTag(tag: String) {
+    this.router.navigate([`tag/${tag}`])
+  }
 }

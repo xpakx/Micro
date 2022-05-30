@@ -1,5 +1,16 @@
-<ul class="options">
-    <li class="option active"><fa-icon [icon]="faNew"></fa-icon> New</li>
-    <li class="option"><fa-icon [icon]="faHot"></fa-icon> Hot</li>
-    <li class="option"><fa-icon [icon]="faFav"></fa-icon> Favorite</li>
-</ul>
+<div class="navigation">
+    <ul class="options">
+        <li class="option active"><fa-icon [icon]="faNew"></fa-icon> New</li>
+        <li class="option"><fa-icon [icon]="faHot"></fa-icon> Hot</li>
+        <li class="option"><fa-icon [icon]="faFav"></fa-icon> Favorite</li>
+    </ul>
+</div>
+
+<div class="top-tags" *ngIf="showTags">
+    <h1 class="title">Top tags</h1>
+    <ul>
+        <li *ngFor="let tag of tags" (click)="toTag(tag.name)">
+            <fa-icon [icon]="faTag"></fa-icon> <span class="tag-name">{{tag.name}}</span>
+        </li>
+    </ul>
+</div>
