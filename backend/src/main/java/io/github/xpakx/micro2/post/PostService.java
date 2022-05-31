@@ -102,10 +102,17 @@ public class PostService {
         );
     }
 
+    public Page<PostDetails> getActivePosts(Integer page) {
+        return postRepository.getPostsWithMostResponsesAfterDate(
+                LocalDateTime.now().minusHours(24),
+                PageRequest.of(page, 20)
+        );
+    }
+
     public Page<PostDetails> getFavoritePosts(Integer page, String username) {
         return postRepository.findAllByFavoriteUserUsername(
                 username,
-                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+                PageRequest.of(page, 20)
         );
     }
 }

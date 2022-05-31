@@ -94,4 +94,20 @@ public class PostPublicViewController {
                 service.getHotPosts(page), HttpStatus.OK
         );
     }
+
+    @GetMapping("/posts/active")
+    public ResponseEntity<Page<PostDetails>> getActivePosts()
+    {
+        return new ResponseEntity<>(
+                service.getActivePosts(0), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/posts/active/{page}")
+    public ResponseEntity<Page<PostDetails>> getActivePosts(@PathVariable Integer page, @PathVariable String name)
+    {
+        return new ResponseEntity<>(
+                service.getActivePosts(page), HttpStatus.OK
+        );
+    }
 }
