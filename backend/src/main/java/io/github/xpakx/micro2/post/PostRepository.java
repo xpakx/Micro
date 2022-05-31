@@ -24,8 +24,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Page<PostDetails> findAllByFavoriteUserUsername(String username, Pageable pageable);
 
     @Query(value = "SELECT * FROM post " +
-            "ORDER BY (SELECT count(post_id) FROM post LEFT JOIN comment ON post.id = post_id " +
-            "WHERE post_id = post.id AND post.created_at > ?1) DESC " +
+            "WHERE post.created_at > ?1 " +
+            "ORDER BY (SELECT count(post_id) FROM comment WHERE post.id = comment.post_id) DESC " +
             "LIMIT ?#{#pageable.getPageSize()} OFFSET ?#{#pageable.getOffset()}",
             nativeQuery = true, countQuery = "SELECT COUNT(*) FROM post WHERE post.created_at > :date")
     Page<PostDetails> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable);
