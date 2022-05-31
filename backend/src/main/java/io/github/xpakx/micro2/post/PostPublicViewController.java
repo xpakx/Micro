@@ -88,7 +88,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/hot/{page}")
-    public ResponseEntity<Page<PostDetails>> getHotPosts(@PathVariable Integer page, @PathVariable String name)
+    public ResponseEntity<Page<PostDetails>> getHotPosts(@PathVariable Integer page)
     {
         return new ResponseEntity<>(
                 service.getHotPosts(page), HttpStatus.OK
@@ -104,7 +104,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/active/{page}")
-    public ResponseEntity<Page<PostDetails>> getActivePosts(@PathVariable Integer page, @PathVariable String name)
+    public ResponseEntity<Page<PostDetails>> getActivePosts(@PathVariable Integer page)
     {
         return new ResponseEntity<>(
                 service.getActivePosts(page), HttpStatus.OK
