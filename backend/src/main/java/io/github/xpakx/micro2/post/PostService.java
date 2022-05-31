@@ -101,4 +101,11 @@ public class PostService {
                 PageRequest.of(page, 20, Sort.by("likeCount").descending())
         );
     }
+
+    public Page<PostDetails> getFavoritePosts(Integer page, String username) {
+        return postRepository.findAllByFavoriteUserUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
 }
