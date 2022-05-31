@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { UpdatedPost } from '../dto/updated-post';
@@ -17,6 +17,7 @@ export class PostFormComponent implements OnInit {
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
+  @Input("init") init?: String;
 
   constructor(private service: PostService, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -25,6 +26,9 @@ export class PostFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.init) {
+      this.form.setValue({ content: this.init + ' ' });
+    }
   }
 
   sendPost(): void {

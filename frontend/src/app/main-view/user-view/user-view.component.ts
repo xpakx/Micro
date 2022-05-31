@@ -14,6 +14,7 @@ export class UserViewComponent implements OnInit {
   postList?: Page<PostDetails>;
   errorOccured: boolean = false;
   errorMsg: String = '';
+  userName: String = '';
 
   constructor(private postService: PostListService, private route: ActivatedRoute) { }
 
@@ -24,6 +25,7 @@ export class UserViewComponent implements OnInit {
   }
 
   getPosts(user: String): void {
+    this.userName = user;
     this.postService.getUserPosts(user).subscribe({
       next: (response: Page<PostDetails>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)

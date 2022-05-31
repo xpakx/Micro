@@ -14,6 +14,7 @@ export class TagViewComponent implements OnInit {
   postList?: Page<PostDetails>;
   errorOccured: boolean = false;
   errorMsg: String = '';
+  tagName: String = '';
 
   constructor(private postService: PostListService, private route: ActivatedRoute) { }
 
@@ -24,6 +25,7 @@ export class TagViewComponent implements OnInit {
   }
 
   getPosts(tag: String): void {
+    this.tagName = tag;
     this.postService.getPostsWithTag(tag).subscribe({
       next: (response: Page<PostDetails>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
