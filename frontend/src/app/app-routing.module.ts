@@ -4,6 +4,7 @@ import { LoginFormComponent } from './authentication/login-form/login-form.compo
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
+import { HotComponent } from './main-view/hot/hot.component';
 import { MainComponent } from './main-view/main/main.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'post/:id/edit', component: PostEditViewComponent },
   { path: 'comment/:id/edit', component: CommentEditViewComponent },
   { path: 'tag/:tag', component: TagViewComponent },
-  { path: 'user/:name', component: UserViewComponent }
+  { path: 'user/:name', component: UserViewComponent },
+  { path: 'hot', component: HotComponent }
 ];
 
 @NgModule({

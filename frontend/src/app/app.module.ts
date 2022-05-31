@@ -26,6 +26,7 @@ import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-
 import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { ModalDeleteComponent } from './modal/modal-delete/modal-delete.component';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.component';
+import { HotComponent } from './main-view/hot/hot.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -52,7 +53,8 @@ export function tokenGetter() {
     CommentEditViewComponent,
     UserViewComponent,
     ModalDeleteComponent,
-    LeftSidebarComponent
+    LeftSidebarComponent,
+    HotComponent
   ],
   imports: [
     BrowserModule,

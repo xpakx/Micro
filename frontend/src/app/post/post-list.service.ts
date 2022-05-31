@@ -33,4 +33,8 @@ export class PostListService {
   public getPostMin(id: number):  Observable<PostDetails> {
     return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}/min`);
   }
+
+  public getHotPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
+    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts/hot${page ? '/'+page : ''}`);
+  }
 }

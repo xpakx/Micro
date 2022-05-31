@@ -38,4 +38,16 @@ export class LeftSidebarComponent implements OnInit {
   toTag(tag: String) {
     this.router.navigate([`tag/${tag}`])
   }
+
+  toMain() {
+    this.router.navigate([''])
+  }
+
+  toHot() {
+    this.router.navigate(['hot'])
+  }
+
+  toFav() {
+    this.router.navigate(['fav'])
+  }
 }
