@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,5 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<PostDetails> findProjectedById(Long id);
 
     Optional<Post> findByCommentsId(Long id);
+    Page<PostDetails> findAllByCreatedAtAfter(LocalDateTime createdAt, Pageable pageable);
 }

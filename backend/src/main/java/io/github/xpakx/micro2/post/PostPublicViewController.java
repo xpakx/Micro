@@ -78,4 +78,20 @@ public class PostPublicViewController {
                 service.getSinglePost(postId), HttpStatus.OK
         );
     }
+
+    @GetMapping("/posts/hot")
+    public ResponseEntity<Page<PostDetails>> getHotPosts()
+    {
+        return new ResponseEntity<>(
+                service.getHotPosts(0), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/posts/hot/{page}")
+    public ResponseEntity<Page<PostDetails>> getHotPosts(@PathVariable Integer page, @PathVariable String name)
+    {
+        return new ResponseEntity<>(
+                service.getHotPosts(page), HttpStatus.OK
+        );
+    }
 }

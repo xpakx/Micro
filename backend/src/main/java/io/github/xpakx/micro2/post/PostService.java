@@ -94,4 +94,11 @@ public class PostService {
         return postRepository.findProjectedById(postId)
                         .orElseThrow(PostNotFoundException::new);
     }
+
+    public Page<PostDetails> getHotPosts(Integer page) {
+        return postRepository.findAllByCreatedAtAfter(
+                LocalDateTime.now().minusHours(24),
+                PageRequest.of(page, 20, Sort.by("likeCount").descending())
+        );
+    }
 }
