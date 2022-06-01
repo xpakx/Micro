@@ -44,6 +44,7 @@
     font-size: 17px;
     color: #777777;
     margin-right: 2.5em;
+    cursor: pointer;
 }
 
 .menu-nav ul li.active {
