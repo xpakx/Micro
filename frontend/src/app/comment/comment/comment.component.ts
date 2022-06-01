@@ -85,4 +85,8 @@ export class CommentComponent implements OnInit {
   edit(): void {
     this.router.navigate([`comment/${this.comment.id}/edit`]);
   }
+
+  toUser(username: String) {
+    this.router.navigate([`user/${username}`])
+  }
 }

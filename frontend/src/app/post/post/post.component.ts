@@ -68,6 +68,10 @@ export class PostComponent implements OnInit {
     this.router.navigate([`post/${id}`])
   }
 
+  toUser(username: String) {
+    this.router.navigate([`user/${username}`])
+  }
+
   plus(vote: boolean) {
     if(vote) {
       this.likePost();
