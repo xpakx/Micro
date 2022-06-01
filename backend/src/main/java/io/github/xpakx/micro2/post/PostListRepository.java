@@ -41,7 +41,7 @@ public class PostListRepository {
                 );
         List<PostWithComments> result = postResults.stream()
                 .map(
-                        (p) -> PostWithComments.of(p, new PageImpl<CommentDetails>(mapOfComments.get(p.getId())))
+                        (p) -> PostWithComments.of(p, new PageImpl<CommentDetails>(mapOfComments.getOrDefault(p.getId(), List.of())))
                 ).collect(Collectors.toList());
         return new PageImpl<PostWithComments>(result, pageable, count);
     }
@@ -87,7 +87,7 @@ public class PostListRepository {
                         "FROM comment c " +
                         "LEFT JOIN user_account u ON c.user_id = u.id " +
                         "WHERE c.id IN (SELECT c2.id FROM comment c2 WHERE c2.post_id = c.post_id ORDER BY c2.created_at DESC LIMIT 2) " +
-                        "AND c.post_id IN ?1"
+                        "AND c.post_id IN ?1 ORDER BY c.created_at DESC"
         );
         query.setParameter(1, ids);
 
