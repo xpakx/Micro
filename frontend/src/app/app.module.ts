@@ -28,6 +28,7 @@ import { ModalDeleteComponent } from './modal/modal-delete/modal-delete.componen
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.component';
 import { HotComponent } from './main-view/hot/hot.component';
 import { ActiveComponent } from './main-view/active/active.component';
+import { FavComponent } from './main-view/fav/fav.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -56,7 +57,8 @@ export function tokenGetter() {
     ModalDeleteComponent,
     LeftSidebarComponent,
     HotComponent,
-    ActiveComponent
+    ActiveComponent,
+    FavComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { ActiveComponent } from './main-view/active/active.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
+import { FavComponent } from './main-view/fav/fav.component';
 import { HotComponent } from './main-view/hot/hot.component';
 import { MainComponent } from './main-view/main/main.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'tag/:tag', component: TagViewComponent },
   { path: 'user/:name', component: UserViewComponent },
   { path: 'hot', component: HotComponent },
-  { path: 'active', component: ActiveComponent }
+  { path: 'active', component: ActiveComponent },
+  { path: 'fav', component: FavComponent }
 ];
 
 @NgModule({

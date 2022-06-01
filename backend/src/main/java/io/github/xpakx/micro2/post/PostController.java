@@ -43,7 +43,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/user/{username}/posts/fav")
+    @GetMapping("/fav")
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<Page<PostDetails>> getFavPosts(@PathVariable String username)
     {
@@ -52,7 +52,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/user/{username}/posts/fav/{page}")
+    @GetMapping("/fav/{page}")
     @PreAuthorize("#username == authentication.principal.username")
     public ResponseEntity<Page<PostDetails>> getFavPosts(@PathVariable Integer page, @PathVariable String username)
     {

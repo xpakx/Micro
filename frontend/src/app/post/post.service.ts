@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Page } from '../common/dto/page';
 import { PostDetails } from './dto/post-details';
 import { PostRequest } from './dto/post-request';
 import { UpdatedPost } from './dto/updated-post';
@@ -31,5 +32,10 @@ export class PostService {
   public deletePost(id: number):  Observable<any> {
     let username = this.getUsername();
     return this.http.delete<UpdatedPost>(`${this.apiServerUrl}/user/${username}/post/${id}`);
+  }
+
+  public getFavPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
+    let username = this.getUsername();
+    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/post/fav${page ? '/'+page : ''}`);
   }
 }
