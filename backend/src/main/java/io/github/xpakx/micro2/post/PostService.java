@@ -26,6 +26,7 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final PostListRepository postListRepository;
 
     public PostDto addPost(PostRequest request, String username) {
         Post newPost = new Post();
@@ -102,8 +103,8 @@ public class PostService {
         );
     }
 
-    public Page<PostDetails> getActivePosts(Integer page) {
-        return postRepository.getPostsWithMostResponsesAfterDate(
+    public Page<PostWithComments> getActivePosts(Integer page) {
+        return postListRepository.getPostsWithMostResponsesAfterDate(
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20)
         );

@@ -96,7 +96,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/active")
-    public ResponseEntity<Page<PostDetails>> getActivePosts()
+    public ResponseEntity<Page<PostWithComments>> getActivePosts()
     {
         return new ResponseEntity<>(
                 service.getActivePosts(0), HttpStatus.OK
@@ -104,7 +104,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/active/{page}")
-    public ResponseEntity<Page<PostDetails>> getActivePosts(@PathVariable Integer page)
+    public ResponseEntity<Page<PostWithComments>> getActivePosts(@PathVariable Integer page)
     {
         return new ResponseEntity<>(
                 service.getActivePosts(page), HttpStatus.OK
