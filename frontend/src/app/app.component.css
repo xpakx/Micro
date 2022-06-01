@@ -47,7 +47,7 @@
     cursor: pointer;
 }
 
-.menu-nav ul li.active {
+.menu-nav ul li:hover{
     color: #749bea;
     border-bottom: 3px solid #749bea;
 }
