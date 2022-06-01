@@ -67,7 +67,7 @@ class PostServiceTest {
     }
 
     private void injectMocks() {
-        service = new PostService(postRepository, commentRepository, userRepository, tagService, null);
+        service = new PostService(postRepository, commentRepository, userRepository, tagService);
     }
 
     private PostRequest getPostRequestWithContent(String content) {

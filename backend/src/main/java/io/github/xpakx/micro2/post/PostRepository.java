@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
+public interface PostRepository extends PagingAndSortingRepository<Post, Long>, PostRepositoryCustom {
     Optional<Post> findByIdAndUserUsername(Long id, String username);
     Page<PostDetails> findAllBy(Pageable pageable);
     Page<PostDetails> getAllByUserUsername(String username, Pageable pageable);
@@ -22,11 +22,4 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByCommentsId(Long id);
     Page<PostDetails> findAllByCreatedAtAfter(LocalDateTime createdAt, Pageable pageable);
     Page<PostDetails> findAllByFavoriteUserUsername(String username, Pageable pageable);
-
-    @Query(value = "SELECT * FROM post " +
-            "WHERE post.created_at > ?1 " +
-            "ORDER BY (SELECT count(post_id) FROM comment WHERE post.id = comment.post_id) DESC " +
-            "LIMIT ?#{#pageable.getPageSize()} OFFSET ?#{#pageable.getOffset()}",
-            nativeQuery = true, countQuery = "SELECT COUNT(*) FROM post WHERE post.created_at > :date")
-    Page<PostDetails> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable);
 }

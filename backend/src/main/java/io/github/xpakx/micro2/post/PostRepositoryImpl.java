@@ -22,10 +22,11 @@ import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
-public class PostListRepository {
+public class PostRepositoryImpl implements PostRepositoryCustom {
     private final EntityManager entityManager;
     private final ProjectionFactory projectionFactory;
 
+    @Override
     public Page<PostWithComments> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable) {
         List<PostDetails> postResults = getPosts(date, pageable);
         int count = getPostCount(date);
