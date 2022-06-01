@@ -37,4 +37,8 @@ export class PostListService {
   public getHotPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
     return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts/hot${page ? '/'+page : ''}`);
   }
+
+  public getActivePosts(page?: number | undefined):  Observable<Page<PostDetails>> {
+    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts/active${page ? '/'+page : ''}`);
+  }
 }

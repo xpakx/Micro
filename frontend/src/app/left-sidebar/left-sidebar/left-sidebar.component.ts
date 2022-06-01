@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faFire, faHeart, faNewspaper, faTag } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faFire, faHeart, faNewspaper, faTag } from '@fortawesome/free-solid-svg-icons';
 import { TagDetails } from 'src/app/tag/dto/tag-details';
 import { TagService } from 'src/app/tag/tag.service';
 
@@ -15,6 +15,7 @@ export class LeftSidebarComponent implements OnInit {
   faHot = faFire;
   faFav = faHeart;
   faTag = faTag;
+  faActive = faComment;
   tags: TagDetails[] = [];
   showTags: boolean = true;
 
@@ -45,6 +46,10 @@ export class LeftSidebarComponent implements OnInit {
 
   toHot() {
     this.router.navigate(['hot'])
+  }
+
+  toActive() {
+    this.router.navigate(['active'])
   }
 
   toFav() {

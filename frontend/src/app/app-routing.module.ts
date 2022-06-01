@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginFormComponent } from './authentication/login-form/login-form.component';
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
+import { ActiveComponent } from './main-view/active/active.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 import { HotComponent } from './main-view/hot/hot.component';
 import { MainComponent } from './main-view/main/main.component';
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'comment/:id/edit', component: CommentEditViewComponent },
   { path: 'tag/:tag', component: TagViewComponent },
   { path: 'user/:name', component: UserViewComponent },
-  { path: 'hot', component: HotComponent }
+  { path: 'hot', component: HotComponent },
+  { path: 'active', component: ActiveComponent }
 ];
 
 @NgModule({
