@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Page } from 'src/app/common/dto/page';
-import { PostDetails } from 'src/app/post/dto/post-details';
+import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { PostListService } from 'src/app/post/post-list.service';
   styleUrls: ['./active.component.css']
 })
 export class ActiveComponent implements OnInit {
-  postList?: Page<PostDetails>;
+  postList?: Page<PostWithComments>;
   errorOccured: boolean = false;
   errorMsg: String = '';
 
@@ -22,7 +22,7 @@ export class ActiveComponent implements OnInit {
 
   getPosts(): void {
     this.postService.getActivePosts().subscribe({
-      next: (response: Page<PostDetails>) => this.updateList(response),
+      next: (response: Page<PostWithComments>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
@@ -32,7 +32,7 @@ export class ActiveComponent implements OnInit {
     this.errorMsg = error.error.message;
   }
 
-  updateList(response: Page<PostDetails>): void {
+  updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
   }
