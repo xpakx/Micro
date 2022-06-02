@@ -3,7 +3,6 @@ package io.github.xpakx.micro2.post;
 import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
-import io.github.xpakx.micro2.post.dto.PostWithComments;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,24 +27,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     private final ProjectionFactory projectionFactory;
 
     @Override
-    public Page<PostWithComments> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable) {
-        List<PostDetails> postResults = getPosts(date, pageable);
+    public Page<PostDetails> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable) {
+        List<PostDetails> postResults = getActivePosts(date, pageable);
         int count = getPostCount(date);
-        Map<Long, List<CommentDetails>> mapOfComments = get2CommentsForEveryPost(
-                postResults.stream()
-                        .map(PostDetails::getId)
-                        .collect(Collectors.toList())
-        ).stream()
-                .collect(
-                        Collectors.groupingBy((c) -> c.getPost().getId(),
-                                Collectors.mapping((r)->projectionFactory.createProjection(CommentDetails.class, r),
-                                        Collectors.toList()))
-                );
-        List<PostWithComments> result = postResults.stream()
-                .map(
-                        (p) -> PostWithComments.of(p, new PageImpl<CommentDetails>(mapOfComments.getOrDefault(p.getId(), List.of())))
-                ).collect(Collectors.toList());
-        return new PageImpl<PostWithComments>(result, pageable, count);
+        return new PageImpl<PostDetails>(postResults, pageable, count);
     }
 
     private int getPostCount(LocalDateTime date) {
@@ -57,7 +43,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return count;
     }
 
-    private List<PostDetails> getPosts(LocalDateTime date, PageRequest pageable) {
+    private List<PostDetails> getActivePosts(LocalDateTime date, PageRequest pageable) {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT post.id AS id, post.content AS content, post.created_at AS created_at, " +
                         "post.like_count AS like_count, post.dislike_count AS dislike_count, " +
@@ -78,8 +64,23 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Map<Long, Page<CommentDetails>> getCommentMapForPostIds(List<Long> ids) {
+        Map<Long, List<CommentDetails>> mapOfComments = get2CommentsForEveryPost(ids).stream()
+                .collect(
+                        Collectors.groupingBy((c) -> c.getPost().getId(),
+                                Collectors.mapping((r)->projectionFactory.createProjection(CommentDetails.class, r),
+                                        Collectors.toList()))
+                );
+        Map<Long, Page<CommentDetails>> result = new HashMap<>();
+        for(Long key: mapOfComments.keySet()) {
+            List<CommentDetails> value = mapOfComments.get(key);
+            result.put(key, new PageImpl<>(value));
+        }
+        return result;
+    }
 
-    public List<Comment> get2CommentsForEveryPost(List<Long> ids) {
+    private List<Comment> get2CommentsForEveryPost(List<Long> ids) {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT c.id AS id, c.content AS content, c.created_at AS created_at, c.edited AS edited, c.deleted_by_user AS deleted_by_user, " +
                         "c.deleted_by_post_author AS deleted_by_post_author, c.like_count AS like_count, c.dislike_count AS dislike_count, " +
