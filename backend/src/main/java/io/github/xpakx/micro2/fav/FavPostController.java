@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}/post/{postId}/fav")
+@RequestMapping("/user/{username}/posts/{postId}/fav")
 public class FavPostController {
     private final FavPostService service;
 

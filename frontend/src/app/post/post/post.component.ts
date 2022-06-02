@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +34,8 @@ export class PostComponent implements OnInit {
   message: String = "";
   invalid: boolean = false;
   showDeleteModal: boolean = false;
+
+  inFav: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService) {
@@ -135,5 +137,31 @@ export class PostComponent implements OnInit {
       return 'Read all ' + this.comments.totalElements + ' comments';
     }
     return "Go to post";
+  }
+
+  favPost() {
+    this.postService.favPost(this.post.id).subscribe({
+      next: (response: any) => this.updateFav(true),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  updateFav(fav: boolean): void {
+    //TODO
+  }
+
+  unfavPost() {
+    this.postService.unfavPost(this.post.id).subscribe({
+      next: (response: any) => this.updateFav(false),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  fav() {
+    if(this.inFav) {
+      this.unfavPost();
+    } else {
+      this.favPost();
+    }
   }
 }

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
-import { PostDetails } from './dto/post-details';
 import { PostRequest } from './dto/post-request';
 import { PostWithComments } from './dto/post-with-comments';
 import { UpdatedPost } from './dto/updated-post';
@@ -38,5 +37,15 @@ export class PostService {
   public getFavPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
     let username = this.getUsername();
     return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/user/${username}/post/fav${page ? '/'+page : ''}`);
+  }
+
+  public favPost(postId: number):  Observable<any> {
+    let username = this.getUsername();
+    return this.http.post<any>(`${this.apiServerUrl}/user/${username}/posts/${postId}/fav`, null);
+  }
+
+  public unfavPost(postId: number):  Observable<any> {
+    let username = this.getUsername();
+    return this.http.delete<any>(`${this.apiServerUrl}/user/${username}/posts/${postId}/fav`);
   }
 }
