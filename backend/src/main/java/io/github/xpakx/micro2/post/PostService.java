@@ -112,7 +112,7 @@ public class PostService {
         );
         return composePostListAndComments(
                 posts,
-                postRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 

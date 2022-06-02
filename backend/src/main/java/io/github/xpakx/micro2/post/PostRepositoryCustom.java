@@ -11,5 +11,4 @@ import java.util.Map;
 
 public interface PostRepositoryCustom {
     Page<PostDetails> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable);
-    Map<Long, Page<CommentDetails>> getCommentMapForPostIds(List<Long> ids);
 }

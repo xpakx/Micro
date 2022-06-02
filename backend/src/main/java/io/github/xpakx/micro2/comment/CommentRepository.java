@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
+public interface CommentRepository extends PagingAndSortingRepository<Comment, Long>, CommentRepositoryCustom {
     Optional<Comment> findByIdAndUserUsername(Long id, String username);
     Page<CommentDetails> getAllByUserUsername(String username, Pageable pageable);
     Page<CommentDetails> getAllByPostId(Long postId, Pageable pageable);
