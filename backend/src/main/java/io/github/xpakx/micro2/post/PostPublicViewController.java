@@ -80,7 +80,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/hot")
-    public ResponseEntity<Page<PostDetails>> getHotPosts()
+    public ResponseEntity<Page<PostWithComments>> getHotPosts()
     {
         return new ResponseEntity<>(
                 service.getHotPosts(0), HttpStatus.OK
@@ -88,7 +88,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/hot/{page}")
-    public ResponseEntity<Page<PostDetails>> getHotPosts(@PathVariable Integer page)
+    public ResponseEntity<Page<PostWithComments>> getHotPosts(@PathVariable Integer page)
     {
         return new ResponseEntity<>(
                 service.getHotPosts(page), HttpStatus.OK

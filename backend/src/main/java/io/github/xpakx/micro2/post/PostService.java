@@ -97,10 +97,14 @@ public class PostService {
                         .orElseThrow(PostNotFoundException::new);
     }
 
-    public Page<PostDetails> getHotPosts(Integer page) {
-        return postRepository.findAllByCreatedAtAfter(
+    public Page<PostWithComments> getHotPosts(Integer page) {
+        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfter(
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20, Sort.by("likeCount").descending())
+        );
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 
