@@ -126,4 +126,14 @@ export class PostComponent implements OnInit {
   edit(): void {
     this.router.navigate([`post/${this.post.id}/edit`]);
   }
+
+  get moreComments(): String {
+    if(!this.comments) {
+      return "More";
+    }
+    if(this.comments.totalElements > 2) {
+      return 'Read all ' + this.comments.totalElements + ' comments';
+    }
+    return "Go to post";
+  }
 }

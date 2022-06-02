@@ -39,7 +39,7 @@
     <app-general-comment-list [comments]="comments" [postAuthor]="author" *ngIf="comments"></app-general-comment-list>
 
     <button class="more-comments" *ngIf="minimal" (click)="toPost(post.id)">
-        {{ comments ? 'Read all ' + comments.totalElements + ' comments' : 'More' }}
+        {{ moreComments }}
     </button>
 </div>
 
