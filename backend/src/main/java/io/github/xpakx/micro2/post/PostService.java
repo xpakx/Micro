@@ -75,10 +75,14 @@ public class PostService {
         );
     }
 
-    public Page<PostDetails> getPostsByTagName(Integer page, String tag) {
-        return postRepository.findAllByTagsName(
+    public Page<PostWithComments> getPostsByTagName(Integer page, String tag) {
+        Page<PostDetails> posts = postRepository.findAllByTagsName(
                 tag,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 
