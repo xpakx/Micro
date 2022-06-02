@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Page } from 'src/app/common/dto/page';
 import { PostDetails } from 'src/app/post/dto/post-details';
+import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostService } from 'src/app/post/post.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { PostService } from 'src/app/post/post.service';
   styleUrls: ['./fav.component.css']
 })
 export class FavComponent implements OnInit {
-  postList?: Page<PostDetails>;
+  postList?: Page<PostWithComments>;
   errorOccured: boolean = false;
   errorMsg: String = '';
 
@@ -22,7 +23,7 @@ export class FavComponent implements OnInit {
 
   getPosts(): void {
     this.postService.getFavPosts().subscribe({
-      next: (response: Page<PostDetails>) => this.updateList(response),
+      next: (response: Page<PostWithComments>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
@@ -32,7 +33,7 @@ export class FavComponent implements OnInit {
     this.errorMsg = error.error.message;
   }
 
-  updateList(response: Page<PostDetails>): void {
+  updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
   }

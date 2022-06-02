@@ -9,8 +9,7 @@ import { PostWithComments } from '../dto/post-with-comments';
   styleUrls: ['./general-post-list.component.css']
 })
 export class GeneralPostListComponent implements OnInit {
-  @Input('posts') posts?: Page<PostDetails>;
-  @Input('postsAndComments') postsWithComments?: Page<PostWithComments>;
+  @Input('posts') posts?: Page<PostWithComments>;
 
   constructor() { }
 

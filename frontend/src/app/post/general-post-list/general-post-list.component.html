@@ -1,11 +1,6 @@
-<div class="post-list-container" *ngIf="posts && !postsWithComments">
+<div class="post-list-container" *ngIf="posts">
     <div class="post-elem"*ngFor="let post of posts.content">
-        <app-post [post]='post' [minimal]='true'></app-post>
-    </div>
-</div>
-
-<div class="post-list-container" *ngIf="!posts && postsWithComments">
-    <div class="post-elem"*ngFor="let post of postsWithComments.content">
         <app-post [post]='post.post' [commentsPage]="post.comments" [minimal]='true'></app-post>
     </div>
 </div>
+

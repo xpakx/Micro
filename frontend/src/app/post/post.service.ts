@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { PostDetails } from './dto/post-details';
 import { PostRequest } from './dto/post-request';
+import { PostWithComments } from './dto/post-with-comments';
 import { UpdatedPost } from './dto/updated-post';
 
 @Injectable({
@@ -34,8 +35,8 @@ export class PostService {
     return this.http.delete<UpdatedPost>(`${this.apiServerUrl}/user/${username}/post/${id}`);
   }
 
-  public getFavPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
+  public getFavPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
     let username = this.getUsername();
-    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/post/fav${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/user/${username}/post/fav${page ? '/'+page : ''}`);
   }
 }

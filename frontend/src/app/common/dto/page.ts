@@ -22,6 +22,7 @@ export interface Page<T> {
     };
     size: number;
     numberOfElements: number;
+    totalElements: number;
     first: boolean;
     empty: boolean;
 }

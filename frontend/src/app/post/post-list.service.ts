@@ -14,16 +14,16 @@ export class PostListService {
 
   constructor(private http: HttpClient) { }
 
-  public getPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
-    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts${page ? '/'+page : ''}`);
+  public getPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts${page ? '/'+page : ''}`);
   }
 
-  public getUserPosts(username: String, page?: number | undefined):  Observable<Page<PostDetails>> {
-    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
+  public getUserPosts(username: String, page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
   }
 
-  public getPostsWithTag(name: String, page?: number | undefined):  Observable<Page<PostDetails>> {
-    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/tags/${name}/posts${page ? '/'+page : ''}`);
+  public getPostsWithTag(name: String, page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/tags/${name}/posts${page ? '/'+page : ''}`);
   }
 
   public getPost(id: number):  Observable<PostWithComments> {
@@ -34,8 +34,8 @@ export class PostListService {
     return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}/min`);
   }
 
-  public getHotPosts(page?: number | undefined):  Observable<Page<PostDetails>> {
-    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts/hot${page ? '/'+page : ''}`);
+  public getHotPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/hot${page ? '/'+page : ''}`);
   }
 
   public getActivePosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
