@@ -32,7 +32,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/user/{username}/posts")
-    public ResponseEntity<Page<PostDetails>> getAllPostsByUsername(@PathVariable String username)
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable String username)
     {
         return new ResponseEntity<>(
                 service.getPostsByUsername(0, username), HttpStatus.OK
@@ -40,7 +40,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/user/{username}/posts/{page}")
-    public ResponseEntity<Page<PostDetails>> getAllPostsByUsername(@PathVariable Integer page, @PathVariable String username)
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable Integer page, @PathVariable String username)
     {
         return new ResponseEntity<>(
                 service.getPostsByUsername(page,username), HttpStatus.OK

@@ -68,10 +68,14 @@ public class PostService {
         );
     }
 
-    public Page<PostDetails> getPostsByUsername(Integer page, String username) {
-        return postRepository.getAllByUserUsername(
+    public Page<PostWithComments> getPostsByUsername(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.getAllByUserUsername(
                 username,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 
