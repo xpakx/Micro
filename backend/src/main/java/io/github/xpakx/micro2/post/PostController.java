@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.post;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostDto;
 import io.github.xpakx.micro2.post.dto.PostRequest;
+import io.github.xpakx.micro2.post.dto.PostWithComments;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class PostController {
 
     @GetMapping("/fav")
     @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<Page<PostDetails>> getFavPosts(@PathVariable String username)
+    public ResponseEntity<Page<PostWithComments>> getFavPosts(@PathVariable String username)
     {
         return new ResponseEntity<>(
                 service.getFavoritePosts(0, username), HttpStatus.OK
@@ -54,7 +55,7 @@ public class PostController {
 
     @GetMapping("/fav/{page}")
     @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<Page<PostDetails>> getFavPosts(@PathVariable Integer page, @PathVariable String username)
+    public ResponseEntity<Page<PostWithComments>> getFavPosts(@PathVariable Integer page, @PathVariable String username)
     {
         return new ResponseEntity<>(
                 service.getFavoritePosts(page,username), HttpStatus.OK

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -116,10 +115,14 @@ public class PostService {
         );
     }
 
-    public Page<PostDetails> getFavoritePosts(Integer page, String username) {
-        return postRepository.findAllByFavoriteUserUsername(
+    public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsername(
                 username,
                 PageRequest.of(page, 20)
+        );
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 
