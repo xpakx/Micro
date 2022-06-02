@@ -284,7 +284,7 @@ class PostServiceTest {
                 .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
         injectMocks();
 
-        Page<PostDetails> result = service.getPosts(0);
+        Page<PostWithComments> result = service.getPosts(0);
 
         assertNotNull(result);
         assertNotNull(result.getContent());

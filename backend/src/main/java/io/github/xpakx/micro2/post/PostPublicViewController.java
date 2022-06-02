@@ -16,7 +16,7 @@ public class PostPublicViewController {
     private final PostService service;
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostDetails>> getAllPosts()
+    public ResponseEntity<Page<PostWithComments>> getAllPosts()
     {
         return new ResponseEntity<>(
                 service.getPosts(0), HttpStatus.OK
@@ -24,7 +24,7 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/{page}")
-    public ResponseEntity<Page<PostDetails>> getAllPosts(@PathVariable Integer page)
+    public ResponseEntity<Page<PostWithComments>> getAllPosts(@PathVariable Integer page)
     {
         return new ResponseEntity<>(
                 service.getPosts(page), HttpStatus.OK

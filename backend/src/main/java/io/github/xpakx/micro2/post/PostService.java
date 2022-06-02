@@ -62,9 +62,13 @@ public class PostService {
         return PostDto.fromPost(postRepository.save(toUpdate));
     }
 
-    public Page<PostDetails> getPosts(Integer page) {
-        return postRepository.findAllBy(
+    public Page<PostWithComments> getPosts(Integer page) {
+        Page<PostDetails> posts = postRepository.findAllBy(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
         );
     }
 
