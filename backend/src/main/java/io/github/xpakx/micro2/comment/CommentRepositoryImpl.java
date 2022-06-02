@@ -1,11 +1,14 @@
 package io.github.xpakx.micro2.comment;
 
+import io.github.xpakx.micro2.comment.dto.CommentCount;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -31,10 +34,12 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                                 Collectors.mapping((r)->projectionFactory.createProjection(CommentDetails.class, r),
                                         Collectors.toList()))
                 );
+        Map<Long, Integer> mapOfCommentCounts = getCountMapForPostIds(ids);
         Map<Long, Page<CommentDetails>> result = new HashMap<>();
+        Pageable pageable = PageRequest.of(0, 2);
         for(Long key: mapOfComments.keySet()) {
             List<CommentDetails> value = mapOfComments.get(key);
-            result.put(key, new PageImpl<>(value));
+            result.put(key, new PageImpl<>(value, pageable, mapOfCommentCounts.get(key)));
         }
         return result;
     }
@@ -79,5 +84,35 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         post.setId(((BigInteger) object[12]).longValue());
         comment.setPost(post);
         return comment;
+    }
+
+    public Map<Long, Integer> getCountMapForPostIds(List<Long> ids) {
+        List<CommentCount> list = getCommentCountForPosts(ids);
+        Map<Long, Integer> result = new HashMap<>();
+        for(CommentCount commentCount : list) {
+            result.put(commentCount.getPostId(), commentCount.getCommentCount());
+        }
+        return result;
+    }
+
+    private List<CommentCount> getCommentCountForPosts(List<Long> ids) {
+        Query query = this.entityManager.createNativeQuery(
+                "SELECT c.post_id AS id, count(c.id) AS comment_count " +
+                        "FROM comment c " +
+                        "WHERE c.post_id IN ?1 " +
+                        "GROUP BY c.post_id "
+        );
+        query.setParameter(1, ids);
+        List<Object[]> results = query.getResultList();
+        return results.stream()
+                .map(this::mapToCommentCount)
+                .collect(Collectors.toList());
+    }
+
+    private CommentCount mapToCommentCount(Object[] object) {
+        CommentCount commentCount = new CommentCount();
+        commentCount.setPostId(((BigInteger) object[0]).longValue());
+        commentCount.setCommentCount(((BigInteger) object[1]).intValue());
+        return commentCount;
     }
 }
