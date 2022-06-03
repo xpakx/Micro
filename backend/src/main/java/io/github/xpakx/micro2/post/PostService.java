@@ -69,6 +69,18 @@ public class PostService {
         );
     }
 
+    public Page<PostWithComments> getPostsAuth(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.findAllBy(
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
+        );
+    }
+
     public Page<PostWithComments> getPostsByUsername(Integer page, String username) {
         Page<PostDetails> posts = postRepository.getAllByUserUsername(
                 username,
@@ -80,6 +92,19 @@ public class PostService {
         );
     }
 
+    public Page<PostWithComments> getPostsByUsernameAuth(Integer page, String user, String username) {
+        Page<PostDetails> posts = postRepository.getAllByUserUsername(
+                user,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
+        );
+    }
+
     public Page<PostWithComments> getPostsByTagName(Integer page, String tag) {
         Page<PostDetails> posts = postRepository.findAllByTagsName(
                 tag,
@@ -88,6 +113,19 @@ public class PostService {
         return composePostListAndComments(
                 posts,
                 commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
+        );
+    }
+
+    public Page<PostWithComments> getPostsByTagNameAuth(Integer page, String tag, String username) {
+        Page<PostDetails> posts = postRepository.findAllByTagsName(
+                tag,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
         );
     }
 
@@ -117,6 +155,19 @@ public class PostService {
         );
     }
 
+    public Page<PostWithComments> getHotPostsAuth(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfter(
+                LocalDateTime.now().minusHours(24),
+                PageRequest.of(page, 20, Sort.by("likeCount").descending())
+        );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
+        );
+    }
+
     public Page<PostWithComments> getActivePosts(Integer page) {
         Page<PostDetails> posts = postRepository.getPostsWithMostResponsesAfterDate(
                 LocalDateTime.now().minusHours(24),
@@ -128,7 +179,20 @@ public class PostService {
         );
     }
 
-    public Page<PostWithCommentsAndUserInfo> getFavoritePosts(Integer page, String username) {
+    public Page<PostWithComments> getActivePostsAuth(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.getPostsWithMostResponsesAfterDate(
+                LocalDateTime.now().minusHours(24),
+                PageRequest.of(page, 20)
+        );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        return composePostListAndComments(
+                posts,
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
+        );
+    }
+
+    public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
         Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsername(
                 username,
                 PageRequest.of(page, 20)
@@ -149,11 +213,11 @@ public class PostService {
         return new PageImpl<PostWithComments>(result, posts.getPageable(), posts.getTotalElements());
     }
 
-    private Page<PostWithCommentsAndUserInfo> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentDetails>> commentMap, Map<Long, PostUserInfo> userInfoMap) {
-        List<PostWithCommentsAndUserInfo> result = posts.stream()
+    private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentDetails>> commentMap, Map<Long, PostUserInfo> userInfoMap) {
+        List<PostWithComments> result = posts.stream()
                 .map(
-                        (p) -> PostWithCommentsAndUserInfo.of(p, commentMap.getOrDefault(p.getId(), Page.empty()), userInfoMap.get(p.getId()))
+                        (p) -> PostWithComments.of(p, commentMap.getOrDefault(p.getId(), Page.empty()), userInfoMap.get(p.getId()))
                 ).collect(Collectors.toList());
-        return new PageImpl<PostWithCommentsAndUserInfo>(result, posts.getPageable(), posts.getTotalElements());
+        return new PageImpl<PostWithComments>(result, posts.getPageable(), posts.getTotalElements());
     }
 }

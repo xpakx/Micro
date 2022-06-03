@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -19,26 +20,30 @@ public class PostPublicViewController {
     private final PostService service;
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPosts(@RequestParam("page") Optional<Integer> page)
+    public ResponseEntity<Page<PostWithComments>> getAllPosts(@RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
-                service.getPosts(page.orElse(0)), HttpStatus.OK
+                principal == null ? service.getPosts(page.orElse(0)) : service.getPostsAuth(page.orElse(0), principal.getName()),
+                HttpStatus.OK
         );
     }
 
     @GetMapping("/users/{username}/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable String username, @RequestParam("page") Optional<Integer> page)
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable String username, @RequestParam("page") Optional<Integer> page,
+                                                                        Principal principal)
     {
         return new ResponseEntity<>(
-                service.getPostsByUsername(page.orElse(0), username), HttpStatus.OK
+                principal == null ? service.getPostsByUsername(page.orElse(0), username) : service.getPostsByUsernameAuth(page.orElse(0), username, principal.getName()),
+                HttpStatus.OK
         );
     }
 
     @GetMapping("/tags/{name}/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByTag(@PathVariable String name, @RequestParam("page") Optional<Integer> page)
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByTag(@PathVariable String name, @RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
-                service.getPostsByTagName(page.orElse(0), name), HttpStatus.OK
+                principal == null ? service.getPostsByTagName(page.orElse(0), name) : service.getPostsByTagNameAuth(page.orElse(0), name, principal.getName()),
+                HttpStatus.OK
         );
     }
 
@@ -59,18 +64,20 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/hot")
-    public ResponseEntity<Page<PostWithComments>> getHotPosts(@RequestParam("page") Optional<Integer> page)
+    public ResponseEntity<Page<PostWithComments>> getHotPosts(@RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
-                service.getHotPosts(page.orElse(0)), HttpStatus.OK
+                principal == null ? service.getHotPosts(page.orElse(0)) : service.getHotPostsAuth(page.orElse(0), principal.getName()),
+                HttpStatus.OK
         );
     }
 
     @GetMapping("/posts/active")
-    public ResponseEntity<Page<PostWithComments>> getActivePosts(@RequestParam("page") Optional<Integer> page)
+    public ResponseEntity<Page<PostWithComments>> getActivePosts(@RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
-                service.getActivePosts(page.orElse(0)), HttpStatus.OK
+                principal == null ? service.getActivePosts(page.orElse(0)) : service.getActivePostsAuth(page.orElse(0), principal.getName()),
+                HttpStatus.OK
         );
     }
 }

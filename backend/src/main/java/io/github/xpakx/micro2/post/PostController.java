@@ -46,7 +46,7 @@ public class PostController {
 
     @GetMapping("/fav")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<PostWithCommentsAndUserInfo>> getFavPosts(@RequestParam("page") Optional<Integer> page, Principal principal)
+    public ResponseEntity<Page<PostWithComments>> getFavPosts(@RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
                 service.getFavoritePosts(page.orElse(0), principal.getName()), HttpStatus.OK
