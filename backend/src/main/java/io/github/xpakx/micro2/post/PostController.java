@@ -8,54 +8,48 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Optional;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}/post")
+@RequestMapping("posts")
 public class PostController {
     private final PostService service;
 
     @PostMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<PostDto> addNewPost(@RequestBody PostRequest request, @PathVariable String username) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostDto> addNewPost(@RequestBody PostRequest request, Principal principal) {
         return new ResponseEntity<>(
-                service.addPost(request, username),
+                service.addPost(request, principal.getName()),
                 HttpStatus.CREATED
         );
     }
 
     @DeleteMapping("/{postId}")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<?> deletePost(@PathVariable String username, @PathVariable Long postId) {
-        service.deletePost(postId, username);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deletePost(@PathVariable Long postId, Principal principal) {
+        service.deletePost(postId, principal.getName());
         return new ResponseEntity<>(
                 HttpStatus.OK
         );
     }
 
     @PutMapping("/{postId}")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostRequest request, @PathVariable String username, @PathVariable Long postId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostRequest request, @PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
-                service.updatePost(request, postId, username),
+                service.updatePost(request, postId, principal.getName()),
                 HttpStatus.OK
         );
     }
 
     @GetMapping("/fav")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<Page<PostWithCommentsAndUserInfo>> getFavPosts(@PathVariable String username)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<PostWithCommentsAndUserInfo>> getFavPosts(@RequestParam("page") Optional<Integer> page, Principal principal)
     {
         return new ResponseEntity<>(
-                service.getFavoritePosts(0, username), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/fav/{page}")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<Page<PostWithCommentsAndUserInfo>> getFavPosts(@PathVariable Integer page, @PathVariable String username)
-    {
-        return new ResponseEntity<>(
-                service.getFavoritePosts(page,username), HttpStatus.OK
+                service.getFavoritePosts(page.orElse(0), principal.getName()), HttpStatus.OK
         );
     }
 }

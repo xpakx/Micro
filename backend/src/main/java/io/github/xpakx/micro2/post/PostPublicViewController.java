@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -16,54 +19,30 @@ public class PostPublicViewController {
     private final PostService service;
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPosts()
+    public ResponseEntity<Page<PostWithComments>> getAllPosts(@RequestParam("page") Optional<Integer> page)
     {
         return new ResponseEntity<>(
-                service.getPosts(0), HttpStatus.OK
+                service.getPosts(page.orElse(0)), HttpStatus.OK
         );
     }
 
-    @GetMapping("/posts/{page}")
-    public ResponseEntity<Page<PostWithComments>> getAllPosts(@PathVariable Integer page)
+    @GetMapping("/users/{username}/posts")
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable String username, @RequestParam("page") Optional<Integer> page)
     {
         return new ResponseEntity<>(
-                service.getPosts(page), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/user/{username}/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable String username)
-    {
-        return new ResponseEntity<>(
-                service.getPostsByUsername(0, username), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/user/{username}/posts/{page}")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByUsername(@PathVariable Integer page, @PathVariable String username)
-    {
-        return new ResponseEntity<>(
-                service.getPostsByUsername(page,username), HttpStatus.OK
+                service.getPostsByUsername(page.orElse(0), username), HttpStatus.OK
         );
     }
 
     @GetMapping("/tags/{name}/posts")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByTag(@PathVariable String name)
+    public ResponseEntity<Page<PostWithComments>> getAllPostsByTag(@PathVariable String name, @RequestParam("page") Optional<Integer> page)
     {
         return new ResponseEntity<>(
-                service.getPostsByTagName(0, name), HttpStatus.OK
+                service.getPostsByTagName(page.orElse(0), name), HttpStatus.OK
         );
     }
 
-    @GetMapping("/tags/{name}/posts/{page}")
-    public ResponseEntity<Page<PostWithComments>> getAllPostsByTag(@PathVariable Integer page, @PathVariable String name)
-    {
-        return new ResponseEntity<>(
-                service.getPostsByTagName(page,name), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/post/{postId}")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<PostWithComments> getSinglePostWithComments(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
@@ -71,7 +50,7 @@ public class PostPublicViewController {
         );
     }
 
-    @GetMapping("/post/{postId}/min")
+    @GetMapping("/posts/{postId}/min")
     public ResponseEntity<PostDetails> getSinglePost(@PathVariable Long postId)
     {
         return new ResponseEntity<>(
@@ -80,34 +59,18 @@ public class PostPublicViewController {
     }
 
     @GetMapping("/posts/hot")
-    public ResponseEntity<Page<PostWithComments>> getHotPosts()
+    public ResponseEntity<Page<PostWithComments>> getHotPosts(@RequestParam("page") Optional<Integer> page)
     {
         return new ResponseEntity<>(
-                service.getHotPosts(0), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/posts/hot/{page}")
-    public ResponseEntity<Page<PostWithComments>> getHotPosts(@PathVariable Integer page)
-    {
-        return new ResponseEntity<>(
-                service.getHotPosts(page), HttpStatus.OK
+                service.getHotPosts(page.orElse(0)), HttpStatus.OK
         );
     }
 
     @GetMapping("/posts/active")
-    public ResponseEntity<Page<PostWithComments>> getActivePosts()
+    public ResponseEntity<Page<PostWithComments>> getActivePosts(@RequestParam("page") Optional<Integer> page)
     {
         return new ResponseEntity<>(
-                service.getActivePosts(0), HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/posts/active/{page}")
-    public ResponseEntity<Page<PostWithComments>> getActivePosts(@PathVariable Integer page)
-    {
-        return new ResponseEntity<>(
-                service.getActivePosts(page), HttpStatus.OK
+                service.getActivePosts(page.orElse(0)), HttpStatus.OK
         );
     }
 }

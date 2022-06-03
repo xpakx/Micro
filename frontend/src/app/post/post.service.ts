@@ -20,23 +20,19 @@ export class PostService {
   }
 
   public newPost(request: PostRequest):  Observable<UpdatedPost> {
-    let username = this.getUsername();
-    return this.http.post<UpdatedPost>(`${this.apiServerUrl}/user/${username}/post`, request);
+    return this.http.post<UpdatedPost>(`${this.apiServerUrl}/posts`, request);
   }
 
   public updatePost(request: PostRequest, id: number):  Observable<UpdatedPost> {
-    let username = this.getUsername();
-    return this.http.put<UpdatedPost>(`${this.apiServerUrl}/user/${username}/post/${id}`, request);
+    return this.http.put<UpdatedPost>(`${this.apiServerUrl}/posts/${id}`, request);
   }
 
   public deletePost(id: number):  Observable<any> {
-    let username = this.getUsername();
-    return this.http.delete<UpdatedPost>(`${this.apiServerUrl}/user/${username}/post/${id}`);
+    return this.http.delete<UpdatedPost>(`${this.apiServerUrl}/posts/${id}`);
   }
 
   public getFavPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
-    let username = this.getUsername();
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/user/${username}/post/fav${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/fav${page ? '?page='+page : ''}`);
   }
 
   public favPost(postId: number):  Observable<any> {

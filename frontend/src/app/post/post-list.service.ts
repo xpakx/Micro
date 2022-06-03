@@ -15,30 +15,30 @@ export class PostListService {
   constructor(private http: HttpClient) { }
 
   public getPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts${page ? '?page='+page : ''}`);
   }
 
   public getUserPosts(username: String, page?: number | undefined):  Observable<Page<PostWithComments>> {
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/user/${username}/posts${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/users/${username}/posts${page ? '?page='+page : ''}`);
   }
 
   public getPostsWithTag(name: String, page?: number | undefined):  Observable<Page<PostWithComments>> {
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/tags/${name}/posts${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/tags/${name}/posts${page ? '?page='+page : ''}`);
   }
 
   public getPost(id: number):  Observable<PostWithComments> {
-    return this.http.get<PostWithComments>(`${this.apiServerUrl}/post/${id}`);
+    return this.http.get<PostWithComments>(`${this.apiServerUrl}/posts/${id}`);
   }
 
   public getPostMin(id: number):  Observable<PostDetails> {
-    return this.http.get<PostDetails>(`${this.apiServerUrl}/post/${id}/min`);
+    return this.http.get<PostDetails>(`${this.apiServerUrl}/posts/${id}/min`);
   }
 
   public getHotPosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/hot${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/hot${page ? '?page='+page : ''}`);
   }
 
   public getActivePosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
-    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/active${page ? '/'+page : ''}`);
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/active${page ? '?page='+page : ''}`);
   }
 }
