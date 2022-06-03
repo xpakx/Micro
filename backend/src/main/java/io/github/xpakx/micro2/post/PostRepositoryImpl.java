@@ -1,11 +1,15 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.comment.dto.CommentCount;
+import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
+import io.github.xpakx.micro2.post.dto.PostUserInfo;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +17,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -73,6 +79,52 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         user.setAvatarUrl((String) object[7]);
         user.setConfirmed((boolean) object[8]);
         post.setUser(user);
+        return post;
+    }
+
+    @Override
+    public Map<Long, PostUserInfo> getUserInfoMapForPostIds(List<Long> ids, String username) {
+        Query userIdQuery = this.entityManager.createQuery(
+                "SELECT u.id FROM UserAccount u WHERE u.username = ?1"
+        );
+        userIdQuery.setParameter(1, username);
+        Long userId = (long) userIdQuery.getSingleResult();
+        List<PostUserInfo> list = getUserInfoForEveryPost(ids, userId);
+        Map<Long, PostUserInfo> result = new HashMap<>();
+        for(PostUserInfo userInfo : list) {
+            result.put(userInfo.getPostId(), userInfo);
+        }
+        return result;
+    }
+
+    private List<PostUserInfo> getUserInfoForEveryPost(List<Long> ids, Long userId) {
+        Query query = this.entityManager.createNativeQuery(
+                "SELECT p.id AS post_id, " +
+                        "CASE WHEN v.positive = true THEN true ELSE false END AS liked, " +
+                        "CASE WHEN v.positive = false THEN true ELSE false END AS disliked, " +
+                        "CASE WHEN f.id IS NULL THEN false ELSE true END AS fav_id " +
+                        "FROM post p " +
+                        "LEFT JOIN fav_post f ON f.post_id = p.id " +
+                        "LEFT JOIN vote v ON v.post_id = p.id " +
+                        "WHERE f.user_id = ?2 " +
+                        "AND v.user_id = ?2 " +
+                        "AND p.id IN ?1 "
+        );
+        query.setParameter(1, ids);
+        query.setParameter(2, userId);
+
+        List<Object[]> results = query.getResultList();
+
+        return results.stream()
+                .map(this::mapToUserInfo)
+                .collect(Collectors.toList());
+    }
+    private PostUserInfo mapToUserInfo(Object[] object) {
+        PostUserInfo post = new PostUserInfo();
+        post.setPostId(((BigInteger) object[0]).longValue());
+        post.setLiked((Boolean) object[1]);
+        post.setDisliked((Boolean) object[2]);
+        post.setFav((Boolean) object[3]);
         return post;
     }
 }

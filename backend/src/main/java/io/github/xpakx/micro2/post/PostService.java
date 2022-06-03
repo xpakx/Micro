@@ -2,10 +2,7 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
-import io.github.xpakx.micro2.post.dto.PostDetails;
-import io.github.xpakx.micro2.post.dto.PostDto;
-import io.github.xpakx.micro2.post.dto.PostRequest;
-import io.github.xpakx.micro2.post.dto.PostWithComments;
+import io.github.xpakx.micro2.post.dto.*;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.tag.TagService;
@@ -131,14 +128,16 @@ public class PostService {
         );
     }
 
-    public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
+    public Page<PostWithCommentsAndUserInfo> getFavoritePosts(Integer page, String username) {
         Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsername(
                 username,
                 PageRequest.of(page, 20)
         );
+        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
         return composePostListAndComments(
                 posts,
-                commentRepository.getCommentMapForPostIds(posts.stream().map(PostDetails::getId).collect(Collectors.toList()))
+                commentRepository.getCommentMapForPostIds(ids),
+                postRepository.getUserInfoMapForPostIds(ids, username)
         );
     }
 
@@ -148,5 +147,13 @@ public class PostService {
                         (p) -> PostWithComments.of(p, commentMap.getOrDefault(p.getId(), Page.empty()))
                 ).collect(Collectors.toList());
         return new PageImpl<PostWithComments>(result, posts.getPageable(), posts.getTotalElements());
+    }
+
+    private Page<PostWithCommentsAndUserInfo> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentDetails>> commentMap, Map<Long, PostUserInfo> userInfoMap) {
+        List<PostWithCommentsAndUserInfo> result = posts.stream()
+                .map(
+                        (p) -> PostWithCommentsAndUserInfo.of(p, commentMap.getOrDefault(p.getId(), Page.empty()), userInfoMap.get(p.getId()))
+                ).collect(Collectors.toList());
+        return new PageImpl<PostWithCommentsAndUserInfo>(result, posts.getPageable(), posts.getTotalElements());
     }
 }
