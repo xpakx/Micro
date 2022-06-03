@@ -22,6 +22,9 @@ export class PostComponent implements OnInit {
   @Input('post') post!: PostDetails;
   @Input('minimal') minimal: boolean = false;
   @Input('commentsPage') comments?: Page<CommentDetails>;
+  @Input('like') like: boolean = false;
+  @Input('dislike') dislike: boolean = false;
+  @Input('fav') inFav: boolean = false;
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faStar = faStar;
@@ -34,8 +37,6 @@ export class PostComponent implements OnInit {
   message: String = "";
   invalid: boolean = false;
   showDeleteModal: boolean = false;
-
-  inFav: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService) {
@@ -84,18 +85,19 @@ export class PostComponent implements OnInit {
 
   likePost() {
     this.likeService.likePost({like: true}, this.post.id).subscribe({
-      next: (response: PostLike) => this.updateLikes(response.totalLikes),
+      next: (response: PostLike) => this.updateLikes(response.totalLikes, true),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
-  updateLikes(totalLikes: number): void {
+  updateLikes(totalLikes: number, like: boolean): void {
     this.post.likeCount = totalLikes;
+    this.like = like;
   }
 
   unlikePost() {
     this.likeService.unlikePost(this.post.id).subscribe({
-      next: (response: Unlike) => this.updateLikes(response.totalLikes),
+      next: (response: Unlike) => this.updateLikes(response.totalLikes, false),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
@@ -147,7 +149,7 @@ export class PostComponent implements OnInit {
   }
 
   updateFav(fav: boolean): void {
-    //TODO
+    this.inFav = fav;
   }
 
   unfavPost() {

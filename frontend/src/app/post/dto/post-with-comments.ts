@@ -5,4 +5,7 @@ import { PostDetails } from "./post-details";
 export interface PostWithComments {
     post: PostDetails;
     comments: Page<CommentDetails>;
+    liked: boolean;
+    disliked: boolean;
+    fav: boolean;
 }

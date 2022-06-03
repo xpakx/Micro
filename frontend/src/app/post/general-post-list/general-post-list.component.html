@@ -1,6 +1,6 @@
 <div class="post-list-container" *ngIf="posts">
     <div class="post-elem"*ngFor="let post of posts.content">
-        <app-post [post]='post.post' [commentsPage]="post.comments" [minimal]='true'></app-post>
+        <app-post [post]='post.post' [commentsPage]="post.comments" [minimal]='true' [fav]="post.fav" [like]="post.liked" [dislike]="post.disliked"></app-post>
     </div>
 </div>
 
