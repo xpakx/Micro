@@ -195,7 +195,7 @@ public class PostService {
     public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
         Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsername(
                 username,
-                PageRequest.of(page, 20)
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
         List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
         return composePostListAndComments(
