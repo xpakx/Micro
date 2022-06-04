@@ -15,22 +15,15 @@ export class PostLikeService {
 
   constructor(private http: HttpClient) { }
 
-  private getUsername() {
-    return localStorage.getItem("username");
-  }
-
   public likePost(request: LikeRequest, postId: number):  Observable<PostLike> {
-    let username = this.getUsername();
-    return this.http.post<PostLike>(`${this.apiServerUrl}/user/${username}/posts/${postId}/like`, request);
+    return this.http.post<PostLike>(`${this.apiServerUrl}/posts/${postId}/like`, request);
   }
 
   public unlikePost(postId: number):  Observable<Unlike> {
-    let username = this.getUsername();
-    return this.http.delete<Unlike>(`${this.apiServerUrl}/user/${username}/posts/${postId}/like`);
+    return this.http.delete<Unlike>(`${this.apiServerUrl}/posts/${postId}/like`);
   }
 
   public getLikeForPost(postId: number):  Observable<LikeDetails> {
-    let username = this.getUsername();
-    return this.http.get<LikeDetails>(`${this.apiServerUrl}/user/${username}/posts/${postId}/like`);
+    return this.http.get<LikeDetails>(`${this.apiServerUrl}/posts/${postId}/like`);
   }
 }
