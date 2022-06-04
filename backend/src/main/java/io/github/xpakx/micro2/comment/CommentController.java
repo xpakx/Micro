@@ -8,34 +8,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}")
+@RequestMapping()
 public class CommentController {
     private final CommentService service;
 
-    @PostMapping("/post/{postId}/comments")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<CommentDto> addNewComment(@RequestBody CommentRequest request, @PathVariable String username, @PathVariable Long postId) {
+    @PostMapping("/posts/{postId}/comments")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentDto> addNewComment(@RequestBody CommentRequest request, @PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
-                service.addComment(request, username, postId),
+                service.addComment(request, principal.getName(), postId),
                 HttpStatus.CREATED
         );
     }
 
     @PutMapping("/comments/{commentId}")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<CommentDto> updatePost(@RequestBody CommentRequest request, @PathVariable String username, @PathVariable Long commentId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentDto> updatePost(@RequestBody CommentRequest request,  @PathVariable Long commentId, Principal principal) {
         return new ResponseEntity<>(
-                service.updateComment(request, commentId, username),
+                service.updateComment(request, commentId, principal.getName()),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/comments/{commentId}")
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<?> deletePost(@PathVariable String username, @PathVariable Long commentId) {
-        service.deleteComment(commentId, username);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deletePost(@PathVariable Long commentId, Principal principal) {
+        service.deleteComment(commentId, principal.getName());
         return new ResponseEntity<>(
                 HttpStatus.OK
         );
