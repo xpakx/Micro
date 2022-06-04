@@ -10,31 +10,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}/comments/{commentId}/like")
+@RequestMapping("/comments/{commentId}/like")
 public class CommentLikeController {
     private final CommentLikeService service;
 
     @PostMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<CommentLikeDto> likeComment(@RequestBody LikeRequest request, @PathVariable String username, @PathVariable Long commentId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentLikeDto> likeComment(@RequestBody LikeRequest request, @PathVariable Long commentId, Principal principal) {
         return new ResponseEntity<>(
-                service.likeComment(request, commentId, username),
+                service.likeComment(request, commentId, principal.getName()),
                 HttpStatus.CREATED
         );
     }
     @DeleteMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<UnlikeDto> unlikePost(@PathVariable String username, @PathVariable Long commentId) {
-        return new ResponseEntity<>(service.unlikeComment(commentId, username), HttpStatus.OK);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UnlikeDto> unlikePost(@PathVariable Long commentId, Principal principal) {
+        return new ResponseEntity<>(service.unlikeComment(commentId, principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<LikeDetails> getLike(@PathVariable String username, @PathVariable Long commentId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<LikeDetails> getLike(@PathVariable Long commentId, Principal principal) {
         return new ResponseEntity<>(
-                service.getLike(commentId, username),
+                service.getLike(commentId, principal.getName()),
                 HttpStatus.OK
         );
     }

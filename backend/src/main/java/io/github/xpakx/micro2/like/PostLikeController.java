@@ -10,31 +10,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}/posts/{postId}/like")
+@RequestMapping("/posts/{postId}/like")
 public class PostLikeController {
     private final PostLikeService service;
 
     @PostMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<PostLikeDto> likePost(@RequestBody LikeRequest request, @PathVariable String username, @PathVariable Long postId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostLikeDto> likePost(@RequestBody LikeRequest request, @PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
-                service.likePost(request, postId, username),
+                service.likePost(request, postId, principal.getName()),
                 HttpStatus.CREATED
         );
     }
     @DeleteMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<UnlikeDto> unlikePost(@PathVariable String username, @PathVariable Long postId) {
-        return new ResponseEntity<>(service.unlikePost(postId, username), HttpStatus.OK);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UnlikeDto> unlikePost(@PathVariable Long postId, Principal principal) {
+        return new ResponseEntity<>(service.unlikePost(postId, principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<LikeDetails> getLike(@PathVariable String username, @PathVariable Long postId) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<LikeDetails> getLike(@PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
-                service.getLike(postId, username),
+                service.getLike(postId, principal.getName()),
                 HttpStatus.OK
         );
     }
