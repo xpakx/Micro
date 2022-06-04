@@ -7,25 +7,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user/{username}/posts/{postId}/fav")
+@RequestMapping("/posts/{postId}/fav")
 public class FavPostController {
     private final FavPostService service;
 
     @PostMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<FavDto> addToFav(@PathVariable Long postId, @PathVariable String username) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FavDto> addToFav(@PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
-                service.addToFav(username, postId),
+                service.addToFav(principal.getName(), postId),
                 HttpStatus.CREATED
         );
     }
 
     @DeleteMapping
-    @PreAuthorize("#username == authentication.principal.username")
-    public ResponseEntity<?> deleteFromFav(@PathVariable Long postId, @PathVariable String username) {
-        service.deleteFromFav(username, postId);
-        return new ResponseEntity<>(                HttpStatus.OK);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deleteFromFav(@PathVariable Long postId, Principal principal) {
+        service.deleteFromFav(principal.getName(), postId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
