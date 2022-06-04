@@ -15,22 +15,15 @@ export class CommentLikeService {
 
   constructor(private http: HttpClient) { }
 
-  private getUsername() {
-    return localStorage.getItem("username");
-  }
-
   public likeComment(request: LikeRequest, commentId: number):  Observable<CommentLike> {
-    let username = this.getUsername();
-    return this.http.post<CommentLike>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`, request);
+    return this.http.post<CommentLike>(`${this.apiServerUrl}/comments/${commentId}/like`, request);
   }
 
   public unlikeComment(commentId: number):  Observable<Unlike> {
-    let username = this.getUsername();
-    return this.http.delete<Unlike>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`);
+    return this.http.delete<Unlike>(`${this.apiServerUrl}/comments/${commentId}/like`);
   }
 
   public getLikeForComment(commentId: number):  Observable<LikeDetails> {
-    let username = this.getUsername();
-    return this.http.get<LikeDetails>(`${this.apiServerUrl}/user/${username}/comments/${commentId}/like`);
+    return this.http.get<LikeDetails>(`${this.apiServerUrl}/comments/${commentId}/like`);
   }
 }
