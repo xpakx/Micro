@@ -15,10 +15,6 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  private getUsername() {
-    return localStorage.getItem("username");
-  }
-
   public newPost(request: PostRequest):  Observable<UpdatedPost> {
     return this.http.post<UpdatedPost>(`${this.apiServerUrl}/posts`, request);
   }
@@ -36,12 +32,10 @@ export class PostService {
   }
 
   public favPost(postId: number):  Observable<any> {
-    let username = this.getUsername();
-    return this.http.post<any>(`${this.apiServerUrl}/user/${username}/posts/${postId}/fav`, null);
+    return this.http.post<any>(`${this.apiServerUrl}/posts/${postId}/fav`, null);
   }
 
   public unfavPost(postId: number):  Observable<any> {
-    let username = this.getUsername();
-    return this.http.delete<any>(`${this.apiServerUrl}/user/${username}/posts/${postId}/fav`);
+    return this.http.delete<any>(`${this.apiServerUrl}/posts/${postId}/fav`);
   }
 }
