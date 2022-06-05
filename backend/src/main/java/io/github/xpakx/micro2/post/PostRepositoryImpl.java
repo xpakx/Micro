@@ -99,16 +99,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private List<PostUserInfo> getUserInfoForEveryPost(List<Long> ids, Long userId) {
         Query query = this.entityManager.createNativeQuery(
-                "SELECT p.id AS post_id, " +
+                "SELECT CASE WHEN f.id IS NULL THEN v.post_id ELSE f.post_id END AS post_id, " +
                         "CASE WHEN v.positive = true THEN true ELSE false END AS liked, " +
                         "CASE WHEN v.positive = false THEN true ELSE false END AS disliked, " +
-                        "CASE WHEN f.id IS NULL THEN false ELSE true END AS fav_id " +
-                        "FROM post p " +
-                        "LEFT JOIN fav_post f ON f.post_id = p.id " +
-                        "LEFT JOIN vote v ON v.post_id = p.id " +
+                        "CASE WHEN f.id IS NULL THEN false ELSE true END AS fav " +
+                        "FROM fav_post f " +
+                        "FULL OUTER JOIN vote v ON v.post_id = f.post_id " +
                         "WHERE f.user_id = ?2 " +
                         "AND v.user_id = ?2 " +
-                        "AND p.id IN ?1 "
+                        "AND CASE WHEN f.id IS NULL THEN v.post_id IN ?1 ELSE f.post_id IN ?1 END "
         );
         query.setParameter(1, ids);
         query.setParameter(2, userId);
