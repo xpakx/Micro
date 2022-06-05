@@ -14,8 +14,7 @@ import { PostListService } from 'src/app/post/post-list.service';
   styleUrls: ['./single-post.component.css']
 })
 export class SinglePostComponent implements OnInit {
-  post?: PostDetails;
-  comments?: Page<CommentDetails>;
+  post?: PostWithComments;
 
   constructor(private route: ActivatedRoute, private postService: PostListService, private commentService: CommentListService) { }
 
@@ -37,8 +36,7 @@ export class SinglePostComponent implements OnInit {
   }
 
   savePost(response: PostWithComments): void {
-    this.post = response.post;
-    this.comments = response.comments;
-    this.comments.content.reverse();
+    this.post = response;
+    this.post.comments.content.reverse();
   }
 }

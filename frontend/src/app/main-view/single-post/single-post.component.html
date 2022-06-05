@@ -1,1 +1,1 @@
-<app-post [post]='post' [commentsPage]="comments" *ngIf="post"></app-post>
+<app-post [post]='post.post' [commentsPage]="post.comments" [like]="post.liked" [dislike]="post.disliked" [fav]="post.fav" *ngIf="post"></app-post>
