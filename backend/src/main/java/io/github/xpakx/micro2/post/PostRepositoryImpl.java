@@ -104,9 +104,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         "CASE WHEN v.positive = false THEN true ELSE false END AS disliked, " +
                         "CASE WHEN f.id IS NULL THEN false ELSE true END AS fav " +
                         "FROM fav_post f " +
-                        "FULL OUTER JOIN vote v ON v.post_id = f.post_id " +
-                        "WHERE f.user_id = ?2 " +
-                        "AND v.user_id = ?2 " +
+                        "FULL OUTER JOIN vote v ON v.post_id = f.post_id AND f.user_id = v.user_id " +
+                        "WHERE " +
+                        "CASE WHEN f.id IS NULL THEN v.user_id = ?2 ELSE f.user_id = ?2 END " +
                         "AND CASE WHEN f.id IS NULL THEN v.post_id IN ?1 ELSE f.post_id IN ?1 END "
         );
         query.setParameter(1, ids);
@@ -121,9 +121,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     private PostUserInfo mapToUserInfo(Object[] object) {
         PostUserInfo post = new PostUserInfo();
         post.setPostId(((BigInteger) object[0]).longValue());
+        System.out.print("id: "+post.getPostId());
         post.setLiked((Boolean) object[1]);
+        System.out.print("l: "+post.isLiked());
         post.setDisliked((Boolean) object[2]);
+        System.out.print("d: "+post.isDisliked());
         post.setFav((Boolean) object[3]);
+        System.out.print("f: "+post.isFav());
+        System.out.println();
         return post;
     }
 }
