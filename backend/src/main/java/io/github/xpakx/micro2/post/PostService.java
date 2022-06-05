@@ -139,6 +139,17 @@ public class PostService {
         );
     }
 
+    public PostWithComments getSinglePostWithCommentsAuth(Long postId, String username) {
+        return PostWithComments.of(
+                postRepository.findProjectedById(postId)
+                        .orElseThrow(PostNotFoundException::new),
+                commentRepository.getAllByPostId(
+                        postId,
+                        PageRequest.of(0, 20, Sort.by("createdAt").descending())),
+                postRepository.getUserInfoForPostId(postId, username).orElse(new PostUserInfo())
+        );
+    }
+
     public PostDetails getSinglePost(Long postId) {
         return postRepository.findProjectedById(postId)
                         .orElseThrow(PostNotFoundException::new);
