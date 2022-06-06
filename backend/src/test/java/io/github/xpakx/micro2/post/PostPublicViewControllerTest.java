@@ -113,7 +113,7 @@ class PostPublicViewControllerTest {
                 .log()
                 .uri()
         .when()
-                .get(baseUrl + "/user/{username}/posts", "user1")
+                .get(baseUrl + "/users/{username}/posts", "user1")
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3))
@@ -141,7 +141,7 @@ class PostPublicViewControllerTest {
                 .log()
                 .uri()
         .when()
-                .get(baseUrl + "/post/{postId}/min", postId)
+                .get(baseUrl + "/posts/{postId}/min", postId)
         .then()
                 .statusCode(OK.value())
                 .body("content", is("post1"));
@@ -153,7 +153,7 @@ class PostPublicViewControllerTest {
                 .log()
                 .uri()
         .when()
-                .get(baseUrl + "/post/{postId}/min", maxPostId+1)
+                .get(baseUrl + "/posts/{postId}/min", maxPostId+1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -164,7 +164,7 @@ class PostPublicViewControllerTest {
                 .log()
                 .uri()
         .when()
-                .get(baseUrl + "/post/{postId}", postId)
+                .get(baseUrl + "/posts/{postId}", postId)
         .then()
                 .statusCode(OK.value())
                 .body("post.content", is("post1"));
@@ -176,7 +176,7 @@ class PostPublicViewControllerTest {
                 .log()
                 .uri()
         .when()
-                .get(baseUrl + "/post/{postId}", maxPostId+1)
+                .get(baseUrl + "/posts/{postId}", maxPostId+1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }

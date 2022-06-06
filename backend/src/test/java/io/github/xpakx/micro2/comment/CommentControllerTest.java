@@ -69,7 +69,7 @@ class CommentControllerTest {
                 .log()
                 .uri()
         .when()
-                .post(baseUrl + "/user/{username}/post/{postId}/comments", "user1", 1)
+                .post(baseUrl + "/posts/{postId}/comments", "user1", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -84,7 +84,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/post/{postId}/comments", "user1", 1)
+                .post(baseUrl + "/posts/{postId}/comments", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -100,7 +100,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/post/{postId}/comments", "user1", postId)
+                .post(baseUrl + "/posts/{postId}/comments", "user1", postId)
         .then()
                 .statusCode(CREATED.value())
                 .body("message", equalTo(request.getMessage()))
@@ -130,7 +130,7 @@ class CommentControllerTest {
                 .log()
                 .uri()
         .when()
-                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+                .delete(baseUrl + "/comments/{commentId}", "user1", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -144,7 +144,7 @@ class CommentControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user2"))
         .when()
-                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user2", id)
+                .delete(baseUrl + "/comments/{commentId}", "user2", id)
         .then()
                 .statusCode(FORBIDDEN.value());
     }
@@ -175,7 +175,7 @@ class CommentControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+                .delete(baseUrl + "/comments/{commentId}", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -188,7 +188,7 @@ class CommentControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+                .delete(baseUrl + "/comments/{commentId}", "user1", id)
         .then()
                 .statusCode(OK.value());
     }
@@ -199,7 +199,7 @@ class CommentControllerTest {
                 .log()
                 .uri()
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+                .put(baseUrl + "/comments/{commentId}", "user1", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -216,7 +216,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user2", id)
+                .put(baseUrl + "/comments/{commentId}", "user2", id)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -231,7 +231,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", 1)
+                .put(baseUrl + "/comments/{commentId}", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -247,7 +247,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+                .put(baseUrl + "/comments/{commentId}", "user1", id)
         .then()
                 .statusCode(BAD_REQUEST.value());
     }
@@ -276,7 +276,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+                .put(baseUrl + "/comments/{commentId}", "user1", id)
         .then()
                 .statusCode(BAD_REQUEST.value());
     }
@@ -303,7 +303,7 @@ class CommentControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/user/{username}/comments/{commentId}", "user1", id)
+                .put(baseUrl + "/comments/{commentId}", "user1", id)
         .then()
                 .statusCode(OK.value())
                 .body("message", is("updated"));

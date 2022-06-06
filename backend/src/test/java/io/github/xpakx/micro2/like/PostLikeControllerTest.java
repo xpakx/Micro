@@ -70,7 +70,7 @@ class PostLikeControllerTest {
                 .log()
                 .uri()
         .when()
-                .post(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+                .post(baseUrl + "/posts/{postId}/like", "user1", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -85,7 +85,7 @@ class PostLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+                .post(baseUrl + "/posts/{postId}/like", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -107,7 +107,7 @@ class PostLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+                .post(baseUrl + "/posts/{postId}/like", "user1", postId)
         .then()
                 .statusCode(CREATED.value())
                 .body("postId", equalTo(Math.toIntExact(postId)))
@@ -138,7 +138,7 @@ class PostLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+                .post(baseUrl + "/posts/{postId}/like", "user1", postId)
         .then()
                 .statusCode(CREATED.value())
                 .body("postId", equalTo(Math.toIntExact(postId)))
@@ -159,7 +159,7 @@ class PostLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+                .post(baseUrl + "/posts/{postId}/like", "user1", postId)
         .then()
                 .statusCode(CREATED.value())
                 .body("postId", equalTo(Math.toIntExact(postId)))
@@ -191,7 +191,7 @@ class PostLikeControllerTest {
                 .log()
                 .uri()
         .when()
-                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+                .delete(baseUrl + "/posts/{postId}/like", "user1", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -203,7 +203,7 @@ class PostLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+                .delete(baseUrl + "/posts/{postId}/like", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -216,7 +216,7 @@ class PostLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+                .delete(baseUrl + "/posts/{postId}/like", "user1", postId)
         .then()
                 .statusCode(OK.value())
                 .body("totalLikes", equalTo(0))
@@ -230,7 +230,7 @@ class PostLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .get(baseUrl + "/user/{username}/posts/{postId}/like", "user1", 1)
+                .get(baseUrl + "/posts/{postId}/like", "user1", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -243,7 +243,7 @@ class PostLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .get(baseUrl + "/user/{username}/posts/{postId}/like", "user1", postId)
+                .get(baseUrl + "/posts/{postId}/like", "user1", postId)
         .then()
                 .statusCode(OK.value())
                 .body("positive", is(true));
