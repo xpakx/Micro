@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentCount;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final ProjectionFactory projectionFactory;
 
     @Override
-    public Map<Long, Page<CommentDetails>> getCommentMapForPostIds(List<Long> ids) {
+    public Map<Long, Page<CommentWithUserData>> getCommentMapForPostIds(List<Long> ids) {
         Map<Long, List<CommentDetails>> mapOfComments = get2CommentsForEveryPost(ids).stream()
                 .collect(
                         Collectors.groupingBy((c) -> c.getPost().getId(),
@@ -35,11 +36,14 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                                         Collectors.toList()))
                 );
         Map<Long, Integer> mapOfCommentCounts = getCountMapForPostIds(ids);
-        Map<Long, Page<CommentDetails>> result = new HashMap<>();
+        Map<Long, Page<CommentWithUserData>> result = new HashMap<>();
         Pageable pageable = PageRequest.of(0, 2);
         for(Long key: mapOfComments.keySet()) {
             List<CommentDetails> value = mapOfComments.get(key);
-            result.put(key, new PageImpl<>(value, pageable, mapOfCommentCounts.get(key)));
+            result.put(
+                    key,
+                    new PageImpl<>(value.stream().map(CommentWithUserData::of).collect(Collectors.toList()), pageable, mapOfCommentCounts.get(key))
+            );
         }
         return result;
     }

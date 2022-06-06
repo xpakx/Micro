@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import io.github.xpakx.micro2.post.dto.*;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
@@ -133,9 +134,9 @@ public class PostService {
         return PostWithComments.of(
             postRepository.findProjectedById(postId)
                     .orElseThrow(PostNotFoundException::new),
-            commentRepository.getAllByPostId(
+            transformComments(commentRepository.getAllByPostId(
                     postId,
-                    PageRequest.of(0, 20, Sort.by("createdAt").descending()))
+                    PageRequest.of(0, 20, Sort.by("createdAt").descending())))
         );
     }
 
@@ -143,9 +144,9 @@ public class PostService {
         return PostWithComments.of(
                 postRepository.findProjectedById(postId)
                         .orElseThrow(PostNotFoundException::new),
-                commentRepository.getAllByPostId(
+                transformComments(commentRepository.getAllByPostId(
                         postId,
-                        PageRequest.of(0, 20, Sort.by("createdAt").descending())),
+                        PageRequest.of(0, 20, Sort.by("createdAt").descending()))),
                 postRepository.getUserInfoForPostId(postId, username).orElse(new PostUserInfo())
         );
     }
@@ -224,7 +225,7 @@ public class PostService {
         );
     }
 
-    private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentDetails>> commentMap) {
+    private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentWithUserData>> commentMap) {
         List<PostWithComments> result = posts.stream()
                 .map(
                         (p) -> PostWithComments.of(p, commentMap.getOrDefault(p.getId(), Page.empty()))
@@ -232,11 +233,17 @@ public class PostService {
         return new PageImpl<PostWithComments>(result, posts.getPageable(), posts.getTotalElements());
     }
 
-    private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentDetails>> commentMap, Map<Long, PostUserInfo> userInfoMap) {
+    private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentWithUserData>> commentMap, Map<Long, PostUserInfo> userInfoMap) {
         List<PostWithComments> result = posts.stream()
                 .map(
                         (p) -> PostWithComments.of(p, commentMap.getOrDefault(p.getId(), Page.empty()), userInfoMap.get(p.getId()))
                 ).collect(Collectors.toList());
         return new PageImpl<PostWithComments>(result, posts.getPageable(), posts.getTotalElements());
+    }
+
+    private Page<CommentWithUserData> transformComments(Page<CommentDetails> comments) {
+        List<CommentWithUserData> result = comments.stream()
+                .map(CommentWithUserData::of).collect(Collectors.toList());
+        return new PageImpl<CommentWithUserData>(result, comments.getPageable(), comments.getTotalElements());
     }
 }
