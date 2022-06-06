@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentCount;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentUserInfo;
 import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.user.UserAccount;
@@ -118,5 +119,48 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         commentCount.setPostId(((BigInteger) object[0]).longValue());
         commentCount.setCommentCount(((BigInteger) object[1]).intValue());
         return commentCount;
+    }
+
+    @Override
+    public Map<Long, CommentUserInfo> getUserInfoMapForCommentIds(List<Long> ids, String username) {
+        Query userIdQuery = this.entityManager.createQuery(
+                "SELECT u.id FROM UserAccount u WHERE u.username = ?1"
+        );
+        userIdQuery.setParameter(1, username);
+        Long userId = (long) userIdQuery.getSingleResult();
+        List<CommentUserInfo> list = getUserInfoForEveryComment(ids, userId);
+        Map<Long, CommentUserInfo> result = new HashMap<>();
+        for(CommentUserInfo userInfo : list) {
+            result.put(userInfo.getCommentId(), userInfo);
+        }
+        return result;
+    }
+
+    private List<CommentUserInfo> getUserInfoForEveryComment(List<Long> ids, Long userId) {
+        Query query = this.entityManager.createNativeQuery(
+                "SELECT v.comment_id AS comment_id, " +
+                        "v.positive AS liked, " +
+                        "NOT(v.positive) AS disliked " +
+                        "FROM vote v " +
+                        "WHERE " +
+                        "v.user_id = ?2 " +
+                        "AND v.comment_id IN ?1  "
+        );
+        query.setParameter(1, ids);
+        query.setParameter(2, userId);
+
+        List<Object[]> results = query.getResultList();
+
+        return results.stream()
+                .map(this::mapToUserInfo)
+                .collect(Collectors.toList());
+    }
+
+    private CommentUserInfo mapToUserInfo(Object[] object) {
+        CommentUserInfo comment = new CommentUserInfo();
+        comment.setCommentId(((BigInteger) object[0]).longValue());
+        comment.setLiked((Boolean) object[1]);
+        comment.setDisliked((Boolean) object[2]);
+        return comment;
     }
 }

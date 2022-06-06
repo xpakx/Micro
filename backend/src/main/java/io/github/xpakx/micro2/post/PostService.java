@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentUserInfo;
 import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import io.github.xpakx.micro2.post.dto.*;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,9 +77,18 @@ public class PostService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
         List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        Map<Long, Page<CommentWithUserData>> comments = commentRepository.getCommentMapForPostIds(ids);
+        List<Long> commentIds = comments.values().stream()
+                .map(Slice::getContent)
+                .flatMap(Collection::stream)
+                .distinct()
+                .map((c) -> c.getComment().getId())
+                .collect(Collectors.toList());
+        Map<Long, CommentUserInfo> userInfoMap = commentRepository.getUserInfoMapForCommentIds(commentIds,  username);
+        comments.replaceAll((k, v) -> transformComments(comments.get(k), userInfoMap));
         return composePostListAndComments(
                 posts,
-                commentRepository.getCommentMapForPostIds(ids),
+                comments,
                 postRepository.getUserInfoMapForPostIds(ids, username)
         );
     }
@@ -245,5 +256,18 @@ public class PostService {
         List<CommentWithUserData> result = comments.stream()
                 .map(CommentWithUserData::of).collect(Collectors.toList());
         return new PageImpl<CommentWithUserData>(result, comments.getPageable(), comments.getTotalElements());
+    }
+
+    private Page<CommentWithUserData> transformComments(Page<CommentWithUserData> comments, Map<Long, CommentUserInfo> userInfoMap) {
+        comments.getContent()
+                .forEach((c) -> {
+                            CommentUserInfo info = userInfoMap.get(c.getComment().getId());
+                            if(info != null) {
+                                c.setLiked(info.isLiked());
+                                c.setDisliked(info.isDisliked());
+                            }
+                        }
+                );
+        return comments;
     }
 }
