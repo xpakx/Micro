@@ -13,6 +13,6 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Page<CommentDetails> getAllByUserUsername(String username, Pageable pageable);
     Page<CommentDetails> getAllByPostId(Long postId, Pageable pageable);
     Page<CommentDetails> findAllBy(Pageable pageable);
-    boolean existsByCreatedAtIsGreaterThan(LocalDateTime createdAt);
+    boolean existsByPostIdAndCreatedAtIsGreaterThan(Long postId, LocalDateTime createdAt);
     Optional<CommentDetails> findProjectedById(Long id);
 }

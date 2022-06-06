@@ -52,7 +52,7 @@ public class CommentService {
         if(toUpdate.getCreatedAt().isBefore(LocalDateTime.now().minusHours(24))) {
             throw new CommentTooOldToEditException();
         }
-        if(commentRepository.existsByCreatedAtIsGreaterThan(toUpdate.getCreatedAt())) {
+        if(commentRepository.existsByPostIdAndCreatedAtIsGreaterThan(toUpdate.getPost().getId(), toUpdate.getCreatedAt())) {
             throw new CommentHasRepliesException();
         }
         toUpdate.setContent(request.getMessage());

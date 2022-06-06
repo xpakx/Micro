@@ -168,7 +168,7 @@ class CommentServiceTest {
     void shouldNotUpdateCommentThatHasReplies() {
         given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
                 .willReturn(Optional.of(getNotOutdatedComment()));
-        given(commentRepository.existsByCreatedAtIsGreaterThan(ArgumentMatchers.any(LocalDateTime.class)))
+        given(commentRepository.existsByPostIdAndCreatedAtIsGreaterThan(anyLong(), ArgumentMatchers.any(LocalDateTime.class)))
                 .willReturn(true);
         injectMocks();
 
@@ -189,7 +189,7 @@ class CommentServiceTest {
     void shouldUpdateComment() {
         given(commentRepository.findByIdAndUserUsername(anyLong(), anyString()))
                 .willReturn(Optional.of(getNotOutdatedComment()));
-        given(commentRepository.existsByCreatedAtIsGreaterThan(ArgumentMatchers.any(LocalDateTime.class)))
+        given(commentRepository.existsByPostIdAndCreatedAtIsGreaterThan(anyLong(), ArgumentMatchers.any(LocalDateTime.class)))
                 .willReturn(false);
         given(commentRepository.save(ArgumentMatchers.any(Comment.class)))
                 .willReturn(getEmptyComment());
