@@ -76,6 +76,10 @@ public class PostService {
         Page<PostDetails> posts = postRepository.findAllBy(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
+        return preparePostWithCommentsPage(username, posts);
+    }
+
+    private Page<PostWithComments> preparePostWithCommentsPage(String username, Page<PostDetails> posts) {
         List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
         Map<Long, Page<CommentWithUserData>> comments = commentRepository.getCommentMapForPostIds(ids);
         List<Long> commentIds = comments.values().stream()
@@ -84,7 +88,7 @@ public class PostService {
                 .distinct()
                 .map((c) -> c.getComment().getId())
                 .collect(Collectors.toList());
-        Map<Long, CommentUserInfo> userInfoMap = commentRepository.getUserInfoMapForCommentIds(commentIds,  username);
+        Map<Long, CommentUserInfo> userInfoMap = commentRepository.getUserInfoMapForCommentIds(commentIds, username);
         comments.replaceAll((k, v) -> transformComments(comments.get(k), userInfoMap));
         return composePostListAndComments(
                 posts,
@@ -109,12 +113,7 @@ public class PostService {
                 user,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
-        return composePostListAndComments(
-                posts,
-                commentRepository.getCommentMapForPostIds(ids),
-                postRepository.getUserInfoMapForPostIds(ids, username)
-        );
+        return preparePostWithCommentsPage(username, posts);
     }
 
     public Page<PostWithComments> getPostsByTagName(Integer page, String tag) {
@@ -133,12 +132,7 @@ public class PostService {
                 tag,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
-        return composePostListAndComments(
-                posts,
-                commentRepository.getCommentMapForPostIds(ids),
-                postRepository.getUserInfoMapForPostIds(ids, username)
-        );
+        return preparePostWithCommentsPage(username, posts);
     }
 
     public PostWithComments getSinglePostWithComments(Long postId) {
@@ -183,12 +177,7 @@ public class PostService {
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20, Sort.by("likeCount").descending())
         );
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
-        return composePostListAndComments(
-                posts,
-                commentRepository.getCommentMapForPostIds(ids),
-                postRepository.getUserInfoMapForPostIds(ids, username)
-        );
+        return preparePostWithCommentsPage(username, posts);
     }
 
     public List<PostDetails> getRandomHotPosts() {
@@ -215,12 +204,7 @@ public class PostService {
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20)
         );
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
-        return composePostListAndComments(
-                posts,
-                commentRepository.getCommentMapForPostIds(ids),
-                postRepository.getUserInfoMapForPostIds(ids, username)
-        );
+        return preparePostWithCommentsPage(username, posts);
     }
 
     public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
@@ -228,12 +212,7 @@ public class PostService {
                 username,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
-        return composePostListAndComments(
-                posts,
-                commentRepository.getCommentMapForPostIds(ids),
-                postRepository.getUserInfoMapForPostIds(ids, username)
-        );
+        return preparePostWithCommentsPage(username, posts);
     }
 
     private Page<PostWithComments> composePostListAndComments(Page<PostDetails> posts, Map<Long, Page<CommentWithUserData>> commentMap) {
