@@ -1,23 +1,23 @@
-<div class="comment-container" *ngIf="comment" [class.deleted]="comment.deletedByUser || comment.deletedByPostAuthor">
+<div class="comment-container" *ngIf="comment" [class.deleted]="comment.comment.deletedByUser || comment.comment.deletedByPostAuthor">
     <div class="author-bar">
         <div class="avatar" style="color:pink">
             <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
         </div>
-        <div class="author-name" (click)="toUser(comment.user.username)">{{comment.user.username}}</div>
+        <div class="author-name" (click)="toUser(comment.comment.user.username)">{{comment.comment.user.username}}</div>
         <div class="confirmed-user"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
-        <div class="post-date">commented at {{comment.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
-        <div class="edited" *ngIf="comment.edited">edited</div>
+        <div class="post-date">commented at {{comment.comment.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
+        <div class="edited" *ngIf="comment.comment.edited">edited</div>
         <div class="left-options">
-            <app-like-button [count]="comment.likeCount" [liked]="false" (plus)="plus($event)"></app-like-button>
+            <app-like-button [count]="comment.comment.likeCount" [liked]="false" (plus)="plus($event)"></app-like-button>
         </div>
     </div>
 
-    <div class="comment-content">{{comment.content}}</div>
+    <div class="comment-content">{{comment.comment.content}}</div>
 
     <div class="option-bar">
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
-        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
-        <button class="option-button" *ngIf="author && !comment.deletedByUser && !comment.deletedByPostAuthor" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
+        <button class="option-button" *ngIf="author && !comment.comment.deletedByUser && !comment.comment.deletedByPostAuthor" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
+        <button class="option-button" *ngIf="author && !comment.comment.deletedByUser && !comment.comment.deletedByPostAuthor" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
     </div>
 </div>
 

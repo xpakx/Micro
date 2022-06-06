@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Page } from 'src/app/common/dto/page';
 import { CommentDetails } from '../dto/comment-details';
+import { CommentWithData } from '../dto/comment-with-data';
 
 @Component({
   selector: 'app-general-comment-list',
@@ -8,7 +9,7 @@ import { CommentDetails } from '../dto/comment-details';
   styleUrls: ['./general-comment-list.component.css']
 })
 export class GeneralCommentListComponent implements OnInit {
-  @Input('comments') comments?: Page<CommentDetails>;
+  @Input('comments') comments?: Page<CommentWithData>;
   @Input('postAuthor') postAuthor: boolean = false;
 
   constructor() { }

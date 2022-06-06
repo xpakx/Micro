@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentService } from 'src/app/comment/comment.service';
-import { CommentDetails } from 'src/app/comment/dto/comment-details';
+import { CommentWithData } from 'src/app/comment/dto/comment-with-data';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
 import { PostLike } from 'src/app/like/dto/post-like';
@@ -21,7 +21,7 @@ import { PostService } from '../post.service';
 export class PostComponent implements OnInit {
   @Input('post') post!: PostDetails;
   @Input('minimal') minimal: boolean = false;
-  @Input('commentsPage') comments?: Page<CommentDetails>;
+  @Input('commentsPage') comments?: Page<CommentWithData>;
   @Input('like') like: boolean = false;
   @Input('dislike') dislike: boolean = false;
   @Input('fav') inFav: boolean = false;

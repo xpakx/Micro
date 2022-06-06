@@ -7,6 +7,7 @@ import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
 import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
+import { CommentWithData } from '../dto/comment-with-data';
 
 @Component({
   selector: 'app-comment',
@@ -14,7 +15,7 @@ import { CommentDetails } from '../dto/comment-details';
   styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit {
-  @Input('comment') comment!: CommentDetails;
+  @Input('comment') comment!: CommentWithData;
   @Input('postAuthor') postAuthor: boolean = false;
   faCheck = faCheckCircle;
   faPlus = faPlus;
@@ -37,18 +38,18 @@ export class CommentComponent implements OnInit {
   }
 
   likeComment() {
-    this.likeService.likeComment({like: true}, this.comment.id).subscribe({
+    this.likeService.likeComment({like: true}, this.comment.comment.id).subscribe({
       next: (response: CommentLike) => this.updateLikes(response.totalLikes),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
   updateLikes(totalLikes: number): void {
-    this.comment.likeCount = totalLikes;
+    this.comment.comment.likeCount = totalLikes;
   }
 
   unlikeComment() {
-    this.likeService.unlikeComment(this.comment.id).subscribe({
+    this.likeService.unlikeComment(this.comment.comment.id).subscribe({
       next: (response: Unlike) => this.updateLikes(response.totalLikes),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
@@ -59,7 +60,7 @@ export class CommentComponent implements OnInit {
 
   get author(): boolean {
     let username: String | null = localStorage.getItem('username');
-    return username != null && (username == this.comment.user.username || this.postAuthor);
+    return username != null && (username == this.comment.comment.user.username || this.postAuthor);
   }
 
   askForDelete(): void {
@@ -72,7 +73,7 @@ export class CommentComponent implements OnInit {
 
   delete(): void {
     this.closeDeleteModal();
-    this.commentService.deleteComment(this.comment.id).subscribe({
+    this.commentService.deleteComment(this.comment.comment.id).subscribe({
       next: (response: any) => this.deleteComment(),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
@@ -83,7 +84,7 @@ export class CommentComponent implements OnInit {
   }
 
   edit(): void {
-    this.router.navigate([`comment/${this.comment.id}/edit`]);
+    this.router.navigate([`comment/${this.comment.comment.id}/edit`]);
   }
 
   toUser(username: String) {
