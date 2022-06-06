@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -69,6 +70,15 @@ public class PostPublicViewController {
     {
         return new ResponseEntity<>(
                 principal == null ? service.getHotPosts(page.orElse(0)) : service.getHotPostsAuth(page.orElse(0), principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/posts/hot/random")
+    public ResponseEntity<List<PostDetails>> getRandomHotPosts(Principal principal)
+    {
+        return new ResponseEntity<>(
+                principal == null ? service.getRandomHotPosts() : service.getRandomHotPostsAuth(principal.getName()),
                 HttpStatus.OK
         );
     }

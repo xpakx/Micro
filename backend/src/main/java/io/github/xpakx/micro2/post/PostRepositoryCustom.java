@@ -14,4 +14,5 @@ public interface PostRepositoryCustom {
     Page<PostDetails> getPostsWithMostResponsesAfterDate(LocalDateTime date, PageRequest pageable);
     Map<Long, PostUserInfo> getUserInfoMapForPostIds(List<Long> ids, String username);
     Optional<PostUserInfo> getUserInfoForPostId(Long postId, String username);
+    List<PostDetails> get2RandomHotPosts(LocalDateTime date);
 }

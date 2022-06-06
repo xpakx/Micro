@@ -179,6 +179,14 @@ public class PostService {
         );
     }
 
+    public List<PostDetails> getRandomHotPosts() {
+        return postRepository.get2RandomHotPosts(LocalDateTime.now().minusHours(24));
+    }
+
+    public List<PostDetails> getRandomHotPostsAuth(String username) {
+        return postRepository.get2RandomHotPosts(LocalDateTime.now().minusHours(24));
+    }
+
     public Page<PostWithComments> getActivePosts(Integer page) {
         Page<PostDetails> posts = postRepository.getPostsWithMostResponsesAfterDate(
                 LocalDateTime.now().minusHours(24),

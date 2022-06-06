@@ -1,7 +1,5 @@
 package io.github.xpakx.micro2.post;
 
-import io.github.xpakx.micro2.comment.dto.CommentCount;
-import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostUserInfo;
 import io.github.xpakx.micro2.user.UserAccount;
@@ -9,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +31,30 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         List<PostDetails> postResults = getActivePosts(date, pageable);
         int count = getPostCount(date);
         return new PageImpl<PostDetails>(postResults, pageable, count);
+    }
+
+    @Override
+    public List<PostDetails> get2RandomHotPosts(LocalDateTime date) {
+        Query query = this.entityManager.createNativeQuery(
+                "SELECT p.id AS id, p.content AS content, p.created_at AS created_at, " +
+                        "p.like_count AS like_count, p.dislike_count AS dislike_count, " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "FROM  " +
+                        "(" +
+                            "SELECT * FROM post " +
+                            "WHERE post.created_at > ?1 " +
+                            "ORDER BY post.like_count DESC " +
+                            "LIMIT 20" +
+                        ") p " +
+                        "LEFT JOIN user_account u ON p.user_id = u.id " +
+                        "ORDER BY RANDOM() LIMIT 2"
+        );
+        query.setParameter(1, date);
+        List<Object[]> results = query.getResultList();
+        return results.stream()
+                .map(this::mapToPost)
+                .map((p) -> projectionFactory.createProjection(PostDetails.class, p))
+                .collect(Collectors.toList());
     }
 
     private int getPostCount(LocalDateTime date) {
