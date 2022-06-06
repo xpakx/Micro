@@ -289,8 +289,8 @@ class PostServiceTest {
         assertNotNull(result);
         assertNotNull(result.getContent());
         assertThat(result.getContent(), hasSize(2));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post1")))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post2")))));
     }
 
     @Test
@@ -304,8 +304,8 @@ class PostServiceTest {
         assertNotNull(result);
         assertNotNull(result.getContent());
         assertThat(result.getContent(), hasSize(2));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post1")))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post2")))));
     }
 
     @Test
@@ -319,8 +319,8 @@ class PostServiceTest {
         assertNotNull(result);
         assertNotNull(result.getContent());
         assertThat(result.getContent(), hasSize(2));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post1"))));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("post2"))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post1")))));
+        assertThat(result.getContent(), hasItem(hasProperty("post", hasProperty("content", is("post2")))));
     }
 
     @Test
@@ -360,7 +360,6 @@ class PostServiceTest {
         PostWithComments result = service.getSinglePostWithComments(1L);
 
         assertSame(post, result.getPost());
-        assertSame(comments, result.getComments());
     }
 
     @Test

@@ -182,6 +182,9 @@ class CommentServiceTest {
         Comment result = new Comment();
         result.setUser(getUserWithUsername("username"));
         result.setCreatedAt(LocalDateTime.now());
+        Post post = new Post();
+        post.setId(1L);
+        result.setPost(post);
         return result;
     }
 

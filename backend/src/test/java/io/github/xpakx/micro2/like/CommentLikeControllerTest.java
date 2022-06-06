@@ -82,7 +82,7 @@ class CommentLikeControllerTest {
                 .log()
                 .uri()
         .when()
-                .post(baseUrl + "/comments/{commentId}/like", "user1", 1)
+                .post(baseUrl + "/comments/{commentId}/like", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -97,7 +97,7 @@ class CommentLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/comments/{commentId}/like", "user1", 1)
+                .post(baseUrl + "/comments/{commentId}/like", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -119,7 +119,7 @@ class CommentLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/comments/{commentId}/like", "user1", commentId)
+                .post(baseUrl + "/comments/{commentId}/like", commentId)
         .then()
                 .statusCode(CREATED.value())
                 .body("commentId", equalTo(Math.toIntExact(commentId)))
@@ -151,7 +151,7 @@ class CommentLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/comments/{commentId}/like", "user1", commentId)
+                .post(baseUrl + "/comments/{commentId}/like", commentId)
         .then()
                 .statusCode(CREATED.value())
                 .body("commentId", equalTo(Math.toIntExact(commentId)))
@@ -172,7 +172,7 @@ class CommentLikeControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/comments/{commentId}/like", "user1", commentId)
+                .post(baseUrl + "/comments/{commentId}/like", commentId)
         .then()
                 .statusCode(CREATED.value())
                 .body("commentId", equalTo(Math.toIntExact(commentId)))
@@ -205,7 +205,7 @@ class CommentLikeControllerTest {
                 .log()
                 .uri()
         .when()
-                .delete(baseUrl + "/comments/{commentId}/like", "user1", 1)
+                .delete(baseUrl + "/comments/{commentId}/like", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -217,7 +217,7 @@ class CommentLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/comments/{commentId}/like", "user1", 1)
+                .delete(baseUrl + "/comments/{commentId}/like", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -230,7 +230,7 @@ class CommentLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/comments/{commentId}/like", "user1", commentId)
+                .delete(baseUrl + "/comments/{commentId}/like", commentId)
         .then()
                 .statusCode(OK.value())
                 .body("totalLikes", equalTo(0))
@@ -244,7 +244,7 @@ class CommentLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .get(baseUrl + "/comments/{commentId}/like", "user1", 1)
+                .get(baseUrl + "/comments/{commentId}/like", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -257,7 +257,7 @@ class CommentLikeControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .get(baseUrl + "/comments/{commentId}/like", "user1", commentId)
+                .get(baseUrl + "/comments/{commentId}/like", commentId)
         .then()
                 .statusCode(OK.value())
                 .body("positive", is(true));

@@ -71,7 +71,7 @@ class PostControllerTest {
                 .log()
                 .uri()
         .when()
-                .post(baseUrl + "/posts", "user1")
+                .post(baseUrl + "/posts")
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -86,7 +86,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/posts", "user1")
+                .post(baseUrl + "/posts")
         .then()
                 .statusCode(CREATED.value())
                 .body("message", equalTo(request.getMessage()))
@@ -111,7 +111,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .post(baseUrl + "/posts", "user1")
+                .post(baseUrl + "/posts")
         .then()
                 .statusCode(CREATED.value())
                 .body("message", equalTo(request.getMessage()));
@@ -126,7 +126,7 @@ class PostControllerTest {
                 .log()
                 .uri()
         .when()
-                .put(baseUrl + "/posts/{postId}", "user1", 1)
+                .put(baseUrl + "/posts/{postId}", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -143,7 +143,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/posts/{postId}", "user2", id)
+                .put(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -176,7 +176,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/posts/{postId}", "user1", 1)
+                .put(baseUrl + "/posts/{postId}", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -192,7 +192,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/posts/{postId}", "user1", id)
+                .put(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(BAD_REQUEST.value());
     }
@@ -217,7 +217,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/posts/{postId}", "user1", id)
+                .put(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(OK.value())
                 .body("message", is("updated"));
@@ -234,7 +234,7 @@ class PostControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
         .when()
-                .put(baseUrl + "/posts/{postId}", "user1", id)
+                .put(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(OK.value());
 
@@ -248,7 +248,7 @@ class PostControllerTest {
                 .log()
                 .uri()
         .when()
-                .delete(baseUrl + "/posts/{postId}", "user1", 1)
+                .delete(baseUrl + "/posts/{postId}", 1)
         .then()
                 .statusCode(UNAUTHORIZED.value());
     }
@@ -262,7 +262,7 @@ class PostControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user2"))
         .when()
-                .delete(baseUrl + "/posts/{postId}", "user2", id)
+                .delete(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -274,7 +274,7 @@ class PostControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/posts/{postId}", "user1", 1)
+                .delete(baseUrl + "/posts/{postId}", 1)
         .then()
                 .statusCode(NOT_FOUND.value());
     }
@@ -287,7 +287,7 @@ class PostControllerTest {
                 .uri().auth()
                 .oauth2(tokenFor("user1"))
         .when()
-                .delete(baseUrl + "/posts/{postId}", "user1", id)
+                .delete(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(OK.value());
     }
