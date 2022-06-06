@@ -146,12 +146,19 @@ public class PostService {
     }
 
     public PostWithComments getSinglePostWithCommentsAuth(Long postId, String username) {
+        PostDetails post = postRepository.findProjectedById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        Page<CommentDetails> comments = commentRepository.getAllByPostId(
+                postId,
+                PageRequest.of(0, 20, Sort.by("createdAt").descending()));
+
+        Map<Long, CommentUserInfo> userInfoMap = commentRepository.getUserInfoMapForCommentIds(
+                comments.stream().map(CommentDetails::getId).collect(Collectors.toList()),
+                username
+        );
         return PostWithComments.of(
-                postRepository.findProjectedById(postId)
-                        .orElseThrow(PostNotFoundException::new),
-                transformComments(commentRepository.getAllByPostId(
-                        postId,
-                        PageRequest.of(0, 20, Sort.by("createdAt").descending()))),
+                post,
+                transformCommentsSingle(comments, userInfoMap),
                 postRepository.getUserInfoForPostId(postId, username).orElse(new PostUserInfo())
         );
     }
@@ -235,6 +242,10 @@ public class PostService {
         List<CommentWithUserData> result = comments.stream()
                 .map(CommentWithUserData::of).collect(Collectors.toList());
         return new PageImpl<CommentWithUserData>(result, comments.getPageable(), comments.getTotalElements());
+    }
+
+    private Page<CommentWithUserData> transformCommentsSingle(Page<CommentDetails> comments, Map<Long, CommentUserInfo> userInfoMap) {
+        return  transformComments(transformComments(comments), userInfoMap);
     }
 
     private Page<CommentWithUserData> transformComments(Page<CommentWithUserData> comments, Map<Long, CommentUserInfo> userInfoMap) {
