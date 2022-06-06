@@ -39,18 +39,19 @@ export class CommentComponent implements OnInit {
 
   likeComment() {
     this.likeService.likeComment({like: true}, this.comment.comment.id).subscribe({
-      next: (response: CommentLike) => this.updateLikes(response.totalLikes),
+      next: (response: CommentLike) => this.updateLikes(response.totalLikes, true),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
-  updateLikes(totalLikes: number): void {
+  updateLikes(totalLikes: number, like: boolean): void {
     this.comment.comment.likeCount = totalLikes;
+    this.comment.liked = like;
   }
 
   unlikeComment() {
     this.likeService.unlikeComment(this.comment.comment.id).subscribe({
-      next: (response: Unlike) => this.updateLikes(response.totalLikes),
+      next: (response: Unlike) => this.updateLikes(response.totalLikes, false),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
