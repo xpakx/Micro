@@ -54,8 +54,9 @@
 
 .menu-actions {
     display: flex;
-    width: 250px;
+    width: 400px;
     padding: 10px 0;
+    margin-right: 20px;
 }
 
 button {

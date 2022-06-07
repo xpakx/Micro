@@ -29,6 +29,7 @@ import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.c
 import { HotComponent } from './main-view/hot/hot.component';
 import { ActiveComponent } from './main-view/active/active.component';
 import { FavComponent } from './main-view/fav/fav.component';
+import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -58,7 +59,8 @@ export function tokenGetter() {
     LeftSidebarComponent,
     HotComponent,
     ActiveComponent,
-    FavComponent
+    FavComponent,
+    RightSidebarComponent
   ],
   imports: [
     BrowserModule,

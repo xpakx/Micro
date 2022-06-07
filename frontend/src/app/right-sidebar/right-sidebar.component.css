@@ -1,0 +1,9 @@
+.hot-container {
+    border: #ecf1f5 solid 1px;
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    padding-bottom: 0;
+}
