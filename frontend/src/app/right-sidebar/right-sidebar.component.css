@@ -7,3 +7,19 @@
     padding: 10px 0;
     padding-bottom: 0;
 }
+
+.hot-title-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.hot-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.hot-title fa-icon {
+    color: rgb(212, 134, 61);
+}

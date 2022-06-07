@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { faFire } from '@fortawesome/free-solid-svg-icons';
 import { PostDetails } from '../post/dto/post-details';
 import { PostListService } from '../post/post-list.service';
 
@@ -10,6 +11,7 @@ import { PostListService } from '../post/post-list.service';
 })
 export class RightSidebarComponent implements OnInit {
   posts: PostDetails[] = [];
+  faHot = faFire;
 
   constructor(private postService: PostListService) { }
 
