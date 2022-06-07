@@ -21,6 +21,7 @@ import { PostService } from '../post.service';
 export class PostComponent implements OnInit {
   @Input('post') post!: PostDetails;
   @Input('minimal') minimal: boolean = false;
+  @Input('sidebar') sidebar: boolean = false;
   @Input('commentsPage') comments?: Page<CommentWithData>;
   @Input('like') like: boolean = false;
   @Input('dislike') dislike: boolean = false;

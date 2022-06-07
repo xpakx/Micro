@@ -1,4 +1,4 @@
-<div class="post-container" *ngIf="post">
+<div class="post-container" *ngIf="post" [class.sidebar-container]="sidebar">
     <div class="author-bar">
         <div class="avatar" style="color:pink">
             <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="quick-response">
+    <div class="quick-response" *ngIf="!sidebar">
         <div class="avatar" style="color: seagreen">
             <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
         </div>
@@ -38,7 +38,7 @@
 
     <app-general-comment-list [comments]="comments" [postAuthor]="author" *ngIf="comments"></app-general-comment-list>
 
-    <button class="more-comments" *ngIf="minimal" (click)="toPost(post.id)">
+    <button class="more-comments" *ngIf="minimal || sidebar" (click)="toPost(post.id)">
         {{ moreComments }}
     </button>
 </div>

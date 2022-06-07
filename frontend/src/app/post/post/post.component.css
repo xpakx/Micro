@@ -8,6 +8,10 @@
     padding-bottom: 0;
 }
 
+.sidebar-container {
+    border: revert;
+}
+
 .author-bar {
     display: flex;
     align-items: center;
