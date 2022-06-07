@@ -6,6 +6,8 @@
         <app-post-form [init]="'@'+userName+':'"></app-post-form>
         <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
     </div>
-    <div class="main-hot"></div>
+    <div class="main-hot">
+        <app-right-sidebar></app-right-sidebar>
+    </div>
 </div>
 
