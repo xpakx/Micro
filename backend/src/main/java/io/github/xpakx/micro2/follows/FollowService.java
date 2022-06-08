@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class FollowService {
     public final FollowsRepository followsRepository;
-    public final FollowPostRepository postRepository;
     public final UserRepository userRepository;
     public final TagRepository tagRepository;
 
