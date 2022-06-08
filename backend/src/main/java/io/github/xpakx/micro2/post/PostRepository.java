@@ -27,6 +27,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long>, 
     Page<PostDetails> findAllByFollowedUsers(String username, Pageable pageable);
 
     @Query(value = "SELECT p FROM Post p LEFT JOIN p.tags t2  " +
-            "WHERE t2.id IN (SELECT t1.id FROM UserFollows u LEFT JOIN u.tags t1 WHERE u.user.username = :name)")
+            "WHERE t2.id IN (SELECT t1.id FROM UserFollows u LEFT JOIN u.tags t1 WHERE u.user.username = :name) " +
+            "ORDER BY p.createdAt DESC")
     Page<PostDetails> findAllFromFollowedTags(String name, Pageable pageable);
 }

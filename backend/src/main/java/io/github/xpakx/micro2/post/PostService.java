@@ -272,7 +272,7 @@ public class PostService {
     public Page<PostWithComments> getPostsFromFollowedTags(Integer page, String username) {
         Page<PostDetails> posts = postRepository.findAllFromFollowedTags(
                 username,
-                PageRequest.of(page, 20)//, Sort.by("createdAt").descending())
+                PageRequest.of(page, 20)
         );
         return preparePostWithCommentsPage(username, posts);
     }
