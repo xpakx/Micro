@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.xpakx.micro2.follows.UserFollows;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,7 @@ public class UserAccount {
                     @JoinColumn(name = "user_role_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
     private Set<UserRole> roles;
+
+    @OneToOne(mappedBy = "user")
+    private UserFollows follows;
 }

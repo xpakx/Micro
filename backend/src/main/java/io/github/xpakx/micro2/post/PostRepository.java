@@ -2,7 +2,6 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -22,4 +21,12 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long>, 
     Optional<Post> findByCommentsId(Long id);
     Page<PostDetails> findAllByCreatedAtAfter(LocalDateTime createdAt, Pageable pageable);
     Page<PostDetails> findAllByFavoriteUserUsername(String username, Pageable pageable);
+
+    @Query(value = "SELECT p FROM Post p LEFT JOIN p.user u LEFT JOIN u.follows uf LEFT JOIN uf.users us  " +
+            "WHERE uf.user.username = :username AND p.user.username = us.username")
+    Page<PostDetails> findAllByFollowedUsers(String username, Pageable pageable);
+
+    @Query(value = "SELECT p FROM Post p LEFT JOIN p.tags t2  " +
+            "WHERE t2.id IN (SELECT t1.id FROM UserFollows u LEFT JOIN u.tags t1 WHERE u.user.username = :name)")
+    Page<PostDetails> findAllFromFollowedTags(String name, Pageable pageable);
 }

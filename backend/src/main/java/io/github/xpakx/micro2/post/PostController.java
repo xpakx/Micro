@@ -52,4 +52,22 @@ public class PostController {
                 service.getFavoritePosts(page.orElse(0), principal.getName()), HttpStatus.OK
         );
     }
+
+    @GetMapping("/follows/tags")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<PostWithComments>> getFollowedFromUsers(@RequestParam("page") Optional<Integer> page, Principal principal)
+    {
+        return new ResponseEntity<>(
+                service.getPostsFromFollowedTags(page.orElse(0), principal.getName()), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/follows/users")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<PostWithComments>> getFollowedFromTags(@RequestParam("page") Optional<Integer> page, Principal principal)
+    {
+        return new ResponseEntity<>(
+                service.getPostsByFollowedUsers(page.orElse(0), principal.getName()), HttpStatus.OK
+        );
+    }
 }

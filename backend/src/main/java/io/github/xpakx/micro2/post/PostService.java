@@ -260,4 +260,20 @@ public class PostService {
                 );
         return comments;
     }
+
+    public Page<PostWithComments> getPostsByFollowedUsers(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.findAllByFollowedUsers(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        return preparePostWithCommentsPage(username, posts);
+    }
+
+    public Page<PostWithComments> getPostsFromFollowedTags(Integer page, String username) {
+        Page<PostDetails> posts = postRepository.findAllFromFollowedTags(
+                username,
+                PageRequest.of(page, 20)//, Sort.by("createdAt").descending())
+        );
+        return preparePostWithCommentsPage(username, posts);
+    }
 }
