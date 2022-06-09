@@ -38,4 +38,12 @@ export class PostService {
   public unfavPost(postId: number):  Observable<any> {
     return this.http.delete<any>(`${this.apiServerUrl}/posts/${postId}/fav`);
   }
+
+  public getPostsByFollowedUsers(page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/follows/users${page ? '?page='+page : ''}`);
+  }
+
+  public getPostsWithFollowedTags(page?: number | undefined):  Observable<Page<PostWithComments>> {
+    return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/follows/tags${page ? '?page='+page : ''}`);
+  }
 }

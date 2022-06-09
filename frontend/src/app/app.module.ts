@@ -31,6 +31,8 @@ import { ActiveComponent } from './main-view/active/active.component';
 import { FavComponent } from './main-view/fav/fav.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { FollowButtonComponent } from './follows/follow-button/follow-button.component';
+import { FollowTagViewComponent } from './main-view/follow-tag-view/follow-tag-view.component';
+import { FollowUserViewComponent } from './main-view/follow-user-view/follow-user-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -62,7 +64,9 @@ export function tokenGetter() {
     ActiveComponent,
     FavComponent,
     RightSidebarComponent,
-    FollowButtonComponent
+    FollowButtonComponent,
+    FollowTagViewComponent,
+    FollowUserViewComponent
   ],
   imports: [
     BrowserModule,
