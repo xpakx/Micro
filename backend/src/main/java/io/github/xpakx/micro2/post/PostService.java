@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,7 +81,9 @@ public class PostService {
     }
 
     private Page<PostWithComments> preparePostWithCommentsPage(String username, Page<PostDetails> posts) {
-        List<Long> ids = posts.stream().map(PostDetails::getId).collect(Collectors.toList());
+        List<Long> ids = posts.stream()
+                .map(PostDetails::getId)
+                .collect(Collectors.toList());
         Map<Long, Page<CommentWithUserData>> comments = commentRepository.getCommentMapForPostIds(ids);
         List<Long> commentIds = comments.values().stream()
                 .map(Slice::getContent)
@@ -264,7 +267,7 @@ public class PostService {
     public Page<PostWithComments> getPostsByFollowedUsers(Integer page, String username) {
         Page<PostDetails> posts = postRepository.findAllByFollowedUsers(
                 username,
-                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+                PageRequest.of(page, 20)
         );
         return preparePostWithCommentsPage(username, posts);
     }
