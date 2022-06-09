@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -31,17 +28,17 @@ public class FollowController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/follows/users")
+    @DeleteMapping("/follows/users/{username}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> unfollowUser(@RequestBody FollowRequest request, Principal principal) {
-        service.unfollowUser(request.getName(), principal.getName());
+    public ResponseEntity<?> unfollowUser(@PathVariable String username, Principal principal) {
+        service.unfollowUser(username, principal.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/follows/tags")
+    @DeleteMapping("/follows/tags/{name}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> unfollowTag(@RequestBody FollowRequest request, Principal principal) {
-        service.unfollowTag(request.getName(), principal.getName());
+    public ResponseEntity<?> unfollowTag(@PathVariable String name, Principal principal) {
+        service.unfollowTag(name, principal.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
