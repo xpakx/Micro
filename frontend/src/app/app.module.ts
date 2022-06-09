@@ -30,6 +30,7 @@ import { HotComponent } from './main-view/hot/hot.component';
 import { ActiveComponent } from './main-view/active/active.component';
 import { FavComponent } from './main-view/fav/fav.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
+import { FollowButtonComponent } from './follows/follow-button/follow-button.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -60,7 +61,8 @@ export function tokenGetter() {
     HotComponent,
     ActiveComponent,
     FavComponent,
-    RightSidebarComponent
+    RightSidebarComponent,
+    FollowButtonComponent
   ],
   imports: [
     BrowserModule,

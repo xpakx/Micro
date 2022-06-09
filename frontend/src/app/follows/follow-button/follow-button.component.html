@@ -1,0 +1,4 @@
+<button class="follow" [class.followed]="followed" (click)="follow()">
+    <div class="follow-text">{{followed ? 'Unfollow' : 'Follow'}}</div>
+    <div class="follow-icon" ><fa-icon [icon]="faFollow"></fa-icon></div>
+</button>

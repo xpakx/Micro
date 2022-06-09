@@ -1,0 +1,37 @@
+.follow {
+    display: flex;
+    color: #bbd4f6;
+    font-weight: 600;
+    border: #d3eede solid 1px;
+    border-radius: 3px;
+}
+
+.follow-text {
+    min-width: 64px;
+    margin: 2px 3px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: #d3eede solid 1px;
+    margin-right: 0;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+}
+
+.follow-icon {
+    color: #a1aab7;
+    font-weight: 600;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.follow.liked .follow-icon {
+    background-color: #64c48c;
+    color: white;
+}
