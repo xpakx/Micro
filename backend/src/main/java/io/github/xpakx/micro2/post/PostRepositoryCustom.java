@@ -15,4 +15,5 @@ public interface PostRepositoryCustom {
     Map<Long, PostUserInfo> getUserInfoMapForPostIds(List<Long> ids, String username);
     Optional<PostUserInfo> getUserInfoForPostId(Long postId, String username);
     List<PostDetails> get2RandomHotPosts(LocalDateTime date);
+    Page<PostDetails> findAllByFollowedUsers(String username, PageRequest pageable);
 }
