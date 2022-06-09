@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
+import { FollowsService } from 'src/app/follows/follows.service';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
 
@@ -15,8 +16,9 @@ export class UserViewComponent implements OnInit {
   errorOccured: boolean = false;
   errorMsg: String = '';
   userName: String = '';
+  followed: boolean = false;
 
-  constructor(private postService: PostListService, private route: ActivatedRoute) { }
+  constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -40,5 +42,31 @@ export class UserViewComponent implements OnInit {
   updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
+  }
+
+  follow(follow: boolean) {
+    if(follow) {
+      this.followUser();
+    } else {
+      this.unfollowUser();
+    }
+  }
+
+  followUser() {
+    this.followsService.followUser({name: this.userName}).subscribe({
+      next: (response: any) => this.updateFollow(true),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  updateFollow(followed: boolean): void {
+    this.followed = followed;
+  }
+
+  unfollowUser() {
+    this.followsService.unfollowUser(this.userName).subscribe({
+      next: (response: any) => this.updateFollow(false),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
   }
 }

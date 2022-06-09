@@ -9,7 +9,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 export class FollowButtonComponent implements OnInit {
   faFollow = faUser;
   @Input('followed') followed: boolean = false;
-  @Output('plus') voteEvent = new EventEmitter<boolean>();
+  @Output('follow') voteEvent = new EventEmitter<boolean>();
 
   constructor() { }
 
