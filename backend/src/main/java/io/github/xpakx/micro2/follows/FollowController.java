@@ -17,28 +17,28 @@ public class FollowController {
     @PostMapping("/follows/users")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> followUser(@RequestBody FollowRequest request, Principal principal) {
-        service.followUser(request.getName(), principal.getName());
+        service.followUser(principal.getName(), request.getName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/follows/tags")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> followTag(@RequestBody FollowRequest request, Principal principal) {
-        service.followTag(request.getName(), principal.getName());
+        service.followTag(principal.getName(), request.getName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/follows/users/{username}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> unfollowUser(@PathVariable String username, Principal principal) {
-        service.unfollowUser(username, principal.getName());
+        service.unfollowUser(principal.getName(), username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/follows/tags/{name}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> unfollowTag(@PathVariable String name, Principal principal) {
-        service.unfollowTag(name, principal.getName());
+        service.unfollowTag(principal.getName(), name);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
