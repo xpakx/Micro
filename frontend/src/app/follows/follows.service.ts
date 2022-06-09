@@ -20,7 +20,7 @@ export class FollowsService {
     return this.http.delete<any>(`${this.apiServerUrl}/follows/users/${name}`);
   }
 
-  public followtag(request: FollowRequest):  Observable<any> {
+  public followTag(request: FollowRequest):  Observable<any> {
     return this.http.post<any>(`${this.apiServerUrl}/follows/tags`, request);
   }
 

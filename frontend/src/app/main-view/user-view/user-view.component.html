@@ -3,7 +3,7 @@
         <app-left-sidebar></app-left-sidebar>
     </div>
     <div class="main-posts">
-        <div class="user">
+        <div class="user-header">
             <app-follow-button [followed]="followed" (follow)="follow($event)"></app-follow-button>
         </div>
         <app-post-form [init]="'@'+userName+':'"></app-post-form>

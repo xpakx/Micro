@@ -3,6 +3,9 @@
         <app-left-sidebar></app-left-sidebar>
     </div>
     <div class="main-posts">
+        <div class="tag-header">
+            <app-follow-button [followed]="followed" (follow)="follow($event)" [icon]="faTag"></app-follow-button>
+        </div>
         <app-post-form [init]="'#'+tagName"></app-post-form>
         <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
     </div>
