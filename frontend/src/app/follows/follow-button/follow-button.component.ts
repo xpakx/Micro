@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-follow-button',
@@ -7,8 +7,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./follow-button.component.css']
 })
 export class FollowButtonComponent implements OnInit {
-  faFollow = faUser;
   @Input('followed') followed: boolean = false;
+  @Input('icon') icon: IconDefinition = faUser;
   @Output('follow') voteEvent = new EventEmitter<boolean>();
 
   constructor() { }
