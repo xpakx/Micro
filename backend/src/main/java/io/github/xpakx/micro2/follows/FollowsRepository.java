@@ -16,4 +16,7 @@ public interface FollowsRepository extends JpaRepository<UserFollows, Long> {
     @Query("select u from UserFollows u where u.user.username = ?1")
     @EntityGraph("followed-tags")
     Optional<UserFollows> findWIthTags(String username);
+
+    boolean existsByUsersUsernameAndUserUsername(String usersUsername, String userUsername);
+    boolean existsByTagsNameAndUserUsername(String name, String username);
 }

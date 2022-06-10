@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.follows;
 
 import io.github.xpakx.micro2.follows.dto.FollowRequest;
+import io.github.xpakx.micro2.follows.dto.FollowedResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,23 @@ public class FollowController {
     public ResponseEntity<?> unfollowTag(@PathVariable String name, Principal principal) {
         service.unfollowTag(principal.getName(), name);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/tags/{tagName}/followed")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FollowedResponse> isTagFollowed(@PathVariable String tagName, Principal principal) {
+        return new ResponseEntity<>(
+                service.isTagFollowed(principal.getName(), tagName),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/users/{username}/followed")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FollowedResponse> isUserFollowed(@PathVariable String username, Principal principal) {
+        return new ResponseEntity<>(
+                service.isUserFollowed(principal.getName(), username),
+                HttpStatus.OK
+        );
     }
 }

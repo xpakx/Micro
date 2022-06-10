@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.follows;
 
+import io.github.xpakx.micro2.follows.dto.FollowedResponse;
 import io.github.xpakx.micro2.follows.error.AlreadyFollowedException;
 import io.github.xpakx.micro2.tag.TagRepository;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -66,5 +67,13 @@ public class FollowService {
         follows.setTags(new HashSet<>());
         follows.setUsers(new HashSet<>());
         return follows;
+    }
+
+    public FollowedResponse isTagFollowed(String username, String tagName) {
+        return new FollowedResponse(followsRepository.existsByTagsNameAndUserUsername(tagName, username));
+    }
+
+    public FollowedResponse isUserFollowed(String username, String user) {
+        return new FollowedResponse(followsRepository.existsByUsersUsernameAndUserUsername(user, username));
     }
 }
