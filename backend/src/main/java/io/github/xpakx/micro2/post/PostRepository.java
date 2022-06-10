@@ -21,9 +21,4 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long>, 
     Optional<Post> findByCommentsId(Long id);
     Page<PostDetails> findAllByCreatedAtAfter(LocalDateTime createdAt, Pageable pageable);
     Page<PostDetails> findAllByFavoriteUserUsername(String username, Pageable pageable);
-
-    @Query(value = "SELECT p FROM Post p LEFT JOIN p.tags t2  " +
-            "WHERE t2.id IN (SELECT t1.id FROM UserFollows u LEFT JOIN u.tags t1 WHERE u.user.username = :name) " +
-            "ORDER BY p.createdAt DESC")
-    Page<PostDetails> findAllFromFollowedTags(String name, Pageable pageable);
 }
