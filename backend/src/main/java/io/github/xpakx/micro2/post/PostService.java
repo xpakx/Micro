@@ -4,10 +4,12 @@ import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentUserInfo;
 import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
+import io.github.xpakx.micro2.mention.MentionService;
 import io.github.xpakx.micro2.post.dto.*;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.tag.TagService;
+import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -29,18 +31,20 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
+    private final MentionService mentionService;
 
     public PostDto addPost(PostRequest request, String username) {
         Post newPost = new Post();
         newPost.setContent(request.getMessage());
-        newPost.setUser(userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Not such user!"))
-        );
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Not such user!"));
+        newPost.setUser(user);
         newPost.setEdited(false);
         newPost.setCreatedAt(LocalDateTime.now());
         newPost.setLikeCount(0);
         newPost.setDislikeCount(0);
         newPost.setTags(tagService.addTags(request.getMessage()));
+        newPost.setMentions(mentionService.addMentions(request.getMessage(), user, newPost));
         return PostDto.fromPost(postRepository.save(newPost));
     }
 

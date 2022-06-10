@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.fav.FavPost;
+import io.github.xpakx.micro2.mention.Mention;
 import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.*;
@@ -53,4 +54,8 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<FavPost> favorite;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Mention> mentions;
 }

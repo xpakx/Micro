@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.mention.MentionService;
 import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.post.dto.PostWithComments;
@@ -53,6 +54,8 @@ class PostServiceTest {
 
     @Mock
     private TagService tagService;
+    @Mock
+    private MentionService mentionService;
 
     private PostService service;
 
@@ -67,7 +70,7 @@ class PostServiceTest {
     }
 
     private void injectMocks() {
-        service = new PostService(postRepository, commentRepository, userRepository, tagService);
+        service = new PostService(postRepository, commentRepository, userRepository, tagService, mentionService);
     }
 
     private PostRequest getPostRequestWithContent(String content) {
