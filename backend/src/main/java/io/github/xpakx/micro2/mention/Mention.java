@@ -20,6 +20,8 @@ public class Mention {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private boolean read;
+
     @JsonIgnore
     @ManyToOne
     private Post post;

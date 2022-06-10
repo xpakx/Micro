@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.mention;
 
+import io.github.xpakx.micro2.mention.dto.MentionCountResponse;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.tag.Tag;
@@ -47,6 +48,13 @@ public class MentionService {
         mention.setPost(post);
         mention.setMentioned(userRepository.findByUsername(name).orElse(null));
         mention.setId(null);
+        mention.setRead(false);
         return mention;
+    }
+
+    public MentionCountResponse getMentionCount(String username) {
+        return new MentionCountResponse(
+                mentionRepository.countDistinctByMentionedUsernameAndReadIsFalse(username)
+        );
     }
 }
