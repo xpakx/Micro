@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
+import { FollowedResponse } from 'src/app/follows/dto/followed-response';
 import { FollowsService } from 'src/app/follows/follows.service';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
@@ -30,6 +31,11 @@ export class UserViewComponent implements OnInit {
     this.userName = user;
     this.postService.getUserPosts(user).subscribe({
       next: (response: Page<PostWithComments>) => this.updateList(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+    
+    this.followsService.isUserFollowed(user).subscribe({
+      next: (response: FollowedResponse) => this.updateFollow(response.followed),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }

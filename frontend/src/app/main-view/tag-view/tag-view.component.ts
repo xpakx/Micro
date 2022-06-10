@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faTag, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Page } from 'src/app/common/dto/page';
+import { FollowedResponse } from 'src/app/follows/dto/followed-response';
 import { FollowsService } from 'src/app/follows/follows.service';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
@@ -32,6 +33,11 @@ export class TagViewComponent implements OnInit {
     this.tagName = tag;
     this.postService.getPostsWithTag(tag).subscribe({
       next: (response: Page<PostWithComments>) => this.updateList(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+    
+    this.followsService.isTagFollowed(tag).subscribe({
+      next: (response: FollowedResponse) => this.updateFollow(response.followed),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
