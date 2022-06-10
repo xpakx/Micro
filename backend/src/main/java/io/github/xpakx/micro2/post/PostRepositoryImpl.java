@@ -221,4 +221,42 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .map((p) -> projectionFactory.createProjection(PostDetails.class, p))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Page<PostDetails> findAllFromFollowedTags(String username, PageRequest pageable) {
+        Query userIdQuery = this.entityManager.createQuery(
+                "SELECT u.id FROM UserAccount u WHERE u.username = ?1"
+        );
+        userIdQuery.setParameter(1, username);
+        Long userId = (long) userIdQuery.getSingleResult();
+        List<PostDetails> postResults = getListOfPostsWithFollowedTags(userId, pageable);
+        int count = postResults.size();
+        return new PageImpl<PostDetails>(postResults, pageable, count);
+    }
+
+    private List<PostDetails> getListOfPostsWithFollowedTags(Long userId, PageRequest pageable) {
+        Query query = this.entityManager.createNativeQuery(
+                "SELECT p.id AS id, p.content AS content, p.created_at AS created_at, " +
+                        "p.like_count AS like_count, p.dislike_count AS dislike_count, " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "FROM post p " +
+                        "LEFT JOIN user_account u ON p.user_id = u.id " +
+                        "LEFT JOIN post_tag pt ON pt.post_id = p.id " +
+                        "WHERE pt.tag_id IN (" +
+                            "SELECT ft.tag_id FROM user_follows uf LEFT JOIN follow_tag ft " +
+                            "ON uf.id = ft.follow_id " +
+                            "WHERE uf.user_id = ?1" +
+                        ") " +
+                        "ORDER BY p.created_at DESC " +
+                        "LIMIT ?2 OFFSET ?3"
+        );
+        query.setParameter(1, userId);
+        query.setParameter(2, pageable.getPageSize());
+        query.setParameter(3, pageable.getOffset());
+        List<Object[]> results = query.getResultList();
+        return results.stream()
+                .map(this::mapToPost)
+                .map((p) -> projectionFactory.createProjection(PostDetails.class, p))
+                .collect(Collectors.toList());
+    }
 }

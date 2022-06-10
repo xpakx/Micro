@@ -4,6 +4,7 @@ import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.post.dto.PostUserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface PostRepositoryCustom {
     Optional<PostUserInfo> getUserInfoForPostId(Long postId, String username);
     List<PostDetails> get2RandomHotPosts(LocalDateTime date);
     Page<PostDetails> findAllByFollowedUsers(String username, PageRequest pageable);
+    Page<PostDetails> findAllFromFollowedTags(String username, PageRequest pageable);
 }
