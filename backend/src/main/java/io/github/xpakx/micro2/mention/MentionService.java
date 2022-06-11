@@ -1,18 +1,19 @@
 package io.github.xpakx.micro2.mention;
 
 import io.github.xpakx.micro2.mention.dto.MentionCountResponse;
+import io.github.xpakx.micro2.mention.dto.MentionDetails;
 import io.github.xpakx.micro2.post.Post;
-import io.github.xpakx.micro2.post.PostRepository;
-import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -49,6 +50,7 @@ public class MentionService {
         mention.setMentioned(userRepository.findByUsername(name).orElse(null));
         mention.setId(null);
         mention.setRead(false);
+        mention.setCreatedAt(LocalDateTime.now());
         return mention;
     }
 
@@ -57,4 +59,12 @@ public class MentionService {
                 mentionRepository.countDistinctByMentionedUsernameAndReadIsFalse(username)
         );
     }
+
+    public Page<MentionDetails> getMentions(String username, Integer page) {
+        return mentionRepository.getAllByMentionedUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
+
 }

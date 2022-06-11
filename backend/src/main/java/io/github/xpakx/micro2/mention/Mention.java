@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,6 +22,7 @@ public class Mention {
     private Long id;
 
     private boolean read;
+    private LocalDateTime createdAt;
 
     @JsonIgnore
     @ManyToOne
