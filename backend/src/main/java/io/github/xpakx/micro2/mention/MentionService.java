@@ -2,6 +2,8 @@ package io.github.xpakx.micro2.mention;
 
 import io.github.xpakx.micro2.mention.dto.MentionCountResponse;
 import io.github.xpakx.micro2.mention.dto.MentionDetails;
+import io.github.xpakx.micro2.mention.dto.MentionReadRequest;
+import io.github.xpakx.micro2.mention.dto.MentionReadResponse;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -67,4 +69,11 @@ public class MentionService {
         );
     }
 
+    public MentionReadResponse readMention(MentionReadRequest request, String username, Long mentionId) {
+        Mention mention = mentionRepository.findByUserUsernameAndId(username, mentionId)
+                .orElseThrow();
+        mention.setRead(request.isRead());
+        mentionRepository.save(mention);
+        return new MentionReadResponse(true);
+    }
 }
