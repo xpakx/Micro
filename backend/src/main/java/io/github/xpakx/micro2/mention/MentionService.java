@@ -76,4 +76,11 @@ public class MentionService {
         mentionRepository.save(mention);
         return new MentionReadResponse(true);
     }
+
+    public MentionReadResponse readMentions(MentionReadRequest request, String username) {
+        List<Mention> mentions = mentionRepository.findAllByMentionedUsernameAndReadIsFalse(username);
+        mentions.forEach((m) -> m.setRead(request.isRead()));
+        mentionRepository.saveAll(mentions);
+        return new MentionReadResponse(request.isRead());
+    }
 }

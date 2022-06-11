@@ -39,9 +39,18 @@ public class MentionController {
 
     @PostMapping("/mentions/{mentionId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MentionReadResponse> getAllMentions(@RequestBody MentionReadRequest request, @PathVariable Long mentionId, Principal principal) {
+    public ResponseEntity<MentionReadResponse> setMentionAsRead(@RequestBody MentionReadRequest request, @PathVariable Long mentionId, Principal principal) {
         return new ResponseEntity<MentionReadResponse>(
                 service.readMention(request, principal.getName(), mentionId),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/mentions/read")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MentionReadResponse> setAllMentionsAsRead(@RequestBody MentionReadRequest request,Principal principal) {
+        return new ResponseEntity<MentionReadResponse>(
+                service.readMentions(request, principal.getName()),
                 HttpStatus.OK
         );
     }
