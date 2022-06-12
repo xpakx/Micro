@@ -37,7 +37,7 @@ public class MentionController {
         );
     }
 
-    @PostMapping("/mentions/{mentionId}")
+    @PostMapping("/mentions/{mentionId}/read")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MentionReadResponse> setMentionAsRead(@RequestBody MentionReadRequest request, @PathVariable Long mentionId, Principal principal) {
         return new ResponseEntity<MentionReadResponse>(
@@ -54,5 +54,4 @@ public class MentionController {
                 HttpStatus.OK
         );
     }
-
 }

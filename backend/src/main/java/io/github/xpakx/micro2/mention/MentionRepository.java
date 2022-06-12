@@ -15,5 +15,5 @@ public interface MentionRepository extends PagingAndSortingRepository<Mention, L
     Page<MentionDetails> getAllByMentionedUsername(String username, Pageable pageable);
     List<Mention> findAllByMentionedUsernameAndReadIsFalse(String username);
 
-    Optional<Mention> findByUserUsernameAndId(String username, Long id);
+    Optional<Mention> findByMentionedUsernameAndId(String username, Long id);
 }

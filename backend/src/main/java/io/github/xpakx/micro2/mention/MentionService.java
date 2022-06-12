@@ -70,7 +70,7 @@ public class MentionService {
     }
 
     public MentionReadResponse readMention(MentionReadRequest request, String username, Long mentionId) {
-        Mention mention = mentionRepository.findByUserUsernameAndId(username, mentionId)
+        Mention mention = mentionRepository.findByMentionedUsernameAndId(username, mentionId)
                 .orElseThrow();
         mention.setRead(request.isRead());
         mentionRepository.save(mention);
