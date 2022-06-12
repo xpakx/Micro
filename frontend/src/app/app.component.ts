@@ -30,6 +30,10 @@ export class AppComponent implements OnInit {
   }
 
   toMain() {
-    this.router.navigate([''])
+    this.router.navigate(['']);
+  }
+
+  toMentions() {
+    this.router.navigate(['my/mentions']);
   }
 }

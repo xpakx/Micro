@@ -14,6 +14,7 @@ import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
 import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
+import { MentionListComponent } from './mention/mention-list/mention-list.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: 'active', component: ActiveComponent },
   { path: 'fav', component: FavComponent },
   { path: 'my/tags', component: FollowTagViewComponent },
-  { path: 'my/users', component: FollowUserViewComponent }
+  { path: 'my/users', component: FollowUserViewComponent },
+  { path: 'my/mentions', component: MentionListComponent },
 ];
 
 @NgModule({

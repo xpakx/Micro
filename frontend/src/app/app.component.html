@@ -13,7 +13,7 @@
         <button class="add-button">Add post</button>
         <div class="user-options">
             <button class="icon-button"><fa-icon [icon]="faSearch"></fa-icon></button>
-            <button class="icon-button">
+            <button class="icon-button" (click)="toMentions()">
                 <fa-icon [icon]="faNotif"></fa-icon>
                 <div class="count" *ngIf="mentionsCount>0"> {{ mentionsCount }}</div>
             </button>

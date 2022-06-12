@@ -1,0 +1,3 @@
+<div class="mention" *ngFor="let mention of mentions">
+    User {{ mention.author.username }} mentioned you in <button (click)="toMention(mention)">post</button>
+</div>

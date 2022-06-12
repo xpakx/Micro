@@ -33,6 +33,7 @@ import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { FollowButtonComponent } from './follows/follow-button/follow-button.component';
 import { FollowTagViewComponent } from './main-view/follow-tag-view/follow-tag-view.component';
 import { FollowUserViewComponent } from './main-view/follow-user-view/follow-user-view.component';
+import { MentionListComponent } from './mention/mention-list/mention-list.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -66,7 +67,8 @@ export function tokenGetter() {
     RightSidebarComponent,
     FollowButtonComponent,
     FollowTagViewComponent,
-    FollowUserViewComponent
+    FollowUserViewComponent,
+    MentionListComponent
   ],
   imports: [
     BrowserModule,
