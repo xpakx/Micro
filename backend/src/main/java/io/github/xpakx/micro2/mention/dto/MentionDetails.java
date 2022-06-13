@@ -8,4 +8,5 @@ public interface MentionDetails {
     UserMin getAuthor();
     UserMin getMentioned();
     PostWithOnlyId getPost();
+    boolean isRead();
 }
