@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.mention;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.Getter;
@@ -27,6 +28,11 @@ public class Mention {
     @JsonIgnore
     @ManyToOne
     private Post post;
+
+    @JsonIgnore
+    @ManyToOne
+    private Comment comment;
+
 
     @JsonIgnore
     @ManyToOne
