@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.mention;
 
+import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.mention.dto.MentionCountResponse;
 import io.github.xpakx.micro2.mention.dto.MentionDetails;
 import io.github.xpakx.micro2.mention.dto.MentionReadRequest;
@@ -28,6 +29,10 @@ public class MentionService {
     private static final int MAX_MENTIONS = 15;
 
     public List<Mention> addMentions(String message, UserAccount user, Post post) {
+        return addMentions(message, user, post, null);
+    }
+
+    public List<Mention> addMentions(String message, UserAccount user, Post post, Comment comment) {
         List<String> allMentions = new ArrayList<String>();
         Matcher m = Pattern.compile("(\\s|\\A|>)@(\\w+)")
                 .matcher(message);
@@ -39,16 +44,17 @@ public class MentionService {
         return allMentions.stream()
                 .distinct()
                 .limit(MAX_MENTIONS)
-                .map((me) -> createNewMention(me, user, post))
+                .map((me) -> createNewMention(me, user, post, comment))
                 .filter((me) -> me.getMentioned() != null)
                 .distinct()
                 .collect(Collectors.toList());
     }
 
-    private Mention createNewMention(String name, UserAccount user, Post post) {
+    private Mention createNewMention(String name, UserAccount user, Post post, Comment comment) {
         Mention mention = new Mention();
         mention.setAuthor(user);
         mention.setPost(post);
+        mention.setComment(comment);
         mention.setMentioned(userRepository.findByUsername(name).orElse(null));
         mention.setId(null);
         mention.setRead(false);

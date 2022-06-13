@@ -7,9 +7,11 @@ import io.github.xpakx.micro2.comment.error.CannotDeleteCommentException;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
+import io.github.xpakx.micro2.mention.MentionService;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
+import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -27,22 +29,24 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final MentionService mentionService;
 
     public CommentDto addComment(CommentRequest request, String username, Long postId) {
         Comment newComment = new Comment();
         newComment.setContent(request.getMessage());
-        newComment.setUser(userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Not such user!"))
-        );
-        newComment.setPost(postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("Not such post!"))
-        );
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Not such user!"));
+        newComment.setUser(user);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("Not such post!"));
+        newComment.setPost(post);
         newComment.setEdited(false);
         newComment.setCreatedAt(LocalDateTime.now());
         newComment.setLikeCount(0);
         newComment.setDislikeCount(0);
         newComment.setDeletedByUser(false);
         newComment.setDeletedByPostAuthor(false);
+        newComment.setMentions(mentionService.addMentions(request.getMessage(), user, post, newComment));
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 

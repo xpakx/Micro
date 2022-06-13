@@ -5,6 +5,7 @@ import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
+import io.github.xpakx.micro2.mention.MentionService;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -44,6 +45,8 @@ class CommentServiceTest {
     private UserRepository userRepository;
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private MentionService mentionService;
 
     private CommentService service;
 
@@ -54,7 +57,7 @@ class CommentServiceTest {
     }
 
     private void injectMocks() {
-        service = new CommentService(commentRepository, userRepository, postRepository);
+        service = new CommentService(commentRepository, userRepository, postRepository, mentionService);
     }
 
     @Test
