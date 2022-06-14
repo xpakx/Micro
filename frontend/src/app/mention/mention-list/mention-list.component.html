@@ -6,11 +6,11 @@
     </div>
     <div class="mention-list-container">
         <div class="mention" *ngFor="let mention of mentions" [class.unread]="!mention.read">
-            User {{ mention.author.username }} mentioned you in 
+            <app-avatar></app-avatar> <span class="username">{{ mention.author.username }}</span> mentioned you in 
             <ng-container *ngIf="mention.comment">
                 comment to
             </ng-container>
-            <button (click)="toMention(mention)">post</button>
+            <a (click)="toMention(mention)">post</a>
         </div>
     </div>        
 </div>
