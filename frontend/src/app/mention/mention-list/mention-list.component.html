@@ -1,3 +1,7 @@
+<button class="read-all-button" (click)="readAll()">
+    Mark all as read
+</button>
+
 <div class="mention" *ngFor="let mention of mentions" [class.unread]="!mention.read">
     User {{ mention.author.username }} mentioned you in 
     <ng-container *ngIf="mention.comment">

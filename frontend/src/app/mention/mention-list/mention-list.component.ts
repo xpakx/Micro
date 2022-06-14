@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
 import { MentionDetails } from '../dto/mention-details';
+import { MentionRead } from '../dto/mention-read';
 import { MentionService } from '../mention.service';
 
 @Component({
@@ -35,4 +36,14 @@ export class MentionListComponent implements OnInit {
     this.mentionService.readMention({read: true}, mention.id).subscribe();
   }
 
+  readAll(): void {
+    this.mentionService.readAllMentions({read: true}).subscribe({
+      next: (response: MentionRead) => this.markAsRead(),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  markAsRead(): void {
+    this.mentions.forEach((m) => m.read = true);
+  }
 }
