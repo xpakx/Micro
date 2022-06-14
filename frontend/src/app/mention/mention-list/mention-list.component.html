@@ -1,3 +1,7 @@
-<div class="mention" *ngFor="let mention of mentions">
-    User {{ mention.author.username }} mentioned you in <button (click)="toMention(mention)">post</button>
+<div class="mention" *ngFor="let mention of mentions" [class.unread]="!mention.read">
+    User {{ mention.author.username }} mentioned you in 
+    <ng-container *ngIf="mention.comment">
+        comment to
+    </ng-container>
+    <button (click)="toMention(mention)">post</button>
 </div>
