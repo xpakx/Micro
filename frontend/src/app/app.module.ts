@@ -34,6 +34,7 @@ import { FollowButtonComponent } from './follows/follow-button/follow-button.com
 import { FollowTagViewComponent } from './main-view/follow-tag-view/follow-tag-view.component';
 import { FollowUserViewComponent } from './main-view/follow-user-view/follow-user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
+import { AvatarComponent } from './post/avatar/avatar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -68,7 +69,8 @@ export function tokenGetter() {
     FollowButtonComponent,
     FollowTagViewComponent,
     FollowUserViewComponent,
-    MentionListComponent
+    MentionListComponent,
+    AvatarComponent
   ],
   imports: [
     BrowserModule,

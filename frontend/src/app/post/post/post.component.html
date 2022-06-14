@@ -1,8 +1,6 @@
 <div class="post-container" *ngIf="post" [class.sidebar-container]="sidebar">
     <div class="author-bar">
-        <div class="avatar" style="color:pink">
-            <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
-        </div>
+        <app-avatar></app-avatar>
         <div class="author-name" (click)="toUser(post.user.username)">{{post.user.username}}</div>
         <div class="confirmed-user" *ngIf="post.user.confirmed"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
         <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
@@ -21,9 +19,7 @@
     </div>
 
     <div class="quick-response" *ngIf="!sidebar">
-        <div class="avatar" style="color: seagreen">
-            <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
-        </div>
+        <app-avatar color="seagreen"></app-avatar>
 
         <form class="quick-response-form" id="form" [formGroup]="quickReply">
             <input class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>

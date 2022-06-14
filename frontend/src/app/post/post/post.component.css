@@ -21,23 +21,6 @@
     margin-bottom: 7px;
 }
 
-.avatar {
-    margin-right: 5px;
-    border: currentColor solid 2px;
-    border-radius: 17px;
-    padding: 0;
-    width: 21px;
-    height: 21px;
-}
-
-.avatar-img {
-    width: 17px;
-    height: 17px;
-    border-radius: 17px;
-    border: #f6f8fa solid 2px;
-    margin: 0;
-}
-
 .confirmed-user {
     margin-right: 3px;
 }
@@ -60,7 +43,7 @@
     padding: 10px 15px;
 }
 
-.quick-response .avatar {
+.quick-response app-avatar {
     opacity: 0.4;
 }
 
