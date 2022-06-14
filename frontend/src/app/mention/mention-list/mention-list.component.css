@@ -14,6 +14,12 @@ app-avatar {
 
 a {
     cursor: pointer;
+    color: #437ef8;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-style: dotted;
 }
 
 button {

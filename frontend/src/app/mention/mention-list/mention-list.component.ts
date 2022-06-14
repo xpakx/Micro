@@ -36,6 +36,12 @@ export class MentionListComponent implements OnInit {
     this.mentionService.readMention({read: true}, mention.id).subscribe();
   }
 
+
+  toMentionComment(mention: MentionDetails) {
+    this.router.navigate([`post/${mention.post.id}`], { fragment: `c${mention.comment.id}`});
+    this.mentionService.readMention({read: true}, mention.id).subscribe();
+  }
+
   readAll(): void {
     this.mentionService.readAllMentions({read: true}).subscribe({
       next: (response: MentionRead) => this.markAsRead(),
