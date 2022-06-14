@@ -87,11 +87,18 @@ button {
     margin-right: 7px;
 }
 
-.count {
+.button-with-counter {
+    position: relative;
+}
+
+.counter {
+    position: absolute;
+    top: -5px;
+    right: -3px;
     font-size: 11px;
     font-weight: 600;
     color: white;
-    width: 12px;
+    min-width: 12px;
     height: 12px;
     border-radius: 12px;
     background-color: red;
