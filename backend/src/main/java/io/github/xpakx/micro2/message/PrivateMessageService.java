@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.message;
 
+import io.github.xpakx.micro2.message.dto.MessageCountResponse;
 import io.github.xpakx.micro2.message.dto.MessageDto;
 import io.github.xpakx.micro2.message.dto.MessageRequest;
 import io.github.xpakx.micro2.user.UserAccount;
@@ -28,5 +29,11 @@ public class PrivateMessageService {
         newMessage.setRead(false);
         newMessage.setCreatedAt(LocalDateTime.now());
         return MessageDto.fromMessage(messageRepository.save(newMessage));
+    }
+
+    public MessageCountResponse getMessageCount(String username) {
+        return new MessageCountResponse(
+                messageRepository.countDistinctByRecipientUsernameAndReadIsFalse(username)
+        );
     }
 }
