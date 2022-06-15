@@ -46,7 +46,9 @@ public class PrivateMessageService {
     }
 
     public MessageDetails getSingleMessage(Long messageId, String username) {
-        return messageRepository.findProjectedByRecipientUsernameAndId(username, messageId)
+        MessageDetails response = messageRepository.findProjectedByRecipientUsernameAndId(username, messageId)
                 .orElseThrow();
+        messageRepository.updateReadById(messageId);
+        return response;
     }
 }
