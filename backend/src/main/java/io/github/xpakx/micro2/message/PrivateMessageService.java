@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -50,5 +51,12 @@ public class PrivateMessageService {
                 .orElseThrow();
         messageRepository.updateReadById(messageId);
         return response;
+    }
+
+    public MessageReadResponse readAllMessages(MessageReadRequest request, String username) {
+        List<PrivateMessage> mentions = messageRepository.findAllByRecipientUsernameAndReadIsFalse(username);
+        mentions.forEach((m) -> m.setRead(request.isRead()));
+        messageRepository.saveAll(mentions);
+        return new MessageReadResponse(request.isRead());
     }
 }

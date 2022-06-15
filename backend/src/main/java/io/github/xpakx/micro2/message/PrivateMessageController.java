@@ -51,4 +51,13 @@ public class PrivateMessageController {
                 service.getSingleMessage(messageId, principal.getName()), HttpStatus.OK
         );
     }
+
+    @PostMapping("/messages/read")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MessageReadResponse> setAllMentionsAsRead(@RequestBody MessageReadRequest request, Principal principal) {
+        return new ResponseEntity<MessageReadResponse>(
+                service.readAllMessages(request, principal.getName()),
+                HttpStatus.OK
+        );
+    }
 }
