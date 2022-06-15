@@ -71,7 +71,7 @@ public class MentionService {
     public Page<MentionDetails> getMentions(String username, Integer page) {
         return mentionRepository.getAllByMentionedUsername(
                 username,
-                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+                PageRequest.of(page, 20, Sort.by("read").and(Sort.by("createdAt").descending()))
         );
     }
 
