@@ -1,9 +1,6 @@
 package io.github.xpakx.micro2.message;
 
-import io.github.xpakx.micro2.message.dto.MessageCountResponse;
-import io.github.xpakx.micro2.message.dto.MessageDto;
-import io.github.xpakx.micro2.message.dto.MessageMin;
-import io.github.xpakx.micro2.message.dto.MessageRequest;
+import io.github.xpakx.micro2.message.dto.*;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
@@ -46,5 +43,10 @@ public class PrivateMessageService {
                 username,
                 PageRequest.of(page, 20, Sort.by("read").and(Sort.by("createdAt").descending()))
         );
+    }
+
+    public MessageDetails getSingleMessage(Long messageId, String username) {
+        return messageRepository.findProjectedByRecipientUsernameAndId(username, messageId)
+                .orElseThrow();
     }
 }

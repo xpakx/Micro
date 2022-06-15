@@ -1,9 +1,6 @@
 package io.github.xpakx.micro2.message;
 
-import io.github.xpakx.micro2.message.dto.MessageCountResponse;
-import io.github.xpakx.micro2.message.dto.MessageDto;
-import io.github.xpakx.micro2.message.dto.MessageMin;
-import io.github.xpakx.micro2.message.dto.MessageRequest;
+import io.github.xpakx.micro2.message.dto.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -43,6 +40,15 @@ public class PrivateMessageController {
         return new ResponseEntity<Page<MessageMin>>(
                 service.getMessageList(principal.getName(), page.orElse(0)),
                 HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/messages/{messageId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MessageDetails> getSingleComment(@PathVariable Long messageId, Principal principal)
+    {
+        return new ResponseEntity<MessageDetails>(
+                service.getSingleMessage(messageId, principal.getName()), HttpStatus.OK
         );
     }
 }
