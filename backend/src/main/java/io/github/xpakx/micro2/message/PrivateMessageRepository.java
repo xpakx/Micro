@@ -17,5 +17,5 @@ public interface PrivateMessageRepository extends PagingAndSortingRepository<Pri
     List<PrivateMessage> findAllByRecipientUsernameAndReadIsFalse(String username);
 
     Optional<PrivateMessage> findByRecipientUsernameAndId(String username, Long id);
-    Page<MessageDetails> findByRecipientUsernameAndSenderUsernameAndId(String recipientUsername, String senderUsername, Long id, Pageable pageable);
+    Optional<MessageDetails> findProjectedByRecipientUsernameAndId(String username, Long id);
 }

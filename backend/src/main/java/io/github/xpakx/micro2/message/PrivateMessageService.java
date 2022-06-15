@@ -2,11 +2,15 @@ package io.github.xpakx.micro2.message;
 
 import io.github.xpakx.micro2.message.dto.MessageCountResponse;
 import io.github.xpakx.micro2.message.dto.MessageDto;
+import io.github.xpakx.micro2.message.dto.MessageMin;
 import io.github.xpakx.micro2.message.dto.MessageRequest;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +38,13 @@ public class PrivateMessageService {
     public MessageCountResponse getMessageCount(String username) {
         return new MessageCountResponse(
                 messageRepository.countDistinctByRecipientUsernameAndReadIsFalse(username)
+        );
+    }
+
+    public Page<MessageMin> getMessageList(String username, Integer page) {
+        return messageRepository.getAllByRecipientUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("read").and(Sort.by("createdAt").descending()))
         );
     }
 }
