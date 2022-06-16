@@ -1,11 +1,11 @@
-<div class="form-container" *ngIf="username">
-    Send message to {{ username }}
-    <form id="form" [formGroup]="form">
-        <label for="content">Message</label>
-        <div class="field">
-            <input class="content" formControlName="content" />
-        </div>
-    </form>
-
-    <button class="btn" [class.blocked]="!form.valid" (click)="sendMessage()">Login</button>
+<div class="message-container" *ngIf="username">
+    <div class="form-container">
+        <form id="form" [formGroup]="form" class="message-form">
+            <input class="content" formControlName="content" placeholder="Send private message to {{ username }}" />
+        </form>
+    
+        <button class="send-button" [class.blocked]="!form.valid" (click)="sendMessage()">
+            <fa-icon [icon]="faSend"></fa-icon>
+        </button>
+    </div>
 </div>

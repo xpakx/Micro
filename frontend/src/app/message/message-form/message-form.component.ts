@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { MessageDto } from '../dto/message-dto';
 import { MessageService } from '../message.service';
 
@@ -14,6 +15,7 @@ export class MessageFormComponent implements OnInit {
   public invalid: boolean = false;
   public sent: boolean = false;
   public message: string = '';
+  faSend = faPaperPlane;
 
   @Input("username") username?: String;
 
