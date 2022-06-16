@@ -18,6 +18,7 @@ export class UserViewComponent implements OnInit {
   errorMsg: String = '';
   userName: String = '';
   followed: boolean = false;
+  showMessageForm: boolean = false;
 
   constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute) { }
 
@@ -74,5 +75,9 @@ export class UserViewComponent implements OnInit {
       next: (response: any) => this.updateFollow(false),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
+  }
+
+  switchMessage() {
+    this.showMessageForm = !this.showMessageForm;
   }
 }

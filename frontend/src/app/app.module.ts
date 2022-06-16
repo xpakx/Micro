@@ -36,6 +36,7 @@ import { FollowUserViewComponent } from './main-view/follow-user-view/follow-use
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { AvatarComponent } from './post/avatar/avatar.component';
 import { MessageFormComponent } from './message/message-form/message-form.component';
+import { MessageButtonComponent } from './message/message-button/message-button.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -72,7 +73,8 @@ export function tokenGetter() {
     FollowUserViewComponent,
     MentionListComponent,
     AvatarComponent,
-    MessageFormComponent
+    MessageFormComponent,
+    MessageButtonComponent
   ],
   imports: [
     BrowserModule,

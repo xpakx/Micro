@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserMin } from 'src/app/mention/dto/user-min';
 import { MessageDto } from '../dto/message-dto';
 import { MessageService } from '../message.service';
 
@@ -16,12 +15,11 @@ export class MessageFormComponent implements OnInit {
   public sent: boolean = false;
   public message: string = '';
 
-  @Input("user") user?: UserMin;
+  @Input("username") username?: String;
 
   constructor(private service: MessageService, private fb: FormBuilder) {
     this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      content: ['', Validators.required]
     });
   }
 
@@ -29,9 +27,9 @@ export class MessageFormComponent implements OnInit {
   }
 
   sendMessage(): void {
-    if(this.form.valid && this.user) {
+    if(this.form.valid && this.username) {
       this.invalid = false;
-      this.service.sendMessage({ content: this.form.controls['content'].value }, this.user.username).subscribe({
+      this.service.sendMessage({ content: this.form.controls['content'].value }, this.username).subscribe({
         next: (response: MessageDto) => this.messageSent(response),
         error: (error: HttpErrorResponse) => this.showError(error)
       })
