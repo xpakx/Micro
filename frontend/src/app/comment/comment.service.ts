@@ -12,6 +12,7 @@ export class CommentService {
   private apiServerUrl = environment.apiServerUrl;
 
   constructor(private http: HttpClient) { }
+  
   public newComment(request: CommentRequest, postId: number):  Observable<UpdatedComment> {
     return this.http.post<UpdatedComment>(`${this.apiServerUrl}/posts/${postId}/comments`, request);
   }

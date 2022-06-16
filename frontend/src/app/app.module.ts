@@ -35,6 +35,7 @@ import { FollowTagViewComponent } from './main-view/follow-tag-view/follow-tag-v
 import { FollowUserViewComponent } from './main-view/follow-user-view/follow-user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { AvatarComponent } from './post/avatar/avatar.component';
+import { MessageFormComponent } from './message/message-form/message-form.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -70,7 +71,8 @@ export function tokenGetter() {
     FollowTagViewComponent,
     FollowUserViewComponent,
     MentionListComponent,
-    AvatarComponent
+    AvatarComponent,
+    MessageFormComponent
   ],
   imports: [
     BrowserModule,

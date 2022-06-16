@@ -24,6 +24,4 @@ public interface PrivateMessageRepository extends PagingAndSortingRepository<Pri
     @Modifying
     @Query("update PrivateMessage p set p.read = true where p.id = ?1")
     int updateReadById(Long id);
-
-
 }

@@ -1,0 +1,11 @@
+<div class="form-container" *ngIf="user">
+    Send message to {{ user.username }}
+    <form id="form" [formGroup]="form">
+        <label for="content">Message</label>
+        <div class="field">
+            <input class="content" formControlName="content" />
+        </div>
+    </form>
+
+    <button class="btn" [class.blocked]="!form.valid" (click)="sendMessage()">Login</button>
+</div>
