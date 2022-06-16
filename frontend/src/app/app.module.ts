@@ -37,6 +37,7 @@ import { MentionListComponent } from './mention/mention-list/mention-list.compon
 import { AvatarComponent } from './post/avatar/avatar.component';
 import { MessageFormComponent } from './message/message-form/message-form.component';
 import { MessageButtonComponent } from './message/message-button/message-button.component';
+import { MessageListComponent } from './message/message-list/message-list.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -74,7 +75,8 @@ export function tokenGetter() {
     MentionListComponent,
     AvatarComponent,
     MessageFormComponent,
-    MessageButtonComponent
+    MessageButtonComponent,
+    MessageListComponent
   ],
   imports: [
     BrowserModule,

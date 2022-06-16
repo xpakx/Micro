@@ -2,8 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Page } from '../common/dto/page';
 import { MessageCount } from './dto/message-count';
 import { MessageDto } from './dto/message-dto';
+import { MessageMin } from './dto/message-min';
+import { MessageRead } from './dto/message-read';
 import { MessageRequest } from './dto/message-request';
 
 @Injectable({
@@ -20,5 +23,13 @@ export class MessageService {
 
   public getMessagesCount():  Observable<MessageCount> {
     return this.http.get<MessageCount>(`${this.apiServerUrl}/messages/count`);
+  }
+
+  public getMessages(page?: number | undefined):  Observable<Page<MessageMin>> {
+    return this.http.get<Page<MessageMin>>(`${this.apiServerUrl}/messages${page ? '?page='+page : ''}`);
+  }
+
+  public readAllMessages(request: MessageRead):  Observable<MessageRead> {
+    return this.http.post<MessageRead>(`${this.apiServerUrl}/messages/read`, request);
   }
 }
