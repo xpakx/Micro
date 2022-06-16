@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { MessageCount } from './dto/message-count';
+import { MessageDetails } from './dto/message-details';
 import { MessageDto } from './dto/message-dto';
 import { MessageMin } from './dto/message-min';
 import { MessageRead } from './dto/message-read';
@@ -31,5 +32,9 @@ export class MessageService {
 
   public readAllMessages(request: MessageRead):  Observable<MessageRead> {
     return this.http.post<MessageRead>(`${this.apiServerUrl}/messages/read`, request);
+  }
+
+  public getMessage(id: number):  Observable<MessageDetails> {
+    return this.http.get<MessageDetails>(`${this.apiServerUrl}/messages/${id}`);
   }
 }

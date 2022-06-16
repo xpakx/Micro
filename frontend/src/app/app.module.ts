@@ -38,6 +38,8 @@ import { AvatarComponent } from './post/avatar/avatar.component';
 import { MessageFormComponent } from './message/message-form/message-form.component';
 import { MessageButtonComponent } from './message/message-button/message-button.component';
 import { MessageListComponent } from './message/message-list/message-list.component';
+import { MessageComponent } from './message/message/message.component';
+import { MessageViewComponent } from './main-view/message-view/message-view.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -76,7 +78,9 @@ export function tokenGetter() {
     AvatarComponent,
     MessageFormComponent,
     MessageButtonComponent,
-    MessageListComponent
+    MessageListComponent,
+    MessageComponent,
+    MessageViewComponent
   ],
   imports: [
     BrowserModule,

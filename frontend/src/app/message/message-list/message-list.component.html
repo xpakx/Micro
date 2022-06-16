@@ -8,7 +8,6 @@
         <div class="mention" *ngFor="let message of messages" [class.unread]="!message.read">
             <app-avatar></app-avatar> <span class="username">{{ message.sender.username }}</span> 
             wrote a <a (click)="toMessage(message)">message</a> to you
-            
         </div>
     </div>        
 </div>

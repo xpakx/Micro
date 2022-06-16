@@ -10,6 +10,7 @@ import { FollowTagViewComponent } from './main-view/follow-tag-view/follow-tag-v
 import { FollowUserViewComponent } from './main-view/follow-user-view/follow-user-view.component';
 import { HotComponent } from './main-view/hot/hot.component';
 import { MainComponent } from './main-view/main/main.component';
+import { MessageViewComponent } from './main-view/message-view/message-view.component';
 import { PostEditViewComponent } from './main-view/post-edit-view/post-edit-view.component';
 import { SinglePostComponent } from './main-view/single-post/single-post.component';
 import { TagViewComponent } from './main-view/tag-view/tag-view.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'my/users', component: FollowUserViewComponent },
   { path: 'my/mentions', component: MentionListComponent },
   { path: 'my/messages', component: MessageListComponent },
+  { path: 'message/:id', component: MessageViewComponent },
 ];
 
 @NgModule({
