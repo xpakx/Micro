@@ -17,6 +17,10 @@
                 <fa-icon [icon]="faNotif"></fa-icon>
                 <div class="counter" *ngIf="mentionsCount>0"> {{ mentionsCount }}</div>
             </button>
+            <button class="icon-button button-with-counter" (click)="toMessages()">
+                <fa-icon [icon]="faMessage"></fa-icon>
+                <div class="counter" *ngIf="messagesCount>0"> {{ messagesCount }}</div>
+            </button>
             <app-avatar></app-avatar>
         </div>
     </div>

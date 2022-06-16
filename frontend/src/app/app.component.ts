@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faEnvelope, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MentionCount } from './mention/dto/mention-count';
 import { MentionService } from './mention/mention.service';
 
@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
   title = 'micro2';
   faSearch = faSearch;
   faNotif = faBell;
+  faMessage = faEnvelope;
   mentionsCount: number = 0;
+  messagesCount: number = 0;
 
   constructor(private router: Router, private mentionService: MentionService) { }
 
@@ -35,5 +37,9 @@ export class AppComponent implements OnInit {
 
   toMentions() {
     this.router.navigate(['my/mentions']);
+  }
+
+  toMessages() {
+    this.router.navigate(['my/messages']);
   }
 }
