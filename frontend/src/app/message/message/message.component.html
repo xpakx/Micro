@@ -7,4 +7,8 @@
     
 
     <div class="message-content">{{message.content}}</div>
+
+    <div class="quick-response">
+        <app-message-form [username]="message.sender.username"></app-message-form>
+    </div>
 </div>
