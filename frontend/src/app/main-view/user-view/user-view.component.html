@@ -1,18 +1,7 @@
-<div class="main-container">
-    <div class="main-actions">
-        <app-left-sidebar></app-left-sidebar>
-    </div>
-    <div class="main-posts">
-        <div class="user-header">
-            <app-follow-button [followed]="followed" (follow)="follow($event)"></app-follow-button>
-            <app-message-button (send)="switchMessage()"></app-message-button>
-        </div>
-        <app-message-form [username]="userName" *ngIf="showMessageForm"></app-message-form>
-        <app-post-form [init]="'@'+userName+':'"></app-post-form>
-        <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
-    </div>
-    <div class="main-hot">
-        <app-right-sidebar></app-right-sidebar>
-    </div>
+<div class="user-header">
+    <app-follow-button [followed]="followed" (follow)="follow($event)"></app-follow-button>
+    <app-message-button (send)="switchMessage()"></app-message-button>
 </div>
-
+<app-message-form [username]="userName" *ngIf="showMessageForm"></app-message-form>
+<app-post-form [init]="'@'+userName+':'"></app-post-form>
+<app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>

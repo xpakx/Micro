@@ -1,21 +1,3 @@
-.main-container {
-    display: flex;
-}
-
-.main-actions {
-    width: 250px;
-}
-
-.main-posts {
-    flex-grow: 1;
-    margin: 0 7px;
-}
-
-.main-hot {
-    width: 400px;
-    margin-right: 20px;
-}
-
 .user-header {
     display: flex;
     justify-content: flex-end;

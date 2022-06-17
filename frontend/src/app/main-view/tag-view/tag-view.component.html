@@ -1,15 +1,5 @@
-<div class="main-container">
-    <div class="main-actions">
-        <app-left-sidebar></app-left-sidebar>
-    </div>
-    <div class="main-posts">
-        <div class="tag-header">
-            <app-follow-button [followed]="followed" (follow)="follow($event)" [icon]="faTag"></app-follow-button>
-        </div>
-        <app-post-form [init]="'#'+tagName"></app-post-form>
-        <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
-    </div>
-    <div class="main-hot">
-        <app-right-sidebar></app-right-sidebar>
-    </div>
+<div class="tag-header">
+    <app-follow-button [followed]="followed" (follow)="follow($event)" [icon]="faTag"></app-follow-button>
 </div>
+<app-post-form [init]="'#'+tagName"></app-post-form>
+<app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginFormComponent } from './authentication/login-form/login-form.component';
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
+import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.component';
 import { ActiveComponent } from './main-view/active/active.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 import { FavComponent } from './main-view/fav/fav.component';
@@ -17,6 +18,7 @@ import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { MessageListComponent } from './message/message-list/message-list.component';
+import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -36,6 +38,9 @@ const routes: Routes = [
   { path: 'my/mentions', component: MentionListComponent },
   { path: 'my/messages', component: MessageListComponent },
   { path: 'message/:id', component: MessageViewComponent },
+
+  { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
+  { path: '', outlet: 'right-sidebar', component: RightSidebarComponent },
 ];
 
 @NgModule({
