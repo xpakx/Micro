@@ -2,6 +2,8 @@ package io.github.xpakx.micro2.post;
 
 import io.github.xpakx.micro2.fav.FavPost;
 import io.github.xpakx.micro2.fav.FavPostRepository;
+import io.github.xpakx.micro2.follows.FollowsRepository;
+import io.github.xpakx.micro2.follows.UserFollows;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.tag.Tag;
@@ -20,6 +22,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -45,6 +48,8 @@ class PostControllerTest {
     TagRepository tagRepository;
     @Autowired
     FavPostRepository favRepository;
+    @Autowired
+    FollowsRepository followsRepository;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +65,7 @@ class PostControllerTest {
     @AfterEach
     void tearDown() {
         favRepository.deleteAll();
+        followsRepository.deleteAll();
         postRepository.deleteAll();
         tagRepository.deleteAll();
         userRepository.deleteAll();
@@ -350,5 +356,63 @@ class PostControllerTest {
         fav.setUser(userRepository.getById(userId));
         fav.setPost(savedPost);
         favRepository.save(fav);
+    }
+
+    @Test
+    void shouldRespondWith401ToGetPostsForFollowedTagsIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/posts/follows/tags")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+
+    @Test
+    void shouldReturnAllPostsForFollowedTags() {
+        Tag tag1 = addTag("tag1");
+        Tag tag2 = addTag("tag2");
+        followTagByUser(tag1, userId);
+        addPostWithTag("#tag1 post1", Set.of(tag1));
+        addPostWithTag("#tag1 #tag2 fav-post2", Set.of(tag1, tag2));
+        addPostWithTag("#tag2 fav-post2", Set.of(tag2));
+        addPostWithTag("fav-post2", Set.of());
+
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+         .when()
+                .get(baseUrl + "/posts/follows/tags")
+         .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(2))
+                .body("content.post.content", everyItem(containsString("#tag1")));
+    }
+
+    private Tag addTag(String tagName) {
+        Tag tag = new Tag();
+        tag.setName(tagName);
+        return tagRepository.save(tag);
+    }
+
+    private void addPostWithTag(String content, Set<Tag> tags) {
+        Post post = new Post();
+        post.setContent(content);
+        post.setLikeCount(0);
+        post.setDislikeCount(0);
+        post.setUser(userRepository.getById(userId));
+        post.setCreatedAt(LocalDateTime.now());
+        post.setTags(tags);
+        postRepository.save(post);
+    }
+
+    private void followTagByUser(Tag tag, Long userId) {
+        UserFollows follows = new UserFollows();
+        follows.setUser(userRepository.getById(userId));
+        follows.setTags(Set.of(tag));
+        follows = followsRepository.save(follows);
     }
 }
