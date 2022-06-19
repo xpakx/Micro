@@ -413,6 +413,58 @@ class PostControllerTest {
         UserFollows follows = new UserFollows();
         follows.setUser(userRepository.getById(userId));
         follows.setTags(Set.of(tag));
-        follows = followsRepository.save(follows);
+        followsRepository.save(follows);
+    }
+
+    @Test
+    void shouldRespondWith401ToGetPostsByFollowedUsersIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/posts/follows/users")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+
+    @Test
+    void shouldReturnAllPostsByFollowedUsers() {
+        Long user2Id = addUserAndReturnId("user2");
+        Long user3Id = addUserAndReturnId("user3");
+        followUserByUser(user2Id, userId);
+        addPostByUserReturnId("post1", user2Id);
+        addPostByUserReturnId("post2", user2Id);
+        addPostByUserReturnId("post3", user3Id);
+
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts/follows/users")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(2))
+                .body("content.post.content", hasItem(equalTo("post1")))
+                .body("content.post.content", hasItem(equalTo("post2")))
+                .body("content.post.content", not(hasItem(equalTo("post3"))));
+    }
+
+    private void followUserByUser(Long followedId, Long followerId) {
+        UserFollows follows = new UserFollows();
+        follows.setUser(userRepository.getById(followerId));
+        follows.setUsers(Set.of(userRepository.getById(followedId)));
+        followsRepository.save(follows);
+    }
+
+    private Long addPostByUserReturnId(String content, Long authorId) {
+        Post post = new Post();
+        post.setContent(content);
+        post.setLikeCount(0);
+        post.setDislikeCount(0);
+        post.setUser(userRepository.getById(authorId));
+        post.setCreatedAt(LocalDateTime.now());
+        return postRepository.save(post).getId();
     }
 }
