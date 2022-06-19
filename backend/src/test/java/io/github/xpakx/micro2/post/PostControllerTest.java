@@ -1,5 +1,7 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.fav.FavPost;
+import io.github.xpakx.micro2.fav.FavPostRepository;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.tag.Tag;
@@ -20,8 +22,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -42,6 +43,8 @@ class PostControllerTest {
     PostRepository postRepository;
     @Autowired
     TagRepository tagRepository;
+    @Autowired
+    FavPostRepository favRepository;
 
     @BeforeEach
     void setUp() {
@@ -56,6 +59,7 @@ class PostControllerTest {
 
     @AfterEach
     void tearDown() {
+        favRepository.deleteAll();
         postRepository.deleteAll();
         tagRepository.deleteAll();
         userRepository.deleteAll();
@@ -290,5 +294,61 @@ class PostControllerTest {
                 .delete(baseUrl + "/posts/{postId}", id)
         .then()
                 .statusCode(OK.value());
+    }
+
+    @Test
+    void shouldRespondWith401ToGetFavIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/posts/fav")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+
+    @Test
+    void shouldReturnAllFavPosts() {
+        addPostFavByUser("fav-post1", userId);
+        addPostFavByUser("fav-post2", userId);
+        addPostFavByUser("fav-post3", addUserAndReturnId("user2"));
+        addPostAndReturnId();
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts/fav")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(2))
+                .body("content.post.content", hasItem(equalTo("fav-post1")))
+                .body("content.post.content", hasItem(equalTo("fav-post2")))
+                .body("content.post.content", not(hasItem(equalTo("fav-post3"))))
+                .body("content.post.content", not(hasItem(equalTo("content"))));
+    }
+
+    private Long addUserAndReturnId(String username) {
+        UserAccount user = new UserAccount();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRoles(new HashSet<>());
+        return userRepository.save(user).getId();
+    }
+
+
+    private void addPostFavByUser(String content, Long userId) {
+        Post post = new Post();
+        post.setContent(content);
+        post.setLikeCount(0);
+        post.setDislikeCount(0);
+        post.setUser(userRepository.getById(this.userId));
+        post.setCreatedAt(LocalDateTime.now());
+        Post savedPost = postRepository.save(post);
+        FavPost fav = new FavPost();
+        fav.setUser(userRepository.getById(userId));
+        fav.setPost(savedPost);
+        favRepository.save(fav);
     }
 }
