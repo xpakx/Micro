@@ -4,6 +4,8 @@ import io.github.xpakx.micro2.fav.FavPost;
 import io.github.xpakx.micro2.fav.FavPostRepository;
 import io.github.xpakx.micro2.follows.FollowsRepository;
 import io.github.xpakx.micro2.follows.UserFollows;
+import io.github.xpakx.micro2.mention.Mention;
+import io.github.xpakx.micro2.mention.MentionRepository;
 import io.github.xpakx.micro2.post.dto.PostRequest;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.tag.Tag;
@@ -21,10 +23,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
@@ -50,6 +54,8 @@ class PostControllerTest {
     FavPostRepository favRepository;
     @Autowired
     FollowsRepository followsRepository;
+    @Autowired
+    MentionRepository mentionRepository;
 
     @BeforeEach
     void setUp() {
@@ -64,6 +70,7 @@ class PostControllerTest {
 
     @AfterEach
     void tearDown() {
+        mentionRepository.deleteAll();
         favRepository.deleteAll();
         followsRepository.deleteAll();
         postRepository.deleteAll();
@@ -466,5 +473,26 @@ class PostControllerTest {
         post.setUser(userRepository.getById(authorId));
         post.setCreatedAt(LocalDateTime.now());
         return postRepository.save(post).getId();
+    }
+
+    @Test
+    void shouldAddNewPostWithMention() {
+        addUserAndReturnId("user2");
+        PostRequest request = getValidPostRequest("content @user2");
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/posts")
+        .then()
+                .statusCode(CREATED.value())
+                .body("message", equalTo(request.getMessage()));
+
+        List<Mention> mentions = mentionRepository.findAllByMentionedUsernameAndReadIsFalse("user2");
+        assertThat(mentions, hasSize(1));
+        assertThat(mentions.get(0), hasProperty("read", equalTo(false)));
     }
 }
