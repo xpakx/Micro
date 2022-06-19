@@ -117,8 +117,11 @@ class PostPublicViewControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3))
-                .body("content", not(hasItem(hasProperty("content", equalTo("post1")))))
-                .body("content", not(hasItem(hasProperty("content", equalTo("post2")))));
+                .body("content.post.content", not(hasItem(equalTo("post1"))))
+                .body("content.post.content", not(hasItem(equalTo("post2"))))
+                .body("content.post.content", hasItem(equalTo("post3")))
+                .body("content.post.content", hasItem(equalTo("post4")))
+                .body("content.post.content", hasItem(equalTo("post5")));
     }
 
     @Test
@@ -131,8 +134,11 @@ class PostPublicViewControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3))
-                .body("content", not(hasItem(hasProperty("content", equalTo("post1")))))
-                .body("content", not(hasItem(hasProperty("content", equalTo("post4")))));
+                .body("content.post.content", not(hasItem(equalTo("post1"))))
+                .body("content.post.content", hasItem(equalTo("post2")))
+                .body("content.post.content", hasItem(equalTo("post3")))
+                .body("content.post.content", not(hasItem(equalTo("post4"))))
+                .body("content.post.content", hasItem(equalTo("post5")));
     }
 
     @Test
