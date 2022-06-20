@@ -122,6 +122,9 @@ class CommentPublicViewControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3))
-                .body("content", not(hasItem(hasProperty("content", equalTo("comment4")))));
+                .body("content.content", not(hasItem(equalTo("comment4"))))
+                .body("content.content", hasItem(equalTo("comment1")))
+                .body("content.content", hasItem(equalTo("comment2")))
+                .body("content.content", hasItem(equalTo("comment3")));
     }
 }
