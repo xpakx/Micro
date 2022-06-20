@@ -4,7 +4,6 @@ import io.github.xpakx.micro2.fav.FavPost;
 import io.github.xpakx.micro2.fav.FavPostRepository;
 import io.github.xpakx.micro2.like.Like;
 import io.github.xpakx.micro2.like.LikeRepository;
-import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.tag.TagRepository;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -219,6 +217,23 @@ class PostPublicViewControllerTest {
                 .body("content.findAll { it.post.id!="+maxPostId+" }.fav", not(hasItem(true)));
     }
 
+    @Test
+    void shouldReturnAllPostsByUserWithUserData() {
+        likePost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/users/{username}/posts", "user1")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(3))
+                .body("content.findAll { it.post.id=="+maxPostId+" }.liked", hasItem(true))
+                .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
+    }
+
     private void likePost(String username, Long postId) {
         Like like = new Like();
         like.setPost(postRepository.findById(postId).get());
@@ -232,5 +247,22 @@ class PostPublicViewControllerTest {
         favPost.setPost(postRepository.findById(postId).get());
         favPost.setUser(userRepository.findByUsername(username).get());
         favPostRepository.save(favPost);
+    }
+
+    @Test
+    void shouldReturnAllPostsByTagWithUserData() {
+        likePost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/tags/{tag}/posts", "tag1")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(3))
+                .body("content.findAll { it.post.id=="+maxPostId+" }.liked", hasItem(true))
+                .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
     }
 }
