@@ -1,5 +1,10 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.fav.FavPost;
+import io.github.xpakx.micro2.fav.FavPostRepository;
+import io.github.xpakx.micro2.like.Like;
+import io.github.xpakx.micro2.like.LikeRepository;
+import io.github.xpakx.micro2.post.dto.PostDetails;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.tag.TagRepository;
@@ -12,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -42,6 +48,10 @@ class PostPublicViewControllerTest {
     PostRepository postRepository;
     @Autowired
     TagRepository tagRepository;
+    @Autowired
+    LikeRepository likeRepository;
+    @Autowired
+    FavPostRepository favPostRepository;
 
     @BeforeEach
     void setUp() {
@@ -86,6 +96,8 @@ class PostPublicViewControllerTest {
 
     @AfterEach
     void tearDown() {
+        likeRepository.deleteAll();
+        favPostRepository.deleteAll();
         postRepository.deleteAll();
         tagRepository.deleteAll();
         userRepository.deleteAll();
@@ -185,5 +197,40 @@ class PostPublicViewControllerTest {
                 .get(baseUrl + "/posts/{postId}", maxPostId+1)
         .then()
                 .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldReturnAllPostsWithUserData() {
+        likePost("user1", postId);
+        favPost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(5))
+                .body("content.findAll { it.post.id=="+postId+" }.liked", hasItem(true))
+                .body("content.findAll { it.post.id!="+postId+" }.liked", not(hasItem(true)))
+                .body("content.findAll { it.post.id=="+maxPostId+" }.fav", hasItem(true))
+                .body("content.findAll { it.post.id!="+maxPostId+" }.fav", not(hasItem(true)));
+    }
+
+    private void likePost(String username, Long postId) {
+        Like like = new Like();
+        like.setPost(postRepository.findById(postId).get());
+        like.setUser(userRepository.findByUsername(username).get());
+        like.setPositive(true);
+        likeRepository.save(like);
+    }
+
+    private void favPost(String username, Long postId) {
+        FavPost favPost = new FavPost();
+        favPost.setPost(postRepository.findById(postId).get());
+        favPost.setUser(userRepository.findByUsername(username).get());
+        favPostRepository.save(favPost);
     }
 }
