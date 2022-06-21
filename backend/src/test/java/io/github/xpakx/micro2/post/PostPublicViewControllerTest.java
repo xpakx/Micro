@@ -265,4 +265,43 @@ class PostPublicViewControllerTest {
                 .body("content.findAll { it.post.id=="+maxPostId+" }.liked", hasItem(true))
                 .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
     }
+
+    @Test
+    void shouldReturnAllHotPosts() {
+        setLikes(maxPostId, 10);
+        setLikes(postId, 9);
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts/hot")
+        .then()
+                .statusCode(OK.value())
+                .body("content[0].post.content", equalTo("post5"))
+                .body("content[1].post.content", equalTo("post1"));
+    }
+
+    private void setLikes(Long postId, int i) {
+        Post post = postRepository.findById(postId).get();
+        post.setLikeCount(i);
+        postRepository.save(post);
+    }
+
+    @Test
+    void shouldReturnHotPostsWithUserData() {
+        setLikes(maxPostId, 10);
+        likePost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts/hot")
+        .then()
+                .statusCode(OK.value())
+                .body("content[0].post.content", equalTo("post5"))
+                .body("content[0].liked", is(true))
+                .body("content[.findAll { it.post.id!="+maxPostId+" }].liked", not(hasItem(true)));
+    }
 }
