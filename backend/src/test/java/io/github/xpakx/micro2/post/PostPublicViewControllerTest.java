@@ -339,6 +339,17 @@ class PostPublicViewControllerTest {
         commentRepository.save(comment);
     }
 
+    private void addComment(Long postId, String content, LocalDateTime dateTime) {
+        Comment comment = new Comment();
+        comment.setUser(userRepository.getById(activeUserId));
+        comment.setPost(postRepository.findById(postId).get());
+        comment.setContent(content);
+        comment.setLikeCount(0);
+        comment.setDislikeCount(0);
+        comment.setCreatedAt(dateTime);
+        commentRepository.save(comment);
+    }
+
     @Test
     void shouldReturnActivePostsWithUserData() {
         addComment(maxPostId, "comment1");
@@ -368,5 +379,25 @@ class PostPublicViewControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("$", hasSize(2));
+    }
+
+    @Test
+    void shouldReturn2CommentsWithActivePosts() {
+        addComment(maxPostId, "comment1", LocalDateTime.now().minusMinutes(3));
+        addComment(maxPostId, "comment2", LocalDateTime.now().minusMinutes(2));
+        addComment(maxPostId, "comment3", LocalDateTime.now());
+        likePost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .when()
+                .get(baseUrl + "/posts/active")
+                .then()
+                .statusCode(OK.value())
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content", hasSize(2))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment2")))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment3")));
     }
 }
