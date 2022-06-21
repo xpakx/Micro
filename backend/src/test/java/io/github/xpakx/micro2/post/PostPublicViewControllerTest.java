@@ -1,5 +1,7 @@
 package io.github.xpakx.micro2.post;
 
+import io.github.xpakx.micro2.comment.Comment;
+import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.fav.FavPost;
 import io.github.xpakx.micro2.fav.FavPostRepository;
 import io.github.xpakx.micro2.like.Like;
@@ -35,6 +37,7 @@ class PostPublicViewControllerTest {
     private String baseUrl;
     private Long postId;
     private Long maxPostId;
+    private long activeUserId;
 
     @Autowired
     UserRepository userRepository;
@@ -50,6 +53,8 @@ class PostPublicViewControllerTest {
     LikeRepository likeRepository;
     @Autowired
     FavPostRepository favPostRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +65,7 @@ class PostPublicViewControllerTest {
         user.setRoles(new HashSet<>());
         user = userRepository.save(user);
         Long userId = user.getId();
+        activeUserId = userId;
         UserAccount user2 = new UserAccount();
         user2.setUsername("user2");
         user2.setPassword("password");
@@ -96,6 +102,7 @@ class PostPublicViewControllerTest {
     void tearDown() {
         likeRepository.deleteAll();
         favPostRepository.deleteAll();
+        commentRepository.deleteAll();
         postRepository.deleteAll();
         tagRepository.deleteAll();
         userRepository.deleteAll();
@@ -302,6 +309,52 @@ class PostPublicViewControllerTest {
                 .statusCode(OK.value())
                 .body("content[0].post.content", equalTo("post5"))
                 .body("content[0].liked", is(true))
-                .body("content[.findAll { it.post.id!="+maxPostId+" }].liked", not(hasItem(true)));
+                .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
+    }
+
+    @Test
+    void shouldReturnAllActivePosts() {
+        addComment(maxPostId, "comment1");
+        addComment(maxPostId, "comment2");
+        addComment(postId, "comment3");
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts/active")
+        .then()
+                .statusCode(OK.value())
+                .body("content[0].post.content", equalTo("post5"))
+                .body("content[1].post.content", equalTo("post1"));
+    }
+
+    private void addComment(Long postId, String content) {
+        Comment comment = new Comment();
+        comment.setUser(userRepository.getById(activeUserId));
+        comment.setPost(postRepository.findById(postId).get());
+        comment.setContent(content);
+        comment.setLikeCount(0);
+        comment.setDislikeCount(0);
+        comment.setCreatedAt(LocalDateTime.now());
+        commentRepository.save(comment);
+    }
+
+    @Test
+    void shouldReturnActivePostsWithUserData() {
+        addComment(maxPostId, "comment1");
+        addComment(maxPostId, "comment2");
+        likePost("user1", maxPostId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts/active")
+        .then()
+                .statusCode(OK.value())
+                .body("content[0].post.content", equalTo("post5"))
+                .body("content[0].liked", is(true))
+                .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
     }
 }
