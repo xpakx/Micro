@@ -357,4 +357,16 @@ class PostPublicViewControllerTest {
                 .body("content[0].liked", is(true))
                 .body("content.findAll { it.post.id!="+maxPostId+" }.liked", not(hasItem(true)));
     }
+
+    @Test
+    void shouldReturn2RandomHotPosts() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts/hot/random")
+        .then()
+                .statusCode(OK.value())
+                .body("$", hasSize(2));
+    }
 }
