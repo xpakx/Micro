@@ -392,9 +392,43 @@ class PostPublicViewControllerTest {
                 .uri()
                 .auth()
                 .oauth2(tokenFor("user1"))
-                .when()
+        .when()
                 .get(baseUrl + "/posts/active")
-                .then()
+        .then()
+                .statusCode(OK.value())
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content", hasSize(2))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment2")))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment3")));
+    }
+
+    @Test
+    void shouldReturn2CommentsWithHotPosts() {
+        addComment(maxPostId, "comment1", LocalDateTime.now().minusMinutes(3));
+        addComment(maxPostId, "comment2", LocalDateTime.now().minusMinutes(2));
+        addComment(maxPostId, "comment3", LocalDateTime.now());
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts/hot")
+        .then()
+                .statusCode(OK.value())
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content", hasSize(2))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment2")))
+                .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment3")));
+    }
+
+    @Test
+    void shouldReturn2CommentsWithAllPosts() {
+        addComment(maxPostId, "comment1", LocalDateTime.now().minusMinutes(3));
+        addComment(maxPostId, "comment2", LocalDateTime.now().minusMinutes(2));
+        addComment(maxPostId, "comment3", LocalDateTime.now());
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/posts")
+        .then()
                 .statusCode(OK.value())
                 .body("content.find { it.post.id=="+maxPostId+" }.comments.content", hasSize(2))
                 .body("content.find { it.post.id=="+maxPostId+" }.comments.content.comment.content", hasItem(equalTo("comment2")))
