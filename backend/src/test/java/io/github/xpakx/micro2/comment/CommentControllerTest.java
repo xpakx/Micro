@@ -1,6 +1,8 @@
 package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.mention.Mention;
+import io.github.xpakx.micro2.mention.MentionRepository;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
@@ -17,10 +19,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,6 +44,8 @@ class CommentControllerTest {
     PostRepository postRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    MentionRepository mentionRepository;
 
     @BeforeEach
     void setUp() {
@@ -54,6 +60,7 @@ class CommentControllerTest {
 
     @AfterEach
     void tearDown() {
+        mentionRepository.deleteAll();
         commentRepository.deleteAll();
         postRepository.deleteAll();
         userRepository.deleteAll();
@@ -307,5 +314,27 @@ class CommentControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("message", is("updated"));
+    }
+
+    @Test
+    void shouldAddNewCommentWithMention() {
+        createUser("user2");
+        CommentRequest request = getValidCommentRequest("content @user2");
+        Long postId = addPostAndReturnId();
+        given()
+                .log()
+                .uri().auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/posts/{postId}/comments", postId)
+        .then()
+                .statusCode(CREATED.value())
+                .body("message", equalTo(request.getMessage()));
+
+        List<Mention> mentions = mentionRepository.findAllByMentionedUsernameAndReadIsFalse("user2");
+        assertThat(mentions, hasSize(1));
+        assertThat(mentions.get(0), hasProperty("read", equalTo(false)));
     }
 }
