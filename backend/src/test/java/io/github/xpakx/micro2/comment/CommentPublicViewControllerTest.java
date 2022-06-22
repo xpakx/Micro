@@ -147,9 +147,8 @@ class CommentPublicViewControllerTest {
                 .get(baseUrl + "/posts/{postId}/comments", postId)
         .then()
                 .statusCode(OK.value())
-                .body("content[0].id", equalTo("comment5"))
-                .body("content[0].liked", is(true))
-                .body("content.findAll { it.id!="+maxCommentId+" }.liked", not(hasItem(true)));
+                .body("content.findAll { it.id!="+maxCommentId+" }.liked", not(hasItem(true)))
+                .body("content.findAll { it.id=="+maxCommentId+" }.liked", hasItem(true));
     }
 
     private String tokenFor(String username) {
