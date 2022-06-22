@@ -1,5 +1,7 @@
 package io.github.xpakx.micro2.comment;
 
+import io.github.xpakx.micro2.like.Like;
+import io.github.xpakx.micro2.like.LikeRepository;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
@@ -8,6 +10,7 @@ import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +46,8 @@ class CommentPublicViewControllerTest {
     PostRepository postRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    LikeRepository likeRepository;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +68,7 @@ class CommentPublicViewControllerTest {
 
     @AfterEach
     void tearDown() {
+        likeRepository.deleteAll();
         commentRepository.deleteAll();
         postRepository.deleteAll();
         userRepository.deleteAll();
@@ -126,5 +132,35 @@ class CommentPublicViewControllerTest {
                 .body("content.content", hasItem(equalTo("comment1")))
                 .body("content.content", hasItem(equalTo("comment2")))
                 .body("content.content", hasItem(equalTo("comment3")));
+    }
+
+    @Test
+    @Disabled
+    void shouldReturnAllCommentsByPostWithUserData() {
+        likeComment("user1", maxCommentId);
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/posts/{postId}/comments", postId)
+        .then()
+                .statusCode(OK.value())
+                .body("content[0].id", equalTo("comment5"))
+                .body("content[0].liked", is(true))
+                .body("content.findAll { it.id!="+maxCommentId+" }.liked", not(hasItem(true)));
+    }
+
+    private String tokenFor(String username) {
+        return jwtTokenUtil.generateToken(userService.loadUserByUsername(username));
+    }
+
+    private void likeComment(String username, Long commentId) {
+        Like like = new Like();
+        like.setComment(commentRepository.findById(commentId).get());
+        like.setUser(userRepository.findByUsername(username).get());
+        like.setPositive(true);
+        likeRepository.save(like);
     }
 }
