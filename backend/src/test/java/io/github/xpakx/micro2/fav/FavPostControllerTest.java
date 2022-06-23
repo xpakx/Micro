@@ -132,4 +132,46 @@ class FavPostControllerTest {
         fav.setUser(userRepository.findByUsername(username).get());
         favRepository.save(fav);
     }
+
+    @Test
+    void shouldRespondWith401ToUnfavPostRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/posts/{postId}/fav", 1L)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldUnfavPost() {
+        Long postId = addPostAndReturnId();
+        favPost(postId, "user1");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/posts/{postId}/fav", postId)
+        .then()
+                .statusCode(OK.value());
+        boolean isFavFoundInDb = favRepository.existsByPostIdAndUserUsername(postId, "user1");
+        assertFalse(isFavFoundInDb);
+    }
+
+    @Test
+    void shouldNotUnfavNotFavPost() {
+        Long postId = addPostAndReturnId();
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/posts/{postId}/fav", postId)
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
 }
