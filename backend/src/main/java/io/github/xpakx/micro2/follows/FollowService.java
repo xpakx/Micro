@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.follows;
 import io.github.xpakx.micro2.follows.dto.FollowedResponse;
 import io.github.xpakx.micro2.follows.error.AlreadyFollowedException;
 import io.github.xpakx.micro2.tag.TagRepository;
+import io.github.xpakx.micro2.tag.error.TagNotFoundException;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class FollowService {
         if(follows.getTags().stream().anyMatch((u) -> u.getName().equals(tagName))) {
             throw new AlreadyFollowedException("You already follow this tag!");
         }
-        follows.getTags().add(tagRepository.findByName(tagName).orElseThrow());
+        follows.getTags().add(tagRepository.findByName(tagName).orElseThrow(TagNotFoundException::new));
         followsRepository.save(follows);
     }
 
