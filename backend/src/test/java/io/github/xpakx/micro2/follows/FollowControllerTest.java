@@ -3,6 +3,7 @@ package io.github.xpakx.micro2.follows;
 import io.github.xpakx.micro2.follows.dto.FollowRequest;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
+import io.github.xpakx.micro2.tag.Tag;
 import io.github.xpakx.micro2.tag.TagRepository;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
@@ -144,6 +145,81 @@ class FollowControllerTest {
                 .body(request)
         .when()
                 .post(baseUrl + "/follows/users")
+        .then()
+                .statusCode(CREATED.value());
+    }
+
+    @Test
+    void shouldRespondWith401ToFollowTagRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .post(baseUrl + "/follows/tags")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondWith404ToFollowTagRequestIfTagToFollowDoesNotExist() {
+        FollowRequest request = getFollowRequest("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/follows/tags")
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldNotFollowAlreadyFollowedTag() {
+        addTag("tag");
+        followTag("tag");
+        FollowRequest request = getFollowRequest("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/follows/tags")
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
+
+    private void followTag(String tag) {
+        UserFollows follows = new UserFollows();
+        follows.setUser(userRepository.findByUsername("user1").get());
+        follows.setTags(Set.of(tagRepository.findByName(tag).get()));
+        followsRepository.save(follows);
+    }
+
+    private void addTag(String name) {
+        Tag tag = new Tag();
+        tag.setName(name);
+        tagRepository.save(tag);
+    }
+
+    @Test
+    void shouldFollowTag() {
+        addTag("tag");
+        FollowRequest request = getFollowRequest("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/follows/tags")
         .then()
                 .statusCode(CREATED.value());
     }
