@@ -336,4 +336,33 @@ class FollowControllerTest {
                 .statusCode(OK.value())
                 .body("followed", is(true));
     }
+
+    @Test
+    void shouldRespondWith401ToUnfollowUserRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/follows/users/{username}", "user2")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldUnfollowUser() {
+        addUser("user2");
+        followUser("user2");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/follows/users/{username}", "user2")
+        .then()
+                .statusCode(OK.value());
+
+        boolean isUserFollowed = followsRepository.existsByUsersUsernameAndUserUsername("user2", "user1");
+        assertFalse(isUserFollowed);
+    }
 }
