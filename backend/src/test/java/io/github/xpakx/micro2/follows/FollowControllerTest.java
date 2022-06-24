@@ -280,4 +280,60 @@ class FollowControllerTest {
                 .statusCode(OK.value())
                 .body("followed", is(true));
     }
+
+    @Test
+    void shouldRespondWith401ToTestIfTagIsFollowedRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/tags/{name}/followed", "tag")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondThatNonExistentTagIsNotFollowed() {
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/tags/{name}/followed", "tag")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(false));
+    }
+
+    @Test
+    void shouldRespondThatTagIsNotFollowed() {
+        addTag("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/tags/{name}/followed", "tag")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(false));
+    }
+
+    @Test
+    void shouldRespondThatTagIsFollowed() {
+        addTag("tag");
+        followTag("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/tags/{name}/followed", "tag")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(true));
+    }
 }
