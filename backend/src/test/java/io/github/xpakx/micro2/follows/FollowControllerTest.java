@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -222,5 +223,61 @@ class FollowControllerTest {
                 .post(baseUrl + "/follows/tags")
         .then()
                 .statusCode(CREATED.value());
+    }
+
+    @Test
+    void shouldRespondWith401ToTestIfUserIsFollowedRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/users/{username}/followed", "user2")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondThatNonExistentUserIsNotFollowed() {
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/users/{username}/followed", "user2")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(false));
+    }
+
+    @Test
+    void shouldRespondThatUserIsNotFollowed() {
+        addUser("user2");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/users/{username}/followed", "user2")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(false));
+    }
+
+    @Test
+    void shouldRespondThatUserIsFollowed() {
+        addUser("user2");
+        followUser("user2");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/users/{username}/followed", "user2")
+        .then()
+                .statusCode(OK.value())
+                .body("followed", is(true));
     }
 }
