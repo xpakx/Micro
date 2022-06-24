@@ -365,4 +365,33 @@ class FollowControllerTest {
         boolean isUserFollowed = followsRepository.existsByUsersUsernameAndUserUsername("user2", "user1");
         assertFalse(isUserFollowed);
     }
+
+    @Test
+    void shouldRespondWith401ToUnfollowTagequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/follows/tags/{name}", "tag")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldUnfollowTag() {
+        addTag("tag");
+        followTag("tag");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .delete(baseUrl + "/follows/tags/{name}", "tag")
+        .then()
+                .statusCode(OK.value());
+
+        boolean isTagFollowed = followsRepository.existsByTagsNameAndUserUsername("tag", "user1");
+        assertFalse(isTagFollowed);
+    }
 }
