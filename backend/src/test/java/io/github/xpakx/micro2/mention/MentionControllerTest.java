@@ -9,6 +9,7 @@ import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.UserService;
 import io.restassured.http.ContentType;
+import org.assertj.core.util.Streams;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,9 +19,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -172,5 +176,38 @@ class MentionControllerTest {
                 .post(baseUrl + "/mentions/{mentionId}/read", mentionId)
         .then()
                 .statusCode(OK.value());
+    }
+
+    @Test
+    void shouldRespondWith401ToMarkAllMentionsAsReadRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .post(baseUrl + "/mentions/read")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldMarkAllMentionsAsRead() {
+        addPostWithMention("@user1: post1");
+        addPostWithMention("@user1: post2");
+        addPostWithMention("@user1: post3");
+        MentionReadRequest request = getMentionReadRequest();
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/mentions/read")
+        .then()
+                .statusCode(OK.value());
+        List<Mention> mentions = Streams.stream(mentionRepository.findAll()).collect(Collectors.toList());
+        assertThat(mentions, hasSize(3));
+        assertThat(mentions, everyItem(hasProperty("read", equalTo(true))));
     }
 }
