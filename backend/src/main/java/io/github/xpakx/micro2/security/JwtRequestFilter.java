@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,12 +21,10 @@ import java.util.List;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
 
     @Autowired
-    public JwtRequestFilter(UserService userService, JwtTokenUtils jwtTokenUtils) {
-        this.userService = userService;
+    public JwtRequestFilter(JwtTokenUtils jwtTokenUtils) {
         this.jwtTokenUtils = jwtTokenUtils;
     }
 
@@ -63,7 +60,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtTokenUtils.validateToken(jwtToken)) {
-
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         username, null, roles);
                 usernamePasswordAuthenticationToken
