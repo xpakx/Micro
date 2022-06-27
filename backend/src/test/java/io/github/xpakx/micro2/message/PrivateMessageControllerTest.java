@@ -118,4 +118,55 @@ class PrivateMessageControllerTest {
         assertThat(messagesInDb, hasSize(1));
         assertThat(messagesInDb, hasItem(hasProperty("content", equalTo(request.getContent()))));
     }
+
+    @Test
+    void shouldRespondWith401ToMessageCountRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/messages/count")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondWith0ForNoMessages() {
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .get(baseUrl + "/messages/count")
+        .then()
+                .statusCode(OK.value())
+                .body("count", equalTo(0));
+    }
+
+    @Test
+    void shouldRespondWithMessageCount() {
+        addMessage("msg1");
+        addMessage("msg2");
+        addMessage("msg3");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .get(baseUrl + "/messages/count")
+        .then()
+                .statusCode(OK.value())
+                .body("count", equalTo(3));
+    }
+
+    private void addMessage(String content) {
+        PrivateMessage message = new PrivateMessage();
+        message.setRead(false);
+        message.setContent(content);
+        message.setSender(userRepository.getById(userId));
+        message.setRecipient(userRepository.getById(recipientId));
+        messageRepository.save(message);
+    }
 }
