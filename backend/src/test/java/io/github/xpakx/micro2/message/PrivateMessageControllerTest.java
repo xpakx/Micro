@@ -1,11 +1,15 @@
 package io.github.xpakx.micro2.message;
 
+import io.github.xpakx.micro2.mention.Mention;
+import io.github.xpakx.micro2.mention.dto.MentionReadRequest;
+import io.github.xpakx.micro2.message.dto.MessageReadRequest;
 import io.github.xpakx.micro2.message.dto.MessageRequest;
 import io.github.xpakx.micro2.security.JwtTokenUtils;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.UserService;
 import io.restassured.http.ContentType;
+import org.assertj.core.util.Streams;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -196,5 +201,44 @@ class PrivateMessageControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3));
+    }
+
+    @Test
+    void shouldRespondWith401ToMarkAllMessagesAsReadRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .post(baseUrl + "/messages/read")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldMarkAllMessagesAsRead() {
+        addMessage("msg1");
+        addMessage("msg2");
+        addMessage("msg3");
+        MessageReadRequest request = getReadRequest();
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .post(baseUrl + "/messages/read")
+        .then()
+                .statusCode(OK.value());
+        List<PrivateMessage> messages = Streams.stream(messageRepository.findAll()).collect(Collectors.toList());
+        assertThat(messages, hasSize(3));
+        assertThat(messages, everyItem(hasProperty("read", equalTo(true))));
+    }
+
+    private MessageReadRequest getReadRequest() {
+        MessageReadRequest request = new MessageReadRequest();
+        request.setRead(true);
+        return request;
     }
 }
