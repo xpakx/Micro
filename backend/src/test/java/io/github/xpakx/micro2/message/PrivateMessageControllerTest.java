@@ -169,4 +169,32 @@ class PrivateMessageControllerTest {
         message.setRecipient(userRepository.getById(recipientId));
         messageRepository.save(message);
     }
+
+    @Test
+    void shouldRespondWith401ToGetMessagesRequestIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/messages")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondWithMessages() {
+        addMessage("msg1");
+        addMessage("msg2");
+        addMessage("msg3");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .get(baseUrl + "/messages")
+        .then()
+                .statusCode(OK.value())
+                .body("content", hasSize(3));
+    }
 }
