@@ -19,6 +19,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -166,13 +167,13 @@ class PrivateMessageControllerTest {
                 .body("count", equalTo(3));
     }
 
-    private void addMessage(String content) {
+    private Long addMessage(String content) {
         PrivateMessage message = new PrivateMessage();
         message.setRead(false);
         message.setContent(content);
         message.setSender(userRepository.getById(userId));
         message.setRecipient(userRepository.getById(recipientId));
-        messageRepository.save(message);
+        return messageRepository.save(message).getId();
     }
 
     @Test
@@ -240,5 +241,62 @@ class PrivateMessageControllerTest {
         MessageReadRequest request = new MessageReadRequest();
         request.setRead(true);
         return request;
+    }
+
+    @Test
+    void shouldRespondWith401TGetMessageRequestIfUserUnauthenticated() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .get(baseUrl + "/messages/{msgId}", 1L)
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldNotReturnMessageIfUserIsNotRecipient() {
+        Long msgId = addMessage("msg");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+        .when()
+                .get(baseUrl + "/messages/{msgId}", msgId)
+        .then()
+                .statusCode(NOT_FOUND.value());
+    }
+
+    @Test
+    void shouldReturnMessage() {
+        Long msgId = addMessage("msg");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .get(baseUrl + "/messages/{msgId}", msgId)
+        .then()
+                .statusCode(OK.value())
+                .body("content", equalTo("msg"));
+    }
+
+    @Test
+    void shouldMarkReturnedMessageAsRead() {
+        Long msgId = addMessage("msg");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user2"))
+        .when()
+                .get(baseUrl + "/messages/{msgId}", msgId)
+        .then()
+                .statusCode(OK.value());
+        Optional<PrivateMessage> messageInDb = messageRepository.findById(msgId);
+        assertTrue(messageInDb.isPresent());
+        assertThat(messageInDb.get().isRead(), is(true));
     }
 }

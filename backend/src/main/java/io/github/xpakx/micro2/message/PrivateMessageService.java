@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.message;
 
 import io.github.xpakx.micro2.message.dto.*;
+import io.github.xpakx.micro2.message.error.MessageNotFoundException;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
@@ -48,7 +49,7 @@ public class PrivateMessageService {
 
     public MessageDetails getSingleMessage(Long messageId, String username) {
         MessageDetails response = messageRepository.findProjectedByRecipientUsernameAndId(username, messageId)
-                .orElseThrow();
+                .orElseThrow(MessageNotFoundException::new);
         messageRepository.updateReadById(messageId);
         return response;
     }
