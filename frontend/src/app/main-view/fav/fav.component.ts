@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
 import { PostDetails } from 'src/app/post/dto/post-details';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
@@ -15,14 +16,28 @@ export class FavComponent implements OnInit {
   errorOccured: boolean = false;
   errorMsg: String = '';
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getPosts();
+    this.route.params.subscribe(routeParams => {
+      let page: number | undefined = routeParams['page'];
+      if(page) {
+        this.loadPage(page);
+      } else {
+        this.getPosts();
+      }
+    });   
   }
 
   getPosts(): void {
     this.postService.getFavPosts().subscribe({
+      next: (response: Page<PostWithComments>) => this.updateList(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  loadPage(page: number): void {
+    this.postService.getFavPosts(page).subscribe({
       next: (response: Page<PostWithComments>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });

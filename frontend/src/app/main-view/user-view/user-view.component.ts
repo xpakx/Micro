@@ -24,13 +24,31 @@ export class UserViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
-      this.getPosts(routeParams['name']);
+      let page: number | undefined = routeParams['page'];
+      if(page) {
+        this.loadPage(routeParams['name'], page);
+      } else {
+        this.getPosts(routeParams['name']);
+      }
     }); 
   }
 
   getPosts(user: String): void {
     this.userName = user;
     this.postService.getUserPosts(user).subscribe({
+      next: (response: Page<PostWithComments>) => this.updateList(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+    
+    this.followsService.isUserFollowed(user).subscribe({
+      next: (response: FollowedResponse) => this.updateFollow(response.followed),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  loadPage(user: String, page: number): void {
+    this.userName = user;
+    this.postService.getUserPosts(user, page).subscribe({
       next: (response: Page<PostWithComments>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });

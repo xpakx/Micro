@@ -25,13 +25,31 @@ export class TagViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
-      this.getPosts(routeParams['tag']);
+      let page: number | undefined = routeParams['page'];
+      if(page) {
+        this.loadPage(routeParams['tag'], page);
+      } else {
+        this.getPosts(routeParams['tag']);
+      }
     }); 
   }
 
   getPosts(tag: String): void {
     this.tagName = tag;
     this.postService.getPostsWithTag(tag).subscribe({
+      next: (response: Page<PostWithComments>) => this.updateList(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+    
+    this.followsService.isTagFollowed(tag).subscribe({
+      next: (response: FollowedResponse) => this.updateFollow(response.followed),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
+  loadPage(tag: String, page: number): void {
+    this.tagName = tag;
+    this.postService.getPostsWithTag(tag, page).subscribe({
       next: (response: Page<PostWithComments>) => this.updateList(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
