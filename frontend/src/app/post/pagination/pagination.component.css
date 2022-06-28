@@ -1,0 +1,7 @@
+.disabled {
+    background-color: gray;
+}
+
+.current {
+    background-color: lightsalmon;
+}
