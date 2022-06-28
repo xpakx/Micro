@@ -40,6 +40,7 @@ import { MessageButtonComponent } from './message/message-button/message-button.
 import { MessageListComponent } from './message/message-list/message-list.component';
 import { MessageComponent } from './message/message/message.component';
 import { MessageViewComponent } from './main-view/message-view/message-view.component';
+import { PaginationComponent } from './post/pagination/pagination.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -80,7 +81,8 @@ export function tokenGetter() {
     MessageButtonComponent,
     MessageListComponent,
     MessageComponent,
-    MessageViewComponent
+    MessageViewComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,17 +1,8 @@
+import { Pageable } from "./pageable";
+
 export interface Page<T> {
     content: T[];
-    pageable: {
-        sort: {
-            sorted: boolean;
-            unsorted: boolean;
-            empty: boolean;
-        };
-        offset: number;
-        pageNumber: number;
-        pageSize: number;
-        paged: boolean;
-        unpaged: boolean;
-    };
+    pageable: Pageable;
     totalPages: number;
     last: boolean;
     number: number;
