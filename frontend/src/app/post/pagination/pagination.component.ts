@@ -30,5 +30,4 @@ export class PaginationComponent implements OnInit {
     }
     this.pageEvent.emit(page);
   }
-
 }

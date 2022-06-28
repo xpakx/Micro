@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
@@ -15,7 +15,7 @@ export class HotComponent implements OnInit {
   errorOccured: boolean = false;
   errorMsg: String = '';
 
-  constructor(private postService: PostListService, private route: ActivatedRoute) { }
+  constructor(private postService: PostListService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -50,5 +50,9 @@ export class HotComponent implements OnInit {
   updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
+  }
+
+  toPage(page: number): void {
+    this.router.navigate([`/hot/page/${page}`]);
   }
 }

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
 import { FollowedResponse } from 'src/app/follows/dto/followed-response';
 import { FollowsService } from 'src/app/follows/follows.service';
@@ -20,7 +20,7 @@ export class UserViewComponent implements OnInit {
   followed: boolean = false;
   showMessageForm: boolean = false;
 
-  constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute) { }
+  constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -97,5 +97,9 @@ export class UserViewComponent implements OnInit {
 
   switchMessage() {
     this.showMessageForm = !this.showMessageForm;
+  }
+
+  toPage(page: number): void {
+    this.router.navigate([`/user/${this.userName}/page/${page}`]);
   }
 }

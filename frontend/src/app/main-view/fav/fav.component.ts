@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
 import { PostDetails } from 'src/app/post/dto/post-details';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
@@ -16,7 +16,7 @@ export class FavComponent implements OnInit {
   errorOccured: boolean = false;
   errorMsg: String = '';
 
-  constructor(private postService: PostService, private route: ActivatedRoute) { }
+  constructor(private postService: PostService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -51,5 +51,9 @@ export class FavComponent implements OnInit {
   updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
+  }
+
+  toPage(page: number): void {
+    this.router.navigate([`/fav/page/${page}`]);
   }
 }

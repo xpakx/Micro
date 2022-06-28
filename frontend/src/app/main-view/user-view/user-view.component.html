@@ -5,3 +5,6 @@
 <app-message-form [username]="userName" *ngIf="showMessageForm"></app-message-form>
 <app-post-form [init]="'@'+userName+':'"></app-post-form>
 <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
+<app-pagination  *ngIf="postList" (page)="toPage($event)" 
+[pages]="postList.totalPages" [curr]="postList.number" [last]="postList.last" [first]="postList.first">
+</app-pagination>

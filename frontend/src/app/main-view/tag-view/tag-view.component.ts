@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faTag, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Page } from 'src/app/common/dto/page';
 import { FollowedResponse } from 'src/app/follows/dto/followed-response';
@@ -21,7 +21,7 @@ export class TagViewComponent implements OnInit {
   faTag: IconDefinition = faTag;
   followed: boolean = false;
 
-  constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute) { }
+  constructor(private postService: PostListService, private followsService: FollowsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(routeParams => {
@@ -94,5 +94,9 @@ export class TagViewComponent implements OnInit {
       next: (response: any) => this.updateFollow(false),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
+  }
+
+  toPage(page: number): void {
+    this.router.navigate([`/tag/${this.tagName}/page/${page}`]);
   }
 }
