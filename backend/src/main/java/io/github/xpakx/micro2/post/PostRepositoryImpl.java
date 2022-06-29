@@ -230,7 +230,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         userIdQuery.setParameter(1, username);
         Long userId = (long) userIdQuery.getSingleResult();
         List<PostDetails> postResults = getListOfPostsWithFollowedTags(userId, pageable);
-        int count = postResults.size();
+        int count = getCountForPostsWithFollowedTags(userId);
         return new PageImpl<PostDetails>(postResults, pageable, count);
     }
 
@@ -258,5 +258,21 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .map(this::mapToPost)
                 .map((p) -> projectionFactory.createProjection(PostDetails.class, p))
                 .collect(Collectors.toList());
+    }
+
+    private int getCountForPostsWithFollowedTags(Long userId) {
+        Query countQuery = this.entityManager.createNativeQuery(
+                "SELECT COUNT(*) " +
+                        "FROM post p " +
+                        "LEFT JOIN user_account u ON p.user_id = u.id " +
+                        "LEFT JOIN post_tag pt ON pt.post_id = p.id " +
+                        "WHERE pt.tag_id IN (" +
+                            "SELECT ft.tag_id FROM user_follows uf LEFT JOIN follow_tag ft " +
+                            "ON uf.id = ft.follow_id " +
+                            "WHERE uf.user_id = ?1" +
+                        ") "
+        );
+        countQuery.setParameter(1, userId);
+        return ((BigInteger) countQuery.getSingleResult()).intValue();
     }
 }
