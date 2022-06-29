@@ -193,7 +193,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         userIdQuery.setParameter(1, username);
         Long userId = (long) userIdQuery.getSingleResult();
         List<PostDetails> postResults = getListOfPostsByFollowedUsers(userId, pageable);
-        int count = postResults.size();
+        int count = getCountForPostsByFollowedUsers(userId);
         return new PageImpl<PostDetails>(postResults, pageable, count);
     }
 
@@ -220,6 +220,21 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .map(this::mapToPost)
                 .map((p) -> projectionFactory.createProjection(PostDetails.class, p))
                 .collect(Collectors.toList());
+    }
+
+    private int getCountForPostsByFollowedUsers(Long userId) {
+        Query countQuery = this.entityManager.createNativeQuery(
+                "SELECT COUNT(*) " +
+                        "FROM post p " +
+                        "LEFT JOIN user_account u ON p.user_id = u.id " +
+                        "WHERE u.id IN (" +
+                            "SELECT us.user_id FROM user_follows uf LEFT JOIN follow_user us " +
+                            "ON uf.id = us.follow_id " +
+                            "WHERE uf.user_id = ?1" +
+                        ") "
+        );
+        countQuery.setParameter(1, userId);
+        return ((BigInteger) countQuery.getSingleResult()).intValue();
     }
 
     @Override
