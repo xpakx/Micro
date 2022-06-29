@@ -3,7 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { CommentListService } from 'src/app/comment/comment-list.service';
 import { CommentService } from 'src/app/comment/comment.service';
+import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { CommentWithData } from 'src/app/comment/dto/comment-with-data';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
@@ -40,7 +42,7 @@ export class PostComponent implements OnInit {
   showDeleteModal: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
-    private likeService: PostLikeService, private postService: PostService) {
+    private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]
     }); 
@@ -165,6 +167,27 @@ export class PostComponent implements OnInit {
       this.unfavPost();
     } else {
       this.favPost();
+    }
+  }
+
+  nextPage(): void {
+    if(this.comments && !this.comments.last) {
+      this.commentListService.getComments(this.post.id, this.comments.number+1).subscribe({
+        next: (response: Page<CommentDetails>) => this.updateComments(response),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      });
+    }
+  }
+
+  updateComments(response: Page<CommentDetails>): void {
+    if(this.comments) {
+      let newComments: CommentWithData[] = response.content.map((a) => { return {comment: a, liked: false, disliked: false}});
+      this.comments.content = newComments.concat(this.comments.content);
+      this.comments.last = response.last;
+      this.comments.totalPages = response.totalPages;
+      this.comments.totalElements = response.totalElements;
+      this.comments.number = response.number;
+      this.comments.numberOfElements += response.numberOfElements;
     }
   }
 }

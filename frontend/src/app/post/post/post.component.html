@@ -32,6 +32,10 @@
         </div>
     </div>
 
+    <button class="more-comments" *ngIf="!minimal && !sidebar && comments && !comments.last" (click)="nextPage()">
+        Load more comments
+    </button>
+
     <app-general-comment-list [comments]="comments" [postAuthor]="author" *ngIf="comments"></app-general-comment-list>
 
     <button class="more-comments" *ngIf="minimal || sidebar" (click)="toPost(post.id)">
