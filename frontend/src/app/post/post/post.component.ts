@@ -182,6 +182,7 @@ export class PostComponent implements OnInit {
   updateComments(response: Page<CommentDetails>): void {
     if(this.comments) {
       let newComments: CommentWithData[] = response.content.map((a) => { return {comment: a, liked: false, disliked: false}});
+      newComments.reverse();
       this.comments.content = newComments.concat(this.comments.content);
       this.comments.last = response.last;
       this.comments.totalPages = response.totalPages;

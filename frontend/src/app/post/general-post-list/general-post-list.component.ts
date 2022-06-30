@@ -14,5 +14,10 @@ export class GeneralPostListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    if(this.posts) {
+      for(let post of this.posts.content) {
+        post.comments.content.reverse();
+      }
+    }
   }
 }
