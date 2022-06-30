@@ -1,5 +1,7 @@
-<button (click)="toPage(0)" [class.disabled]="firstPage">«</button>
-<button (click)="toPage(currentPage-1)" [class.disabled]="firstPage">‹</button>
-<button *ngFor="let page of pages" (click)="toPage(page)" [class.current]="page == currentPage">{{page}}</button>
-<button (click)="toPage(currentPage+1)" [class.disabled]="lastPage">›</button>
-<button (click)="toPage(totalPages-1)" [class.disabled]="lastPage">»</button>
+<div class="page_nav">
+    <button class="pagination_button" (click)="toPage(0)" [class.disabled]="firstPage">«</button>
+    <button class="pagination_button"  (click)="toPage(currentPage-1)" [class.disabled]="firstPage">‹</button>
+    <button class="pagination_button"  *ngFor="let page of pages" (click)="toPage(page)" [class.current]="page == currentPage">{{page}}</button>
+    <button class="pagination_button"  (click)="toPage(currentPage+1)" [class.disabled]="lastPage">›</button>
+    <button class="pagination_button"  (click)="toPage(totalPages-1)" [class.disabled]="lastPage">»</button>
+</div>

@@ -1,7 +1,28 @@
+.pagination_button {
+    border-radius: 5px;
+    color: #a1aab7;
+    border: #bbd4f6 solid 1px;
+}
+
 .disabled {
-    background-color: gray;
+    background-color: #cdd2d9;
+    color: white;
 }
 
 .current {
-    background-color: lightsalmon;
+    background-color: #64c48c;
+    border-color: #64c48c;
+    color: white;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+}
+
+.page_nav {
+    display: flex;
+    gap: 5px;
 }
