@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { CommentDetails } from './dto/comment-details';
+import { CommentWithData } from './dto/comment-with-data';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class CommentListService {
 
   constructor(private http: HttpClient) { }
 
-  public getComments(postId: number, page?: number | undefined):  Observable<Page<CommentDetails>> {
-    return this.http.get<Page<CommentDetails>>(`${this.apiServerUrl}/posts/${postId}/comments${page ? '?page='+page : ''}`);
+  public getComments(postId: number, page?: number | undefined):  Observable<Page<CommentWithData>> {
+    return this.http.get<Page<CommentWithData>>(`${this.apiServerUrl}/posts/${postId}/comments${page ? '?page='+page : ''}`);
   }
 
   public getComment(commentId: number): Observable<CommentDetails> {

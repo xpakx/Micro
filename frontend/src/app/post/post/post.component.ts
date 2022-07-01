@@ -173,15 +173,15 @@ export class PostComponent implements OnInit {
   nextPage(): void {
     if(this.comments && !this.comments.last) {
       this.commentListService.getComments(this.post.id, this.comments.number+1).subscribe({
-        next: (response: Page<CommentDetails>) => this.updateComments(response),
+        next: (response: Page<CommentWithData>) => this.updateComments(response),
         error: (error: HttpErrorResponse) => this.showError(error)
       });
     }
   }
 
-  updateComments(response: Page<CommentDetails>): void {
+  updateComments(response: Page<CommentWithData>): void {
     if(this.comments) {
-      let newComments: CommentWithData[] = response.content.map((a) => { return {comment: a, liked: false, disliked: false}});
+      let newComments: CommentWithData[] = response.content;
       newComments.reverse();
       this.comments.content = newComments.concat(this.comments.content);
       this.comments.last = response.last;
