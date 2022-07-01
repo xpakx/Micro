@@ -135,9 +135,8 @@ class CommentPublicViewControllerTest {
     }
 
     @Test
-    @Disabled
     void shouldReturnAllCommentsByPostWithUserData() {
-        likeComment("user1", maxCommentId);
+        likeComment("user1", commentId);
         given()
                 .log()
                 .uri()
@@ -147,8 +146,8 @@ class CommentPublicViewControllerTest {
                 .get(baseUrl + "/posts/{postId}/comments", postId)
         .then()
                 .statusCode(OK.value())
-                .body("content.findAll { it.comment.id!="+maxCommentId+" }.liked", not(hasItem(true)))
-                .body("content.findAll { it.comment.id=="+maxCommentId+" }.liked", hasItem(true));
+                .body("content.findAll { it.comment.id!="+commentId+" }.liked", not(hasItem(true)))
+                .body("content.findAll { it.comment.id=="+commentId+" }.liked", hasItem(true));
     }
 
     private String tokenFor(String username) {
