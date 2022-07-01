@@ -1,8 +1,6 @@
 package io.github.xpakx.micro2.comment;
 
-import io.github.xpakx.micro2.comment.dto.CommentDetails;
-import io.github.xpakx.micro2.comment.dto.CommentDto;
-import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.dto.*;
 import io.github.xpakx.micro2.comment.error.CannotDeleteCommentException;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
@@ -15,13 +13,14 @@ import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -81,11 +80,32 @@ public class CommentService {
         commentRepository.save(toDelete);
     }
 
-    public Page<CommentDetails> getCommentsForPost(Integer page, Long postId) {
-        return commentRepository.getAllByPostId(
+    public Page<CommentWithUserData> getCommentsForPost(Integer page, Long postId) {
+        Page<CommentDetails> comments = commentRepository.getAllByPostId(
                 postId,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
+        List<CommentWithUserData> result = comments.stream()
+                .map(
+                        (c) -> CommentWithUserData.of(c, new CommentUserInfo())
+                ).collect(Collectors.toList());
+        return new PageImpl<CommentWithUserData>(result, comments.getPageable(), comments.getTotalElements());
+    }
+
+    public Page<CommentWithUserData> getCommentsForPostAuth(Integer page, Long postId, String username) {
+        Page<CommentDetails> comments = commentRepository.getAllByPostId(
+                postId,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+        List<Long> commentIds = comments.getContent().stream()
+                .map(CommentDetails::getId)
+                .collect(Collectors.toList());
+        Map<Long, CommentUserInfo> userInfoMap = commentRepository.getUserInfoMapForCommentIds(commentIds, username);
+        List<CommentWithUserData> result = comments.stream()
+                .map(
+                        (c) -> CommentWithUserData.of(c, userInfoMap.get(c.getId()))
+                ).collect(Collectors.toList());
+        return new PageImpl<CommentWithUserData>(result, comments.getPageable(), comments.getTotalElements());
     }
 
     public CommentDetails getSingleComment(Long commentId) {

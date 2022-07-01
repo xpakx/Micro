@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
+import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import io.github.xpakx.micro2.comment.error.CommentHasRepliesException;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.comment.error.CommentTooOldToEditException;
@@ -314,12 +315,22 @@ class CommentServiceTest {
                 .willReturn(new PageImpl<>(List.of(getCommentDetails("comment1"), getCommentDetails("comment2"))));
         injectMocks();
 
-        Page<CommentDetails> result = service.getCommentsForPost(0, 1L);
+        Page<CommentWithUserData> result = service.getCommentsForPost(0, 1L);
 
         assertNotNull(result);
         assertNotNull(result.getContent());
         assertThat(result.getContent(), hasSize(2));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("comment1"))));
-        assertThat(result.getContent(), hasItem(hasProperty("content", is("comment2"))));
+        assertThat(result.getContent(), hasItem(
+                    hasProperty("comment",
+                            hasProperty("content", is("comment1"))
+                    )
+                )
+        );
+        assertThat(result.getContent(), hasItem(
+                        hasProperty("comment",
+                                hasProperty("content", is("comment2"))
+                        )
+                )
+        );
     }
 }

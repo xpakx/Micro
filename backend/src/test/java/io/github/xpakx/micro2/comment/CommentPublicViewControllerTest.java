@@ -128,10 +128,10 @@ class CommentPublicViewControllerTest {
         .then()
                 .statusCode(OK.value())
                 .body("content", hasSize(3))
-                .body("content.content", not(hasItem(equalTo("comment4"))))
-                .body("content.content", hasItem(equalTo("comment1")))
-                .body("content.content", hasItem(equalTo("comment2")))
-                .body("content.content", hasItem(equalTo("comment3")));
+                .body("content.comment.content", not(hasItem(equalTo("comment4"))))
+                .body("content.comment.content", hasItem(equalTo("comment1")))
+                .body("content.comment.content", hasItem(equalTo("comment2")))
+                .body("content.comment.content", hasItem(equalTo("comment3")));
     }
 
     @Test
@@ -147,8 +147,8 @@ class CommentPublicViewControllerTest {
                 .get(baseUrl + "/posts/{postId}/comments", postId)
         .then()
                 .statusCode(OK.value())
-                .body("content.findAll { it.id!="+maxCommentId+" }.liked", not(hasItem(true)))
-                .body("content.findAll { it.id=="+maxCommentId+" }.liked", hasItem(true));
+                .body("content.findAll { it.comment.id!="+maxCommentId+" }.liked", not(hasItem(true)))
+                .body("content.findAll { it.comment.id=="+maxCommentId+" }.liked", hasItem(true));
     }
 
     private String tokenFor(String username) {
