@@ -1,6 +1,6 @@
 export interface UpdatedComment {
     id: number,
-    content: String,
+    message: String,
     createdAt: Date,
     username: String
 }

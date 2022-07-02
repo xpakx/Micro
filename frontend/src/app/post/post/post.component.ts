@@ -55,7 +55,7 @@ export class PostComponent implements OnInit {
     if(this.quickReply.valid && this.post) {
       this.commentService.newComment({message: this.quickReply.controls['content'].value}, this.post.id)
       .subscribe({
-        next: (response: UpdatedComment) => this.refresh(response),
+        next: (response: UpdatedComment) => this.addNewComment(response),
         error: (error: HttpErrorResponse) => this.showError(error)
       });
     }
@@ -66,8 +66,25 @@ export class PostComponent implements OnInit {
     this.invalid = true;
   }
 
-  refresh(response: UpdatedComment): void {
-    
+  addNewComment(response: UpdatedComment): void {
+    let newComment: CommentWithData = {
+      liked: false, 
+      disliked: false, 
+      comment: {
+        id: response.id, 
+        content: response.message, 
+        createdAt: response.createdAt,
+        edited: false,
+        deletedByUser: false,
+        deletedByPostAuthor: false,
+        likeCount: 0,
+        dislikeCount: 0,
+        user: {
+          username: response.username
+        }
+      }
+    }
+    this.comments?.content.push(newComment);
   }
 
   toPost(id: number) {

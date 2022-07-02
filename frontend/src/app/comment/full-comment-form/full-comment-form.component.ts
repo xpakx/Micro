@@ -5,6 +5,7 @@ import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-
 import { UpdatedPost } from 'src/app/post/dto/updated-post';
 import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
+import { UpdatedComment } from '../dto/updated-comment';
 
 @Component({
   selector: 'app-full-comment-form',
@@ -36,7 +37,7 @@ export class FullCommentFormComponent implements OnInit {
     if(this.form.valid && this.comment) {
       this.service.updateComment({message: this.form.controls['content'].value}, this.comment.id)
       .subscribe({
-        next: (response: UpdatedPost) => this.refresh(response),
+        next: (response: UpdatedComment) => this.refresh(response),
         error: (error: HttpErrorResponse) => this.showError(error)
       });
     }
@@ -47,7 +48,6 @@ export class FullCommentFormComponent implements OnInit {
     this.invalid = true;
   }
 
-  refresh(response: UpdatedPost): void {
-    
+  refresh(response: UpdatedComment): void {
   }
 }
