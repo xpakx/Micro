@@ -64,6 +64,11 @@ export class CommentComponent implements OnInit {
     return username != null && (username == this.comment.comment.user.username || this.postAuthor);
   }
 
+  get commentAuthor(): boolean {
+    let username: String | null = localStorage.getItem('username');
+    return username != null && username == this.comment.comment.user.username;
+  }
+
   askForDelete(): void {
     this.showDeleteModal = true;
   }
@@ -75,13 +80,19 @@ export class CommentComponent implements OnInit {
   delete(): void {
     this.closeDeleteModal();
     this.commentService.deleteComment(this.comment.comment.id).subscribe({
-      next: (response: any) => this.deleteComment(),
+      next: (response: any, commentId: number = this.comment.comment.id) => this.deleteComment(commentId),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
-  deleteComment(): void {
-    //todo
+  deleteComment(id: number): void {
+    if(this.commentAuthor) {
+      this.comment.comment.content = "[comment deleted by author]";
+      this.comment.comment.deletedByUser = true;
+    } else {
+      this.comment.comment.content =  "[comment deleted by post author]";
+      this.comment.comment.deletedByPostAuthor = true;
+    }
   }
 
   edit(): void {
