@@ -20,4 +20,10 @@ export class GeneralPostListComponent implements OnInit {
       }
     }
   }
+
+  deletePost(id: number) : void {
+    if(this.posts) {
+      this.posts.content = this.posts.content.filter((p) => p.post.id != id);
+    }
+  }
 }

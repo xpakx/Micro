@@ -1,11 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentListService } from 'src/app/comment/comment-list.service';
 import { CommentService } from 'src/app/comment/comment.service';
-import { CommentDetails } from 'src/app/comment/dto/comment-details';
 import { CommentWithData } from 'src/app/comment/dto/comment-with-data';
 import { UpdatedComment } from 'src/app/comment/dto/updated-comment';
 import { Page } from 'src/app/common/dto/page';
@@ -28,6 +27,7 @@ export class PostComponent implements OnInit {
   @Input('like') like: boolean = false;
   @Input('dislike') dislike: boolean = false;
   @Input('fav') inFav: boolean = false;
+  @Output('deletion') deletionEvent: EventEmitter<number> = new EventEmitter<number>();
   faCheck = faCheckCircle;
   faPlus = faPlus;
   faStar = faStar;
@@ -144,7 +144,7 @@ export class PostComponent implements OnInit {
   }
 
   deletePost(): void {
-    //todo
+    this.deletionEvent.emit(this.post.id);
   }
 
   edit(): void {
