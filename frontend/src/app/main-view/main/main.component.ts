@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'src/app/common/dto/page';
+import { PostDetails } from 'src/app/post/dto/post-details';
 import { PostWithComments } from 'src/app/post/dto/post-with-comments';
 import { PostListService } from 'src/app/post/post-list.service';
 
@@ -54,5 +55,11 @@ export class MainComponent implements OnInit {
   updateList(response: Page<PostWithComments>): void {
     this.postList = response;
     this.errorOccured = false;
+  }
+
+  addNewPost(post: PostWithComments): void {
+    if(this.postList) {
+      this.postList.content = [post].concat(this.postList.content);
+    }
   }
 }

@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
+import { PostDetails } from '../dto/post-details';
+import { PostWithComments } from '../dto/post-with-comments';
 import { UpdatedPost } from '../dto/updated-post';
 import { PostService } from '../post.service';
 
@@ -18,6 +20,7 @@ export class PostFormComponent implements OnInit {
   faAttach = faPaperclip;
   faSend = faPaperPlane;
   @Input("init") init?: String;
+  @Output("newPost") newPostEvent: EventEmitter<PostWithComments> = new EventEmitter<PostWithComments>();
 
   constructor(private service: PostService, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -47,6 +50,54 @@ export class PostFormComponent implements OnInit {
   }
 
   refresh(response: UpdatedPost): void {
+    let newPost: PostWithComments = {
+      post: {
+        id: response.id,
+        content: response.message,
+        createdAt: response.createdAt,
+        edited: false,
+        likeCount: 0,
+        dislikeCount: 0,
+        user: {
+          username: response.username,
+          gender: "",
+          avatarUrl: "",
+          confirmed: false
+        }
+      }, 
+      liked: false, 
+      disliked: false, 
+      fav: false, 
+      comments: {
+        content: [], 
+        totalPages: 0, 
+        totalElements: 0, 
+        last: false, 
+        number: 0, 
+        size: 0, 
+        numberOfElements: 0, 
+        empty: true, 
+        first: true,
+        sort: {
+          empty: true, 
+          sorted: true, 
+          unsorted: false
+        },
+        pageable: {
+          sort: {
+            empty: true, 
+            sorted: true, 
+            unsorted: false
+          }, 
+          offset: 0, 
+          pageNumber: 0, 
+          pageSize: 0, 
+          paged: true, 
+          unpaged: false
+        }
+      }
+    };
     
+    this.newPostEvent.emit(newPost);
   }
 }
