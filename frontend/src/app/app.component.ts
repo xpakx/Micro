@@ -46,6 +46,10 @@ export class AppComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  toMyMicro() {
+    this.router.navigate(['my/tags']);
+  }
+
   toMentions() {
     this.router.navigate(['my/mentions']);
   }

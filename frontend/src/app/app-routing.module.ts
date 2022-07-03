@@ -4,6 +4,7 @@ import { LoginFormComponent } from './authentication/login-form/login-form.compo
 import { LogoutComponent } from './authentication/logout/logout.component';
 import { RegisterFormComponent } from './authentication/register-form/register-form.component';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar/left-sidebar.component';
+import { MySidebarComponent } from './left-sidebar/my-sidebar/my-sidebar.component';
 import { ActiveComponent } from './main-view/active/active.component';
 import { CommentEditViewComponent } from './main-view/comment-edit-view/comment-edit-view.component';
 import { FavComponent } from './main-view/fav/fav.component';
@@ -48,6 +49,7 @@ const routes: Routes = [
   { path: 'message/:id', component: MessageViewComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
+  { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },
   { path: '', outlet: 'right-sidebar', component: RightSidebarComponent },
 ];
 

@@ -41,6 +41,7 @@ import { MessageListComponent } from './message/message-list/message-list.compon
 import { MessageComponent } from './message/message/message.component';
 import { MessageViewComponent } from './main-view/message-view/message-view.component';
 import { PaginationComponent } from './post/pagination/pagination.component';
+import { MySidebarComponent } from './left-sidebar/my-sidebar/my-sidebar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -82,7 +83,8 @@ export function tokenGetter() {
     MessageListComponent,
     MessageComponent,
     MessageViewComponent,
-    PaginationComponent
+    PaginationComponent,
+    MySidebarComponent
   ],
   imports: [
     BrowserModule,
