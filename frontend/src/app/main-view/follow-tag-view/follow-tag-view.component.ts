@@ -55,4 +55,10 @@ export class FollowTagViewComponent implements OnInit {
   toPage(page: number): void {
     this.router.navigate([`/my/tags/page/${page}`]);
   }
+
+  addNewPost(post: PostWithComments): void {
+    if(this.postList) {
+      this.postList.content = [post].concat(this.postList.content);
+    }
+  }
 }

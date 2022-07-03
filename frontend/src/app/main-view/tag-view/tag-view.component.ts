@@ -99,4 +99,10 @@ export class TagViewComponent implements OnInit {
   toPage(page: number): void {
     this.router.navigate([`/tag/${this.tagName}/page/${page}`]);
   }
+
+  addNewPost(post: PostWithComments): void {
+    if(this.postList) {
+      this.postList.content = [post].concat(this.postList.content);
+    }
+  }
 }

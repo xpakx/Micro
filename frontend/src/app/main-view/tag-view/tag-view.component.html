@@ -1,7 +1,7 @@
 <div class="tag-header">
     <app-follow-button [followed]="followed" (follow)="follow($event)" [icon]="faTag"></app-follow-button>
 </div>
-<app-post-form [init]="'#'+tagName"></app-post-form>
+<app-post-form [init]="'#'+tagName" (newPost)="addNewPost($event)"></app-post-form>
 <app-general-post-list *ngIf="postList" [posts]="postList"></app-general-post-list>
 <app-pagination  *ngIf="postList" (page)="toPage($event)" 
 [pages]="postList.totalPages" [curr]="postList.number" [last]="postList.last" [first]="postList.first">

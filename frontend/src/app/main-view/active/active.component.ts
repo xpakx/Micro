@@ -55,4 +55,10 @@ export class ActiveComponent implements OnInit {
   toPage(page: number): void {
     this.router.navigate([`/active/page/${page}`]);
   }
+
+  addNewPost(post: PostWithComments): void {
+    if(this.postList) {
+      this.postList.content = [post].concat(this.postList.content);
+    }
+  }
 }
