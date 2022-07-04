@@ -8,6 +8,9 @@ import io.github.xpakx.micro2.user.UserRoleRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,5 +32,17 @@ public class AdministrationService {
         UserRole role = new UserRole();
         role.setAuthority(name);
         return role;
+    }
+
+    @Transactional
+    public UserAccount deleteRole(String username, RoleRequest role) {
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        user.setRoles(
+                user.getRoles().stream()
+                        .filter((a) -> !a.getAuthority().equals(role.getName()))
+                        .collect(Collectors.toSet())
+        );
+        return userRepository.save(user);
     }
 }
