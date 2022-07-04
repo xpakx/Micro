@@ -18,7 +18,7 @@ public class AdministrationController {
     public ResponseEntity<UserAccount> addNewRole(@RequestBody RoleRequest request, @PathVariable String username) {
         return new ResponseEntity<>(
                 service.addRole(username, request),
-                HttpStatus.CREATED
+                HttpStatus.OK
         );
     }
 
