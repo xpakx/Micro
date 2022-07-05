@@ -283,7 +283,7 @@ class PostServiceTest {
 
     @Test
     void shouldReturnPageWithAllPosts() {
-        given(postRepository.findAllBy(ArgumentMatchers.any(PageRequest.class)))
+        given(postRepository.findAllByDeletedIsFalse(ArgumentMatchers.any(PageRequest.class)))
                 .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
         injectMocks();
 
@@ -298,7 +298,7 @@ class PostServiceTest {
 
     @Test
     void shouldReturnPageWithUserPosts() {
-        given(postRepository.getAllByUserUsername(anyString(), ArgumentMatchers.any(PageRequest.class)))
+        given(postRepository.getAllByUserUsernameAndDeletedIsFalse(anyString(), ArgumentMatchers.any(PageRequest.class)))
                 .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
         injectMocks();
 
@@ -313,7 +313,7 @@ class PostServiceTest {
 
     @Test
     void shouldReturnPageWithTaggedPosts() {
-        given(postRepository.findAllByTagsName(anyString(), ArgumentMatchers.any(PageRequest.class)))
+        given(postRepository.findAllByTagsNameAndDeletedIsFalse(anyString(), ArgumentMatchers.any(PageRequest.class)))
                 .willReturn(new PageImpl<>(List.of(getPostDetails("post1"), getPostDetails("post2"))));
         injectMocks();
 

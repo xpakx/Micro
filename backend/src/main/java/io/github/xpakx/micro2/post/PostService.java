@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +69,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPosts(Integer page) {
-        Page<PostDetails> posts = postRepository.findAllBy(
+        Page<PostDetails> posts = postRepository.findAllByDeletedIsFalse(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
         return composePostListAndComments(
@@ -80,7 +79,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPostsAuth(Integer page, String username) {
-        Page<PostDetails> posts = postRepository.findAllBy(
+        Page<PostDetails> posts = postRepository.findAllByDeletedIsFalse(
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
         return preparePostWithCommentsPage(username, posts);
@@ -107,7 +106,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPostsByUsername(Integer page, String username) {
-        Page<PostDetails> posts = postRepository.getAllByUserUsername(
+        Page<PostDetails> posts = postRepository.getAllByUserUsernameAndDeletedIsFalse(
                 username,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
@@ -118,7 +117,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPostsByUsernameAuth(Integer page, String user, String username) {
-        Page<PostDetails> posts = postRepository.getAllByUserUsername(
+        Page<PostDetails> posts = postRepository.getAllByUserUsernameAndDeletedIsFalse(
                 user,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
@@ -126,7 +125,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPostsByTagName(Integer page, String tag) {
-        Page<PostDetails> posts = postRepository.findAllByTagsName(
+        Page<PostDetails> posts = postRepository.findAllByTagsNameAndDeletedIsFalse(
                 tag,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
@@ -137,7 +136,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getPostsByTagNameAuth(Integer page, String tag, String username) {
-        Page<PostDetails> posts = postRepository.findAllByTagsName(
+        Page<PostDetails> posts = postRepository.findAllByTagsNameAndDeletedIsFalse(
                 tag,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
@@ -178,7 +177,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getHotPosts(Integer page) {
-        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfter(
+        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfterAndDeletedIsFalse(
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20, Sort.by("likeCount").descending())
         );
@@ -189,7 +188,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getHotPostsAuth(Integer page, String username) {
-        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfter(
+        Page<PostDetails> posts = postRepository.findAllByCreatedAtAfterAndDeletedIsFalse(
                 LocalDateTime.now().minusHours(24),
                 PageRequest.of(page, 20, Sort.by("likeCount").descending())
         );
@@ -224,7 +223,7 @@ public class PostService {
     }
 
     public Page<PostWithComments> getFavoritePosts(Integer page, String username) {
-        Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsername(
+        Page<PostDetails> posts = postRepository.findAllByFavoriteUserUsernameAndDeletedIsFalse(
                 username,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );

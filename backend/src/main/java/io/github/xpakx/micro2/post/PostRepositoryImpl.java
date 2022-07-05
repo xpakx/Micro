@@ -43,6 +43,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         "(" +
                             "SELECT * FROM post " +
                             "WHERE post.created_at > ?1 " +
+                            "AND post.deleted = false " +
                             "ORDER BY post.like_count DESC " +
                             "LIMIT 20" +
                         ") p " +
@@ -59,7 +60,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private int getPostCount(LocalDateTime date) {
         Query countQuery = this.entityManager.createQuery(
-                "SELECT COUNT(*) FROM Post p WHERE p.createdAt > ?1"
+                "SELECT COUNT(*) FROM Post p WHERE p.createdAt > ?1 AND p.deleted = false"
         );
         countQuery.setParameter(1, date);
         long countResult = (long) countQuery.getSingleResult();
@@ -75,6 +76,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         "FROM post " +
                         "LEFT JOIN user_account u ON post.user_id = u.id " +
                         "WHERE post.created_at > ?1 " +
+                        "AND post.deleted = false " +
                         "ORDER BY (SELECT count(post_id) FROM comment WHERE post.id = comment.post_id) DESC " +
                         "LIMIT ?2 OFFSET ?3"
         );
@@ -209,6 +211,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                             "ON uf.id = us.follow_id " +
                             "WHERE uf.user_id = ?1" +
                         ") " +
+                        "AND p.deleted = false " +
                         "ORDER BY p.created_at DESC " +
                         "LIMIT ?2 OFFSET ?3"
         );
@@ -231,7 +234,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                             "SELECT us.user_id FROM user_follows uf LEFT JOIN follow_user us " +
                             "ON uf.id = us.follow_id " +
                             "WHERE uf.user_id = ?1" +
-                        ") "
+                        ") " +
+                        "AND p.deleted = false "
         );
         countQuery.setParameter(1, userId);
         return ((BigInteger) countQuery.getSingleResult()).intValue();
@@ -262,6 +266,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                             "ON uf.id = ft.follow_id " +
                             "WHERE uf.user_id = ?1" +
                         ") " +
+                        "AND p.deleted = false " +
                         "ORDER BY p.created_at DESC " +
                         "LIMIT ?2 OFFSET ?3"
         );
@@ -285,7 +290,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                             "SELECT ft.tag_id FROM user_follows uf LEFT JOIN follow_tag ft " +
                             "ON uf.id = ft.follow_id " +
                             "WHERE uf.user_id = ?1" +
-                        ") "
+                        ") " +
+                        "AND p.deleted = false "
         );
         countQuery.setParameter(1, userId);
         return ((BigInteger) countQuery.getSingleResult()).intValue();
