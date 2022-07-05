@@ -12,10 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -134,5 +136,63 @@ class AdministrationControllerTest {
                 .body("roles.authority", hasItem("ROLE_TEST"));
         int rolesInDb = roleRepository.findAll().size();
         assertEquals(2, rolesInDb);
+    }
+
+    @Test
+    void shouldRespondWith401ToDeleteRoleIfUserUnauthorized() {
+        given()
+                .log()
+                .uri()
+        .when()
+                .delete(baseUrl + "/administration/users/{username}/roles", "user1")
+        .then()
+                .statusCode(UNAUTHORIZED.value());
+    }
+
+    @Test
+    void shouldRespondWith403ToDeleteRoleIfUserIsNotAdmin() {
+        RoleRequest request = getRoleRequest("ROLE_TEST");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("user1"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .delete(baseUrl + "/administration/users/{username}/roles", "user1")
+        .then()
+                .statusCode(FORBIDDEN.value());
+    }
+
+    @Test
+    void shouldDeleteRole() {
+        RoleRequest request = getRoleRequest("ROLE_TEST");
+        addRoleToUser("user1", "ROLE_TEST");
+        given()
+                .log()
+                .uri()
+                .auth()
+                .oauth2(tokenFor("admin"))
+                .contentType(ContentType.JSON)
+                .body(request)
+        .when()
+                .delete(baseUrl + "/administration/users/{username}/roles", "user1")
+        .then()
+                .statusCode(OK.value());
+
+        Optional<UserAccount> user = userRepository.findByUsername("user1");
+        assertTrue(user.isPresent());
+        assertThat(user.get().getRoles(), not(hasItem(hasProperty("authority", equalTo("ROLE_TEST")))));
+    }
+
+    private void addRoleToUser(String username, String roleName) {
+        UserRole role = new UserRole();
+        role.setAuthority(roleName);
+        UserAccount user = userRepository.findByUsername(username).get();
+        Set<UserRole> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 }
