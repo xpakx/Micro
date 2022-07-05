@@ -39,6 +39,7 @@ public class Post {
 
     LocalDateTime createdAt;
     boolean edited;
+    boolean deleted;
 
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})

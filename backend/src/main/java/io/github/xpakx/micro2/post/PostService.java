@@ -40,6 +40,7 @@ public class PostService {
                 .orElseThrow(() -> new UserNotFoundException("Not such user!"));
         newPost.setUser(user);
         newPost.setEdited(false);
+        newPost.setDeleted(false);
         newPost.setCreatedAt(LocalDateTime.now());
         newPost.setLikeCount(0);
         newPost.setDislikeCount(0);
@@ -52,7 +53,8 @@ public class PostService {
     public void deletePost(Long id, String username) {
         Post toDelete = postRepository.findByIdAndUserUsername(id, username)
                 .orElseThrow(PostNotFoundException::new);
-        postRepository.delete(toDelete); //TODO: maybe weak deletion? not sure
+        toDelete.setDeleted(true);
+        postRepository.save(toDelete);
     }
 
     public PostDto updatePost(PostRequest request, Long postId, String username) {
