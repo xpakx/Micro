@@ -22,7 +22,7 @@
         <app-avatar color="seagreen"></app-avatar>
 
         <form class="quick-response-form" id="form" [formGroup]="quickReply">
-            <input class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>
+            <input #responseInput class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>
         </form>
 
         <div class="response-options">

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -41,6 +41,7 @@ export class PostComponent implements OnInit {
   invalid: boolean = false;
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
+  @ViewChild("responseInput") responseElem?: ElementRef;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
@@ -215,6 +216,11 @@ export class PostComponent implements OnInit {
   }
 
   addEmoji(emoji: String): void {
-    this.quickReply.controls['content'].setValue(this.quickReply.controls['content'].value + emoji);
+    if(this.responseElem) {
+      let position: number = this.responseElem.nativeElement.selectionStart;
+      let oldText: String = this.quickReply.controls['content'].value;
+      let newText: String = oldText.slice(0, position) + emoji + oldText.slice(position)
+      this.quickReply.controls['content'].setValue(newText);
+    }
   }
 }

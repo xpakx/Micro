@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PostDetails } from '../dto/post-details';
@@ -22,6 +22,7 @@ export class PostFormComponent implements OnInit {
   @Input("init") init?: String;
   @Output("newPost") newPostEvent: EventEmitter<PostWithComments> = new EventEmitter<PostWithComments>();
   showEmojiDialog: boolean = false;
+  @ViewChild("postInput") postElem?: ElementRef;
 
   constructor(private service: PostService, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -107,6 +108,11 @@ export class PostFormComponent implements OnInit {
   }
 
   addEmoji(emoji: String): void {
-    this.form.controls['content'].setValue(this.form.controls['content'].value + emoji);
+    if(this.postElem) {
+      let position: number = this.postElem.nativeElement.selectionStart;
+      let oldText: String = this.form.controls['content'].value;
+      let newText: String = oldText.slice(0, position) + emoji + oldText.slice(position)
+      this.form.controls['content'].setValue(newText);
+    }
   }
 }
