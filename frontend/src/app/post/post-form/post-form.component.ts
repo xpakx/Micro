@@ -21,6 +21,7 @@ export class PostFormComponent implements OnInit {
   faSend = faPaperPlane;
   @Input("init") init?: String;
   @Output("newPost") newPostEvent: EventEmitter<PostWithComments> = new EventEmitter<PostWithComments>();
+  showEmojiDialog: boolean = false;
 
   constructor(private service: PostService, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -99,5 +100,13 @@ export class PostFormComponent implements OnInit {
     };
     
     this.newPostEvent.emit(newPost);
+  }
+
+  openEmojiDialog(): void {
+    this.showEmojiDialog = true;
+  }
+  
+  closeEmojiDialog(): void {
+    this.showEmojiDialog = false;
   }
 }

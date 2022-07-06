@@ -40,6 +40,7 @@ export class PostComponent implements OnInit {
   message: String = "";
   invalid: boolean = false;
   showDeleteModal: boolean = false;
+  showEmojiDialog: boolean = false;
 
   constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
@@ -207,5 +208,13 @@ export class PostComponent implements OnInit {
       this.comments.number = response.number;
       this.comments.numberOfElements += response.numberOfElements;
     }
+  }
+
+  openEmojiDialog(): void {
+    this.showEmojiDialog = true;
+  }
+  
+  closeEmojiDialog(): void {
+    this.showEmojiDialog = false;
   }
 }
