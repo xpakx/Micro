@@ -27,7 +27,7 @@
 
         <div class="response-options">
             <button class="option-button"><fa-icon [icon]="faAttach"></fa-icon></button>
-            <button class="option-button" (click)="openEmojiDialog()"><fa-icon [icon]="faSmile"></fa-icon></button>
+            <button class="option-button" (click)="switchEmojiDialog()"><fa-icon [icon]="faSmile"></fa-icon></button>
             <button class="send-button" (click)="reply()" [class.disabled-button]="quickReply.invalid"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
     </div>

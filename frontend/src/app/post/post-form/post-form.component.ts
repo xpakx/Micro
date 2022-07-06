@@ -102,12 +102,8 @@ export class PostFormComponent implements OnInit {
     this.newPostEvent.emit(newPost);
   }
 
-  openEmojiDialog(): void {
-    this.showEmojiDialog = true;
-  }
-  
-  closeEmojiDialog(): void {
-    this.showEmojiDialog = false;
+  switchEmojiDialog(): void {
+    this.showEmojiDialog = !this.showEmojiDialog;
   }
 
   addEmoji(emoji: String): void {
