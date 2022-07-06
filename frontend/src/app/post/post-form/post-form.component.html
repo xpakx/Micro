@@ -14,4 +14,4 @@
     </div>
 </div>
 
-<app-emoji-choice *ngIf="showEmojiDialog"></app-emoji-choice>
+<app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>

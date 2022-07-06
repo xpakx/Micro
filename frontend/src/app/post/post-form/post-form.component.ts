@@ -109,4 +109,8 @@ export class PostFormComponent implements OnInit {
   closeEmojiDialog(): void {
     this.showEmojiDialog = false;
   }
+
+  addEmoji(emoji: String): void {
+    this.form.controls['content'].setValue(this.form.controls['content'].value + emoji);
+  }
 }

@@ -217,4 +217,8 @@ export class PostComponent implements OnInit {
   closeEmojiDialog(): void {
     this.showEmojiDialog = false;
   }
+
+  addEmoji(emoji: String): void {
+    this.quickReply.controls['content'].setValue(this.quickReply.controls['content'].value + emoji);
+  }
 }

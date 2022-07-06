@@ -44,4 +44,4 @@
 </div>
 
 <app-modal-delete *ngIf="showDeleteModal" text="post" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>
-<app-emoji-choice *ngIf="showEmojiDialog"></app-emoji-choice>
+<app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
