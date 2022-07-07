@@ -1,6 +1,7 @@
 <div class="main-container">
     <div class="main-actions">
-        <router-outlet name="left-sidebar"></router-outlet>
+        <app-left-sidebar *ngIf="sidebar==0"></app-left-sidebar>
+        <app-my-sidebar *ngIf="sidebar==1"></app-my-sidebar>
     </div>
     <div class="main-content">
         <router-outlet></router-outlet>
