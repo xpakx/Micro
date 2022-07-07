@@ -10,8 +10,10 @@
         </ul>
     </div>
     <div class="menu-actions">
-        <button class="add-button">Add post</button>
-        <div class="user-options">
+        <div *ngIf="!logged"></div>
+        <button class="add-button" *ngIf="!logged" (click)="toLogin()">Login</button>
+        <button class="add-button" *ngIf="logged">Add post</button>
+        <div class="user-options" *ngIf="logged">
             <button class="icon-button"><fa-icon [icon]="faSearch"></fa-icon></button>
             <button class="icon-button button-with-counter" (click)="toMentions()">
                 <fa-icon [icon]="faNotif"></fa-icon>

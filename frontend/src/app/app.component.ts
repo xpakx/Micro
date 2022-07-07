@@ -21,8 +21,16 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router, private mentionService: MentionService, private messageService: MessageService) { }
 
-  ngOnInit(): void {
+  get logged(): boolean {
     if(localStorage.getItem("token")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  ngOnInit(): void {
+    if(this.logged) {
       this.mentionService.getMentionsCount().subscribe({
         next: (response: MentionCount) => this.updateMentions(response.count)
       });
@@ -56,5 +64,9 @@ export class AppComponent implements OnInit {
 
   toMessages() {
     this.router.navigate(['my/messages']);
+  }
+
+  toLogin() {
+    this.router.navigate(['login']);
   }
 }
