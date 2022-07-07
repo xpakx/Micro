@@ -43,6 +43,7 @@ import { MessageViewComponent } from './main-view/message-view/message-view.comp
 import { PaginationComponent } from './post/pagination/pagination.component';
 import { MySidebarComponent } from './left-sidebar/my-sidebar/my-sidebar.component';
 import { EmojiChoiceComponent } from './modal/emoji-choice/emoji-choice.component';
+import { MainContainerComponent } from './main-view/main-container/main-container.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -86,7 +87,8 @@ export function tokenGetter() {
     MessageViewComponent,
     PaginationComponent,
     MySidebarComponent,
-    EmojiChoiceComponent
+    EmojiChoiceComponent,
+    MainContainerComponent
   ],
   imports: [
     BrowserModule,
