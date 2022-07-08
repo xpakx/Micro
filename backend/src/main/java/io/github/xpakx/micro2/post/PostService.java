@@ -284,4 +284,8 @@ public class PostService {
         );
         return preparePostWithCommentsPage(username, posts);
     }
+
+    public Page<PostDetails> searchPosts(String search, Integer page) {
+        return postRepository.findByContentIsContainingIgnoreCase(search, PageRequest.of(page, 20));
+    }
 }

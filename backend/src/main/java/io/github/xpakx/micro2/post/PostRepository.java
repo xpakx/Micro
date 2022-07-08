@@ -21,4 +21,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long>, 
     Optional<Post> findByCommentsId(Long id);
     Page<PostDetails> findAllByCreatedAtAfterAndDeletedIsFalse(LocalDateTime createdAt, Pageable pageable);
     Page<PostDetails> findAllByFavoriteUserUsernameAndDeletedIsFalse(String username, Pageable pageable);
+
+    Page<PostDetails> findByContentIsContainingIgnoreCase(String content, Pageable pageable);
 }

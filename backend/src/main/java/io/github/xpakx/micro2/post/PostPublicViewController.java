@@ -91,4 +91,12 @@ public class PostPublicViewController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("/posts/search")
+    public ResponseEntity<Page<PostDetails>> search(@RequestParam("page") Optional<Integer> page, @RequestParam("search") String searchTerm) {
+        return new ResponseEntity<>(
+                service.searchPosts(searchTerm, page.orElse(0)),
+                HttpStatus.OK
+        );
+    }
 }
