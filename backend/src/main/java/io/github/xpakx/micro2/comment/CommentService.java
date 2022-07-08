@@ -112,4 +112,8 @@ public class CommentService {
         return commentRepository.findProjectedById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
     }
+
+    public Page<CommentDetails> searchComments(String search, Integer page) {
+        return commentRepository.findByContentIsContainingIgnoreCase(search, PageRequest.of(page, 20));
+    }
 }

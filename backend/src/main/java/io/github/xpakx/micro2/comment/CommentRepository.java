@@ -15,4 +15,5 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Page<CommentDetails> findAllBy(Pageable pageable);
     boolean existsByPostIdAndCreatedAtIsGreaterThan(Long postId, LocalDateTime createdAt);
     Optional<CommentDetails> findProjectedById(Long id);
+    Page<CommentDetails> findByContentIsContainingIgnoreCase(String content, Pageable pageable);
 }

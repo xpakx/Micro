@@ -35,4 +35,12 @@ public class CommentPublicViewController {
                 service.getSingleComment(commentId), HttpStatus.OK
         );
     }
+
+    @GetMapping("/comments/search")
+    public ResponseEntity<Page<CommentDetails>> search(@RequestParam("page") Optional<Integer> page, @RequestParam("search") String searchTerm) {
+        return new ResponseEntity<>(
+                service.searchComments(searchTerm, page.orElse(0)),
+                HttpStatus.OK
+        );
+    }
 }
