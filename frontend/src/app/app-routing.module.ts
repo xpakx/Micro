@@ -20,6 +20,7 @@ import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { MessageListComponent } from './message/message-list/message-list.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
+import { SearchViewComponent } from './search/search-view/search-view.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'my/mentions', component: MentionListComponent },
   { path: 'my/messages', component: MessageListComponent },
   { path: 'message/:id', component: MessageViewComponent },
+  { path: 'search', component: SearchViewComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
   { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },

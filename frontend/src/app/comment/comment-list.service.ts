@@ -21,4 +21,8 @@ export class CommentListService {
   public getComment(commentId: number): Observable<CommentDetails> {
     return this.http.get<CommentDetails>(`${this.apiServerUrl}/comments/${commentId}`);
   }
+
+  public search(search: String, page?: number | undefined):  Observable<Page<CommentDetails>> {
+    return this.http.get<Page<CommentDetails>>(`${this.apiServerUrl}/comments/search?search=${search}${page ? '&page='+page : ''}`);
+  }
 }

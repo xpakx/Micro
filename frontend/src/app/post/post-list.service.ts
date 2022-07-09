@@ -43,8 +43,11 @@ export class PostListService {
     return this.http.get<PostDetails[]>(`${this.apiServerUrl}/posts/hot/random`);
   }
 
-
   public getActivePosts(page?: number | undefined):  Observable<Page<PostWithComments>> {
     return this.http.get<Page<PostWithComments>>(`${this.apiServerUrl}/posts/active${page ? '?page='+page : ''}`);
+  }
+
+  public search(search: String, page?: number | undefined):  Observable<Page<PostDetails>> {
+    return this.http.get<Page<PostDetails>>(`${this.apiServerUrl}/posts/search?search=${search}${page ? '&page='+page : ''}`);
   }
 }
