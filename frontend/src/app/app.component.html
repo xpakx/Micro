@@ -14,7 +14,10 @@
         <button class="add-button" *ngIf="!logged" (click)="toLogin()">Login</button>
         <button class="add-button" *ngIf="logged">Add post</button>
         <div class="user-options" *ngIf="logged">
-            <button class="icon-button"><fa-icon [icon]="faSearch"></fa-icon></button>
+            <form class="form-inline" [formGroup]="searchForm" *ngIf="showSearch">
+                <input class="form-control" type="search" placeholder="Search" formControlName="search">
+            </form>
+            <button class="icon-button" (click)="search()"><fa-icon [icon]="faSearch"></fa-icon></button>
             <button class="icon-button button-with-counter" (click)="toMentions()">
                 <fa-icon [icon]="faNotif"></fa-icon>
                 <div class="counter" *ngIf="mentionsCount>0"> {{ mentionsCount }}</div>
