@@ -2,7 +2,7 @@
     <form class="form-inline" [formGroup]="searchForm">
         <input class="form-control" type="search" placeholder="Search" formControlName="search">
     </form>
-    <button class="icon-button">Search</button>
+    <button class="icon-button" (click)="search()">Search</button>
     <button class="icon-button" (click)="switchSearchInPosts()">Search in {{ showPosts ? 'comments' : 'posts'}}</button>
 </div>
 

@@ -73,4 +73,14 @@ export class SearchViewComponent implements OnInit {
       this.getComments(this.searchString);
     }
   }
+
+  search(): void {
+    this.searchString = this.searchForm.controls['search'].value;
+    if(this.showPosts) {
+      this.getPosts(this.searchString);
+    } else {
+      this.getComments(this.searchString);
+    }
+    
+  }
 }
