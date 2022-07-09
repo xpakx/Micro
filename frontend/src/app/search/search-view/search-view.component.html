@@ -1,3 +1,11 @@
+<div class="search-input">
+    <form class="form-inline" [formGroup]="searchForm">
+        <input class="form-control" type="search" placeholder="Search" formControlName="search">
+    </form>
+    <button class="icon-button">Search</button>
+    <button class="icon-button" (click)="switchSearchInPosts()">Search in {{ showPosts ? 'comments' : 'posts'}}</button>
+</div>
+
 <div class="post-list" *ngIf="showPosts && posts">
     <div class="post" *ngFor="let post of posts.content">
         {{post.content}}
