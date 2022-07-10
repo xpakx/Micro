@@ -1,0 +1,37 @@
+button {
+    cursor: pointer;
+    border: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #dbe6fe;
+    color: #437ef8;
+    padding: 7px 15px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.buttons {
+    margin: 10px 0;
+    display: flex;
+}
+
+
+
+.search-input {
+    display: flex;
+    flex-direction: column;
+    background-color: #f6f8fa;
+    padding: 10px 15px;
+
+}
+
+.form-control {
+    border: none;
+    background-color: #f6f8fa;
+    color: #b1b9c4;
+    width: 100%;
+}
+
