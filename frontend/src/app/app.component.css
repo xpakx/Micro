@@ -107,3 +107,10 @@ button {
     justify-content: center;
 }
 
+.form-control {
+    border: 2px solid #dbe6fe;
+    border-radius: 4px;
+    background-color: #f6f8fa;
+    color: #b1b9c4;
+    width: 100%;
+}
