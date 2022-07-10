@@ -45,6 +45,7 @@ import { MySidebarComponent } from './left-sidebar/my-sidebar/my-sidebar.compone
 import { EmojiChoiceComponent } from './modal/emoji-choice/emoji-choice.component';
 import { MainContainerComponent } from './main-view/main-container/main-container.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
+import { CommentSearchComponent } from './comment/comment-search/comment-search.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -90,7 +91,8 @@ export function tokenGetter() {
     MySidebarComponent,
     EmojiChoiceComponent,
     MainContainerComponent,
-    SearchViewComponent
+    SearchViewComponent,
+    CommentSearchComponent
   ],
   imports: [
     BrowserModule,

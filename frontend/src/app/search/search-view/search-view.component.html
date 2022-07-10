@@ -17,9 +17,7 @@
 </div>
 
 <div class="comment-list" *ngIf="!showPosts && comments">
-    <div class="comment" *ngFor="let comment of comments.content">
-        {{comment.content}}
-    </div>
+    <app-comment-search *ngFor="let comment of comments.content" [comment]="comment"></app-comment-search>
 
     <app-pagination  *ngIf="comments" (page)="toCommentPage($event)" 
     [pages]="comments.totalPages" [curr]="comments.number" [last]="comments.last" [first]="comments.first">
