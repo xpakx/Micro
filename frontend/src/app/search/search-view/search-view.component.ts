@@ -60,6 +60,13 @@ export class SearchViewComponent implements OnInit {
     this.showPosts = true;
   }
 
+  toCommentPage(page: number) {
+    this.commentService.search(this.searchString, page).subscribe({
+      next: (response: Page<CommentDetails>) => this.updateComments(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
   private getComments(search: String) {
     this.commentService.search(search).subscribe({
       next: (response: Page<CommentDetails>) => this.updateComments(response),
