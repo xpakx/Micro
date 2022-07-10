@@ -10,6 +10,10 @@
 
 <div class="post-list" *ngIf="showPosts && posts">
     <app-post *ngFor="let post of posts.content" [post]="post" [sidebar]="true"></app-post>
+
+    <app-pagination  *ngIf="posts" (page)="toPostPage($event)" 
+    [pages]="posts.totalPages" [curr]="posts.number" [last]="posts.last" [first]="posts.first">
+    </app-pagination>
 </div>
 
 <div class="comment-list" *ngIf="!showPosts && comments">
@@ -17,3 +21,4 @@
         {{comment.content}}
     </div>
 </div>
+

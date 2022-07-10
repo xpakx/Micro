@@ -37,6 +37,13 @@ export class SearchViewComponent implements OnInit {
     this.getPosts(search);
   }
 
+  toPostPage(page: number): void {
+    this.postService.search(this.searchString, page).subscribe({
+      next: (response: Page<PostDetails>) => this.updatePosts(response),
+      error: (error: HttpErrorResponse) => this.showError(error)
+    });
+  }
+
   private getPosts(search: String) {
     this.postService.search(search).subscribe({
       next: (response: Page<PostDetails>) => this.updatePosts(response),
