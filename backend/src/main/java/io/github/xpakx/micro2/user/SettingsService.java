@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.user;
 
+import io.github.xpakx.micro2.user.dto.ChangeGenderRequest;
 import io.github.xpakx.micro2.user.dto.ChangePasswordRequest;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,12 @@ public class SettingsService {
             throw new ValidationException("Passwords don't match!");
         }
         toChange.setPassword(passwordEncoder.encode(request.getPassword()));
+        return userRepository.save(toChange);
+    }
+
+    public UserAccount changeGender(ChangeGenderRequest request, String username) {
+        UserAccount toChange = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        toChange.setGender(request.getGender());
         return userRepository.save(toChange);
     }
 }

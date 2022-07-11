@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.user;
 
+import io.github.xpakx.micro2.user.dto.ChangeGenderRequest;
 import io.github.xpakx.micro2.user.dto.ChangePasswordRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,20 @@ import java.security.Principal;
 public class SettingsController {
     private final SettingsService service;
 
-
     @PutMapping("/password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserAccount> changePassword(@RequestBody ChangePasswordRequest password, Principal principal) {
         return new ResponseEntity<>(
                 service.changePassword(password, principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/gender")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserAccount> changeGender(@RequestBody ChangeGenderRequest request, Principal principal) {
+        return new ResponseEntity<>(
+                service.changeGender(request, principal.getName()),
                 HttpStatus.OK
         );
     }
