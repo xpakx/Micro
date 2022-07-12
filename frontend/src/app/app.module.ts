@@ -46,6 +46,7 @@ import { EmojiChoiceComponent } from './modal/emoji-choice/emoji-choice.componen
 import { MainContainerComponent } from './main-view/main-container/main-container.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
 import { CommentSearchComponent } from './comment/comment-search/comment-search.component';
+import { SettingsComponent } from './user/settings/settings.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -92,7 +93,8 @@ export function tokenGetter() {
     EmojiChoiceComponent,
     MainContainerComponent,
     SearchViewComponent,
-    CommentSearchComponent
+    CommentSearchComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
