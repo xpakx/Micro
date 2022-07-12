@@ -1,1 +1,15 @@
-<p>settings works!</p>
+<div class="settings-row">
+    <h2 class="setting-title">Change password</h2>
+    <form class="form-inline" [formGroup]="passwordForm">
+        <label for="password">Password</label>
+        <div class="field">
+            <input class="password" formControlName="password" type="password" />
+        </div>
+
+        <label for="passwordRe">Repeat password</label>
+        <div class="field">
+            <input class="passwordRe" formControlName="passwordRe" type="password" />
+        </div>
+    </form>
+    <button class="icon-button" (click)="changePassword()">Change Password</button>
+</div>

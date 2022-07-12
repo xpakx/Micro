@@ -21,6 +21,7 @@ import { MentionListComponent } from './mention/mention-list/mention-list.compon
 import { MessageListComponent } from './message/message-list/message-list.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
+import { SettingsComponent } from './user/settings/settings.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'my/messages', component: MessageListComponent },
   { path: 'message/:id', component: MessageViewComponent },
   { path: 'search', component: SearchViewComponent },
+  { path: 'settings', component: SettingsComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
   { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },

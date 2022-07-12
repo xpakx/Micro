@@ -1,4 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserDto } from '../dto/user-dto';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -6,10 +10,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  passwordForm: FormGroup;
 
-  constructor() { }
+  constructor(private settingsService: SettingsService, private fb: FormBuilder) {
+    this.passwordForm = this.fb.group({
+      password: ['', Validators.required],
+      passwordRe: ['', Validators.required]
+    });
+   }
 
   ngOnInit(): void {
+  }
+
+  changePassword(): void {
+    if(this.passwordForm.valid) {
+      this.settingsService.changePassword({
+        password: this.passwordForm.controls['password'].value,
+        passwordRe: this.passwordForm.controls['passwordRe'].value,
+      }).subscribe({
+        next: (response: UserDto) => this.onSuccess(),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      })
+    }
+  }
+
+  private showError(error: HttpErrorResponse) {
+    //todo
+  }
+
+  private onSuccess() {
+    //todo
   }
 
 }

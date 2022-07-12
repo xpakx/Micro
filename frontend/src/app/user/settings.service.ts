@@ -15,10 +15,10 @@ export class SettingsService {
   constructor(private http: HttpClient) { }
 
   public changePassword(request: ChangePasswordRequest):  Observable<UserDto> {
-    return this.http.post<UserDto>(`${this.apiServerUrl}/password`, request);
+    return this.http.put<UserDto>(`${this.apiServerUrl}/password`, request);
   }
 
   public changeGender(request: ChangeGenderRequest):  Observable<UserDto> {
-    return this.http.post<UserDto>(`${this.apiServerUrl}/gender`, request);
+    return this.http.put<UserDto>(`${this.apiServerUrl}/gender`, request);
   }
 }
