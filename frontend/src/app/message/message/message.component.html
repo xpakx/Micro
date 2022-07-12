@@ -1,7 +1,7 @@
 <div class="message-container" *ngIf="message" [class.unread]="!message.read">
     <div class="message">
         <div class="author-bar">
-            <app-avatar></app-avatar>
+            <app-avatar [gender]="message.sender.gender"></app-avatar>
             <div class="author-name" (click)="toUser(message.sender.username)">{{message.sender.username}}</div>
             <div class="post-date">sent at {{message.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         </div>

@@ -1,3 +1,4 @@
 export interface CommentAuthor {
-    username: String
+    username: String;
+    gender: String;
 }

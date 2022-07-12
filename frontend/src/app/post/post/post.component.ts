@@ -82,7 +82,8 @@ export class PostComponent implements OnInit {
         likeCount: 0,
         dislikeCount: 0,
         user: {
-          username: response.username
+          username: response.username,
+          gender: 'male'
         }
       }
     }

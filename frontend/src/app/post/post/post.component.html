@@ -1,6 +1,6 @@
 <div class="post-container" *ngIf="post" [class.sidebar-container]="sidebar">
     <div class="author-bar">
-        <app-avatar></app-avatar>
+        <app-avatar [gender]="post.user.gender"></app-avatar>
         <div class="author-name" (click)="toUser(post.user.username)">{{post.user.username}}</div>
         <div class="confirmed-user" *ngIf="post.user.confirmed"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
         <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="quick-response" *ngIf="!sidebar">
-        <app-avatar color="seagreen"></app-avatar>
+        <app-avatar gender="male"></app-avatar>
 
         <form class="quick-response-form" id="form" [formGroup]="quickReply">
             <input #responseInput class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>
