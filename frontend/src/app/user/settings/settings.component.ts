@@ -11,11 +11,15 @@ import { SettingsService } from '../settings.service';
 })
 export class SettingsComponent implements OnInit {
   passwordForm: FormGroup;
+  genderForm: FormGroup;
 
   constructor(private settingsService: SettingsService, private fb: FormBuilder) {
     this.passwordForm = this.fb.group({
       password: ['', Validators.required],
       passwordRe: ['', Validators.required]
+    });
+    this.genderForm = this.fb.group({
+      gender: ['', Validators.required]
     });
    }
 
@@ -42,4 +46,15 @@ export class SettingsComponent implements OnInit {
     //todo
   }
 
+
+  changeGender(): void {
+    if(this.genderForm.valid) {
+      this.settingsService.changeGender({
+        gender: this.genderForm.controls['gender'].value
+      }).subscribe({
+        next: (response: UserDto) => this.onSuccess(),
+        error: (error: HttpErrorResponse) => this.showError(error)
+      })
+    }
+  }
 }

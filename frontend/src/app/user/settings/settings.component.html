@@ -1,15 +1,26 @@
 <div class="settings-row">
     <h2 class="setting-title">Change password</h2>
     <form class="form-inline" [formGroup]="passwordForm">
-        <label for="password">Password</label>
+        <label for="password">New password</label>
         <div class="field">
             <input class="password" formControlName="password" type="password" />
         </div>
 
-        <label for="passwordRe">Repeat password</label>
+        <label for="passwordRe">Repeat new password</label>
         <div class="field">
             <input class="passwordRe" formControlName="passwordRe" type="password" />
         </div>
     </form>
-    <button class="icon-button" (click)="changePassword()">Change Password</button>
+    <button class="icon-button" (click)="changePassword()">Apply</button>
+</div>
+
+<div class="settings-row">
+    <h2 class="setting-title">Change gender</h2>
+    <form class="form-inline" [formGroup]="genderForm">
+        <label for="gender">Gender</label>
+        <div class="field">
+            <input class="gender" formControlName="gender" />
+        </div>
+    </form>
+    <button class="icon-button" (click)="changeGender()">Apply</button>
 </div>
