@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
   @Output("page") pageEvent = new EventEmitter<number>();
-  @Input("pages") totalPages: number = 0;
+  totalPages: number = 0;
   currentPage: number = 0;
   @Input("last") lastPage: boolean = true;
   @Input("first") firstPage: boolean = true;
@@ -15,9 +15,13 @@ export class PaginationComponent implements OnInit {
 
   constructor() { }
 
-  
   @Input("curr") set current(page: number) {
     this.currentPage = page;
+    this.calculatePages();
+  } 
+
+  @Input("pages") set pagesTotal(page: number) {
+    this.totalPages = page;
     this.calculatePages();
   } 
 
