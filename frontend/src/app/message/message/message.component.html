@@ -6,7 +6,7 @@
             <div class="post-date">sent at {{message.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         </div>
         
-        <div class="message-content">{{message.content}}</div>
+        <div markdown class="message-content">{{message.content}}</div>
     </div>
     
     <app-message-form [username]="message.sender.username"></app-message-form>
