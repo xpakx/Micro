@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PostDetails } from '../dto/post-details';
 import { UpdatedPost } from '../dto/updated-post';
@@ -13,14 +13,14 @@ import { PostService } from '../post.service';
 })
 export class FullPostFormComponent implements OnInit {
   @Input("editPost") post?: PostDetails;
-  form: FormGroup;
+  form: UntypedFormGroup;
   message: String = '';
   invalid: boolean = false;
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
 
-  constructor(private service: PostService, private fb: FormBuilder) {
+  constructor(private service: PostService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
       content: ['', Validators.required]
     }); 

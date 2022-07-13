@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserDto } from '../dto/user-dto';
 import { SettingsService } from '../settings.service';
 
@@ -10,10 +10,10 @@ import { SettingsService } from '../settings.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  passwordForm: FormGroup;
-  genderForm: FormGroup;
+  passwordForm: UntypedFormGroup;
+  genderForm: UntypedFormGroup;
 
-  constructor(private settingsService: SettingsService, private fb: FormBuilder) {
+  constructor(private settingsService: SettingsService, private fb: UntypedFormBuilder) {
     this.passwordForm = this.fb.group({
       password: ['', Validators.required],
       passwordRe: ['', Validators.required]

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentListService } from 'src/app/comment/comment-list.service';
@@ -36,14 +36,14 @@ export class PostComponent implements OnInit {
   faSend = faPaperPlane;
   faDelete = faTrashAlt;
   faEdit = faEdit;
-  quickReply: FormGroup;
+  quickReply: UntypedFormGroup;
   message: String = "";
   invalid: boolean = false;
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
   @ViewChild("responseInput") responseElem?: ElementRef;
 
-  constructor(private commentService: CommentService, private fb: FormBuilder, private router: Router,
+  constructor(private commentService: CommentService, private fb: UntypedFormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]

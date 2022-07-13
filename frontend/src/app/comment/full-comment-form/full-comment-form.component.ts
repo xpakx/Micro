@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { UpdatedPost } from 'src/app/post/dto/updated-post';
 import { CommentService } from '../comment.service';
@@ -14,14 +14,14 @@ import { UpdatedComment } from '../dto/updated-comment';
 })
 export class FullCommentFormComponent implements OnInit {
   @Input("editComment") comment?: CommentDetails;
-  form: FormGroup;
+  form: UntypedFormGroup;
   message: String = '';
   invalid: boolean = false;
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
 
-  constructor(private service: CommentService, private fb: FormBuilder) {
+  constructor(private service: CommentService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
       content: ['', Validators.required]
     }); 

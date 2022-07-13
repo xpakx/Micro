@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faBell, faEnvelope, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MentionCount } from './mention/dto/mention-count';
@@ -19,11 +19,11 @@ export class AppComponent implements OnInit {
   faMessage = faEnvelope;
   mentionsCount: number = 0;
   messagesCount: number = 0;
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
   smallWindow: boolean = false;
   showSearch: boolean = false;
 
-  constructor(private router: Router, private mentionService: MentionService, private messageService: MessageService, private fb: FormBuilder) { 
+  constructor(private router: Router, private mentionService: MentionService, private messageService: MessageService, private fb: UntypedFormBuilder) { 
     this.searchForm = this.fb.group({
       search: ['']
     });

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { MessageDto } from '../dto/message-dto';
 import { MessageService } from '../message.service';
@@ -11,7 +11,7 @@ import { MessageService } from '../message.service';
   styleUrls: ['./message-form.component.css']
 })
 export class MessageFormComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   public invalid: boolean = false;
   public sent: boolean = false;
   public message: string = '';
@@ -19,7 +19,7 @@ export class MessageFormComponent implements OnInit {
 
   @Input("username") username?: String;
 
-  constructor(private service: MessageService, private fb: FormBuilder) {
+  constructor(private service: MessageService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
       content: ['', Validators.required]
     });

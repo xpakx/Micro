@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PostDetails } from '../dto/post-details';
 import { PostWithComments } from '../dto/post-with-comments';
@@ -13,7 +13,7 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-form.component.css']
 })
 export class PostFormComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   message: String = '';
   invalid: boolean = false;
   faSmile = faSmile;
@@ -24,7 +24,7 @@ export class PostFormComponent implements OnInit {
   showEmojiDialog: boolean = false;
   @ViewChild("postInput") postElem?: ElementRef;
 
-  constructor(private service: PostService, private fb: FormBuilder) {
+  constructor(private service: PostService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
       content: ['', Validators.required]
     }); 

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentListService } from 'src/app/comment/comment-list.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
@@ -17,10 +17,10 @@ export class SearchViewComponent implements OnInit {
   showPosts: boolean = true;
   posts?: Page<PostDetails>;
   comments?: Page<CommentDetails>;
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
   searchString: String = '';
 
-  constructor(private postService: PostListService, private commentService: CommentListService, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private postService: PostListService, private commentService: CommentListService, private route: ActivatedRoute, private fb: UntypedFormBuilder) {
     this.searchForm = this.fb.group({
       search: ['']
     });
