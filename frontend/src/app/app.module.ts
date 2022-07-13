@@ -47,6 +47,7 @@ import { MainContainerComponent } from './main-view/main-container/main-containe
 import { SearchViewComponent } from './search/search-view/search-view.component';
 import { CommentSearchComponent } from './comment/comment-search/comment-search.component';
 import { SettingsComponent } from './user/settings/settings.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -108,7 +109,8 @@ export function tokenGetter() {
         allowedDomains: ['localhost:8080', '192.168.50.118:8080'],
       }
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    MarkdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
