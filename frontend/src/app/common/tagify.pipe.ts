@@ -11,9 +11,9 @@ export class TagifyPipe implements PipeTransform {
 
   private stylize(text: string | String): string | String {
     let stylizedText: string | String = text;
-    let tagPattern: RegExp = /(\s|^|>)#(\w+)/;
+    let tagPattern: RegExp = /(\s|^|>)#(\w+)/g;
     stylizedText = stylizedText.replace(tagPattern, "$1#<a href=\"/tag/$2\">$2</a>");
-    let mentionPattern: RegExp = /(\s|^|>)@(\w+)/;
+    let mentionPattern: RegExp = /(\s|^|>)@(\w+)/g;
     stylizedText = stylizedText.replace(mentionPattern, "$1@<a href=\"/user/$2\">$2</a>");
     return stylizedText;
   }
