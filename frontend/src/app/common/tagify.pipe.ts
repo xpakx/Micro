@@ -17,6 +17,9 @@ export class TagifyPipe implements PipeTransform {
           if (t.startsWith("#") && t.length>1) {  
             stylizedText += `#<a href="/tag/${t.substring(1)}">${t.substring(1)}</a> `;
           }
+          else if (t.startsWith("@") && t.length>1) {  
+            stylizedText += `@<a href="/user/${t.substring(1)}">${t.substring(1)}</a> `;
+          }
           else
             stylizedText += t + " ";
         }
