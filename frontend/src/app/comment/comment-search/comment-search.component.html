@@ -6,7 +6,7 @@
         <div class="edited" *ngIf="comment.edited">edited</div>
     </div>
 
-    <div markdown class="post-content">{{comment.content}}</div>
+    <div markdown class="post-content">{{comment.content | tagify}}</div>
 
 
     <button class="more-comments" (click)="toComment(comment.id)">
