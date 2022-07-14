@@ -10,23 +10,11 @@ export class TagifyPipe implements PipeTransform {
   }
 
   private stylize(text: string | String): string | String {
-    let stylizedText: string = '';
-    if (text && text.length > 0) {
-      for (let line of text.split("\n")) {
-        for (let t of line.split(" ")) {
-          if (t.startsWith("#") && t.length>1) {  
-            stylizedText += `#<a href="/tag/${t.substring(1)}">${t.substring(1)}</a> `;
-          }
-          else if (t.startsWith("@") && t.length>1) {  
-            stylizedText += `@<a href="/user/${t.substring(1)}">${t.substring(1)}</a> `;
-          }
-          else
-            stylizedText += t + " ";
-        }
-        stylizedText += '<br>';
-      }
-      return stylizedText;
-    }
-    else return text;
+    let stylizedText: string | String = text;
+    let tagPattern: RegExp = /(\s|\A|>)#(\w+)/;
+    stylizedText = stylizedText.replace(tagPattern, "$1#<a href=\"/tag/$2\">$2</a>")
+    let mentionPattern: RegExp = /(\s|\A|>)@(\w+)/;
+    stylizedText = stylizedText.replace(mentionPattern, "$1@<a href=\"/user/$2\">$2</a>")
+    return stylizedText;
   }
 }
