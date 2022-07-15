@@ -16,7 +16,7 @@
     padding: 10px 15px;
 }
 
-.quick-post .avatar {
+.quick-post app-avatar {
     opacity: 0.4;
 }
 

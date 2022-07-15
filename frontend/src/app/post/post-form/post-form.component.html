@@ -1,8 +1,6 @@
 <div class="quick-post-container">
     <div class="quick-post">
-        <div class="avatar" style="color: seagreen">
-            <img class="avatar-img" src="https://loganfuneralchapel.com/wp-content/uploads/2017/01/xgeneric-profile-avatar_352864.jpg.pagespeed.ic.tKiXzscPKc.jpg"/>
-        </div>
+        <app-avatar></app-avatar>
         <form class="quick-post-form" id="form" [formGroup]="form">
             <input #postInput class="quick-post-input" placeholder="Write post" formControlName="content"/>
         </form>
