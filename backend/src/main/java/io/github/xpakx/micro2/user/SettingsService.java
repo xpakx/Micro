@@ -7,6 +7,7 @@ import io.github.xpakx.micro2.user.error.FileEmptyException;
 import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 @AllArgsConstructor
@@ -61,5 +64,11 @@ public class SettingsService {
         }
         toChange.setAvatarUrl("/avatars/"+filename);
         return UserDto.of(userRepository.save(toChange));
+    }
+
+    public ByteArrayResource getAvatar(String username) throws IOException {
+        return new ByteArrayResource(Files.readAllBytes(Paths.get(
+                "./avatars/"+username+".png"
+        )));
     }
 }
