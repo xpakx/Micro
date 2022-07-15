@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -32,6 +33,14 @@ public class SettingsController {
     public ResponseEntity<UserDto> changeGender(@RequestBody ChangeGenderRequest request, Principal principal) {
         return new ResponseEntity<>(
                 service.changeGender(request, principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/avatar")
+    public ResponseEntity<UserDto> uploadAvatar(MultipartFile file, Principal principal) {
+        return new ResponseEntity<>(
+                service.uploadAvatar(file, principal.getName()),
                 HttpStatus.OK
         );
     }
