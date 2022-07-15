@@ -1,7 +1,6 @@
 package io.github.xpakx.micro2.user;
 
 import io.github.xpakx.micro2.user.dto.UserName;
-import io.github.xpakx.micro2.user.error.UserPublicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
