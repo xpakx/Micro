@@ -52,7 +52,7 @@ public class SettingsService {
             File dir = new File("./avatars");
             String path = dir.getAbsolutePath();
             FileOutputStream f = new FileOutputStream(
-                    path.substring(0, path.length()-1) + filename);
+                    path + "/" + filename);
             int ch = 0;
             while ((ch = in.read()) != -1) {
                 f.write(ch);
