@@ -24,3 +24,16 @@
     </form>
     <button class="icon-button" (click)="changeGender()">Apply</button>
 </div>
+
+<div class="settings-row">
+    <h2 class="setting-title">Change avatar</h2>
+
+    <input class="hidden" type="file" (change)="selectAvatar($event)" #avatarSelect>
+    <button class="icon-button" (click)="openFileSelection()">
+        Select file…
+    </button>
+
+    <button class="icon-button" (click)="sendAvatar()">Apply</button>
+</div>
+
+        

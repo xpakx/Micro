@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserDto } from '../dto/user-dto';
 import { SettingsService } from '../settings.service';
@@ -12,6 +12,9 @@ import { SettingsService } from '../settings.service';
 export class SettingsComponent implements OnInit {
   passwordForm: UntypedFormGroup;
   genderForm: UntypedFormGroup;
+
+  file?: File;
+  @ViewChild('avatarSelect', {static: true}) avatarSelect?: ElementRef;
 
   constructor(private settingsService: SettingsService, private fb: UntypedFormBuilder) {
     this.passwordForm = this.fb.group({
@@ -56,5 +59,29 @@ export class SettingsComponent implements OnInit {
         error: (error: HttpErrorResponse) => this.showError(error)
       })
     }
+  }
+
+  selectAvatar(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if(fileList && fileList.length > 0) {
+      let firstFile = fileList.item(0);
+      this.file = firstFile ? firstFile : undefined;
+    }
+  }
+
+  openFileSelection() {
+    if(this.avatarSelect) {
+      this.avatarSelect.nativeElement.click();
+    }
+  }
+
+  sendAvatar() {
+    if(!this.file) {
+      return;
+    }
+    this.settingsService.sendAvatar(this.file).subscribe(
+      
+    );
   }
 }
