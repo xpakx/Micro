@@ -62,7 +62,7 @@ public class SettingsService {
         } catch (IOException ex) {
             throw new FileSaveException();
         }
-        toChange.setAvatarUrl("/avatars/"+filename);
+        toChange.setAvatarUrl("/avatar/"+filename);
         return UserDto.of(userRepository.save(toChange));
     }
 
