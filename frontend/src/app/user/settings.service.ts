@@ -21,4 +21,10 @@ export class SettingsService {
   public changeGender(request: ChangeGenderRequest):  Observable<UserDto> {
     return this.http.put<UserDto>(`${this.apiServerUrl}/gender`, request);
   }
+
+  public sendAvatar(file: File): Observable<any> {  
+    let formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.put(`${this.apiServerUrl}/avatar`, formData);
+  }
 }
