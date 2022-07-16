@@ -1,6 +1,6 @@
 <div class="post-container" *ngIf="post" [class.sidebar-container]="sidebar">
     <div class="author-bar">
-        <app-avatar [gender]="post.user.gender"></app-avatar>
+        <app-avatar [gender]="post.user.gender" [url]="post.user.avatarUrl"></app-avatar>
         <div class="author-name" (click)="toUser(post.user.username)">{{post.user.username}}</div>
         <div class="confirmed-user" *ngIf="post.user.confirmed"><fa-icon [icon]="faCheck" size="xs"></fa-icon></div>
         <div class="post-date">posted at {{post.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>

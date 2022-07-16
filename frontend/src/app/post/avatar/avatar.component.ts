@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-avatar',
@@ -6,7 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./avatar.component.css']
 })
 export class AvatarComponent implements OnInit {
-  @Input('url') url: String = '/assets/default-avatar.jpg';
+  private apiServerUrl = environment.apiServerUrl;
+  @Input('url') set avatarUrl(value: String) {
+    if(value.length > 0) {
+      this.url = this.apiServerUrl + value;
+    }
+  } 
+  url: String = '/assets/default-avatar.jpg';
   
   color: String = 'gray';
   @Input('gender') set gender(value: String) {
