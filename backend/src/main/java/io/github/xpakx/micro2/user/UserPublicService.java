@@ -1,6 +1,5 @@
 package io.github.xpakx.micro2.user;
 
-import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.dto.UserName;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
