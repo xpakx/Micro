@@ -38,7 +38,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT p.id AS id, p.content AS content, p.created_at AS created_at, " +
                         "p.like_count AS like_count, p.dislike_count AS dislike_count, " +
-                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed, " +
+                        "p.attachment_url AS attachment_url " +
                         "FROM  " +
                         "(" +
                             "SELECT * FROM post " +
@@ -72,7 +73,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT post.id AS id, post.content AS content, post.created_at AS created_at, " +
                         "post.like_count AS like_count, post.dislike_count AS dislike_count, " +
-                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed, " +
+                        "post.attachment_url AS attachment_url " +
                         "FROM post " +
                         "LEFT JOIN user_account u ON post.user_id = u.id " +
                         "WHERE post.created_at > ?1 " +
@@ -103,6 +105,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         user.setAvatarUrl((String) object[7]);
         user.setConfirmed((boolean) object[8]);
         post.setUser(user);
+        post.setAttachmentUrl((String) object[9]);
         return post;
     }
 
@@ -203,7 +206,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT p.id AS id, p.content AS content, p.created_at AS created_at, " +
                         "p.like_count AS like_count, p.dislike_count AS dislike_count, " +
-                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed, " +
+                        "p.attachment_url AS attachment_url " +
                         "FROM post p " +
                         "LEFT JOIN user_account u ON p.user_id = u.id " +
                         "WHERE u.id IN (" +
@@ -257,7 +261,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         Query query = this.entityManager.createNativeQuery(
                 "SELECT p.id AS id, p.content AS content, p.created_at AS created_at, " +
                         "p.like_count AS like_count, p.dislike_count AS dislike_count, " +
-                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed " +
+                        "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed, " +
+                        "p.attachment_url AS attachment_url " +
                         "FROM post p " +
                         "LEFT JOIN user_account u ON p.user_id = u.id " +
                         "LEFT JOIN post_tag pt ON pt.post_id = p.id " +

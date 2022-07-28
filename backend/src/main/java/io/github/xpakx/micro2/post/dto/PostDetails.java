@@ -18,4 +18,5 @@ public interface PostDetails {
     boolean isEdited();
     Integer getLikeCount();
     Integer getDislikeCount();
+    String getAttachmentUrl();
 }

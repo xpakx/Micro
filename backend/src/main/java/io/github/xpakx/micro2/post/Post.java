@@ -59,4 +59,6 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     private List<Mention> mentions;
+
+    private String attachmentUrl;
 }

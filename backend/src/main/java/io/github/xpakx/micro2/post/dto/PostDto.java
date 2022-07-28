@@ -20,6 +20,7 @@ public class PostDto {
     private LocalDateTime createdAt;
     private Integer likeCount;
     private Integer dislikeCount;
+    private String attachmentUrl;
 
     public static PostDto fromPost(Post post) {
         PostDto transformed = new PostDto();
@@ -29,6 +30,7 @@ public class PostDto {
         transformed.setCreatedAt(post.getCreatedAt());
         transformed.setLikeCount(post.getLikeCount());
         transformed.setDislikeCount(post.getDislikeCount());
+        transformed.setAttachmentUrl(post.getAttachmentUrl());
         return  transformed;
     }
 }

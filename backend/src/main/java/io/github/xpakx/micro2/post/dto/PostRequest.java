@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class PostRequest {
     private String message;
+    private String encodedAttachment;
 }
