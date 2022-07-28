@@ -41,6 +41,7 @@ export class AttachmentChoiceComponent implements OnInit {
       image.onload = rs => {
         const imgBase64Path: String = e.target.result;
         this.attachmentEvent.emit(imgBase64Path);
+        console.log(imgBase64Path);
       };
     }
     reader.readAsDataURL(this.file);

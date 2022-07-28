@@ -54,7 +54,9 @@ public class PostService {
         newPost.setTags(tagService.addTags(request.getMessage()));
         newPost.setMentions(mentionService.addMentions(request.getMessage(), user, newPost));
         if(request.getEncodedAttachment() != null && request.getEncodedAttachment().length() > 0) {
-            byte[] imageByte= Base64.decodeBase64(request.getEncodedAttachment());
+            byte[] imageByte = Base64.decodeBase64(
+                    request.getEncodedAttachment().contains(",") ? request.getEncodedAttachment().split(",")[1] : request.getEncodedAttachment()
+            );
             try {
                 File dir = new File("./attachments");
                 String path = dir.getAbsolutePath();
