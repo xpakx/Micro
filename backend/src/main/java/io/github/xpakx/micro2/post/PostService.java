@@ -11,12 +11,17 @@ import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.tag.TagService;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
+import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +50,22 @@ public class PostService {
         newPost.setDislikeCount(0);
         newPost.setTags(tagService.addTags(request.getMessage()));
         newPost.setMentions(mentionService.addMentions(request.getMessage(), user, newPost));
+        if(request.getEncodedAttachment() != null && request.getEncodedAttachment().length() > 0) {
+            byte[] imageByte= Base64.decodeBase64(request.getEncodedAttachment());
+            try {
+                File dir = new File("./attachments");
+                String path = dir.getAbsolutePath();
+                String filename = username + "_" + LocalDateTime.now().toString();
+                FileOutputStream f = new FileOutputStream(
+                        path + "/" + filename);
+                f.write(imageByte);
+                f.flush();
+                f.close();
+                newPost.setAttachmentUrl(filename);
+            } catch (IOException ex) {
+                throw new FileSaveException();
+            }
+        }
         return PostDto.fromPost(postRepository.save(newPost));
     }
 
