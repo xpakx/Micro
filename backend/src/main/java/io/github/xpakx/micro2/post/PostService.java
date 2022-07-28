@@ -15,6 +15,7 @@ import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -67,6 +70,12 @@ public class PostService {
             }
         }
         return PostDto.fromPost(postRepository.save(newPost));
+    }
+
+    public ByteArrayResource getAttachment(String name) throws IOException {
+        return new ByteArrayResource(Files.readAllBytes(Paths.get(
+                "./avatars/"+name
+        )));
     }
 
     @Transactional
