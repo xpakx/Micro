@@ -40,7 +40,7 @@ export class PostFormComponent implements OnInit {
 
   sendPost(): void {
     if(this.form.valid) {
-      this.service.newPost({message: this.form.controls['content'].value})
+      this.service.newPost({message: this.form.controls['content'].value, encodedAttachment: this.attachmentBase64})
       .subscribe({
         next: (response: UpdatedPost) => this.refresh(response),
         error: (error: HttpErrorResponse) => this.showError(error)
@@ -62,6 +62,7 @@ export class PostFormComponent implements OnInit {
         edited: false,
         likeCount: 0,
         dislikeCount: 0,
+        attachmentUrl: response.attachmentUrl,
         user: {
           username: response.username,
           gender: "",

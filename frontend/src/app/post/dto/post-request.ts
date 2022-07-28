@@ -1,3 +1,4 @@
 export interface PostRequest {
-    message: String
+    message: String,
+    encodedAttachment: String
 }

@@ -11,6 +11,7 @@ import { Page } from 'src/app/common/dto/page';
 import { PostLike } from 'src/app/like/dto/post-like';
 import { Unlike } from 'src/app/like/dto/unlike';
 import { PostLikeService } from 'src/app/like/post-like.service';
+import { environment } from 'src/environments/environment';
 import { PostDetails } from '../dto/post-details';
 import { PostService } from '../post.service';
 
@@ -42,6 +43,9 @@ export class PostComponent implements OnInit {
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
   @ViewChild("responseInput") responseElem?: ElementRef;
+
+
+  private apiServerUrl = environment.apiServerUrl;
 
   constructor(private commentService: CommentService, private fb: UntypedFormBuilder, private router: Router,
     private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
@@ -223,5 +227,9 @@ export class PostComponent implements OnInit {
       let newText: String = oldText.slice(0, position) + emoji + oldText.slice(position)
       this.quickReply.controls['content'].setValue(newText);
     }
+  }
+
+  get getAttachmentUrl(): String {
+    return this.post.attachmentUrl ? `${this.apiServerUrl}/attachment/${this.post.attachmentUrl}` : '';
   }
 }

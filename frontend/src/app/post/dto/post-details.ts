@@ -7,5 +7,6 @@ export interface PostDetails {
     edited: boolean,
     user: PostAuthor,
     likeCount: number,
-    dislikeCount: number
+    dislikeCount: number,
+    attachmentUrl: String
 }

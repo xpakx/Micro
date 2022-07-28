@@ -19,6 +19,8 @@ export class FullPostFormComponent implements OnInit {
   faSmile = faSmile;
   faAttach = faPaperclip;
   faSend = faPaperPlane;
+  attachmentBase64: String = "";
+
 
   constructor(private service: PostService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
@@ -39,7 +41,7 @@ export class FullPostFormComponent implements OnInit {
 
   sendPost(): void {
     if(this.form.valid) {
-      this.service.newPost({message: this.form.controls['content'].value})
+      this.service.newPost({message: this.form.controls['content'].value, encodedAttachment: this.attachmentBase64})
       .subscribe({
         next: (response: UpdatedPost) => this.refresh(response),
         error: (error: HttpErrorResponse) => this.showError(error)
@@ -49,7 +51,7 @@ export class FullPostFormComponent implements OnInit {
 
   editPost(): void {
     if(this.form.valid && this.post) {
-      this.service.updatePost({message: this.form.controls['content'].value}, this.post.id)
+      this.service.updatePost({message: this.form.controls['content'].value, encodedAttachment: this.attachmentBase64}, this.post.id)
       .subscribe({
         next: (response: UpdatedPost) => this.refresh(response),
         error: (error: HttpErrorResponse) => this.showError(error)
@@ -64,5 +66,9 @@ export class FullPostFormComponent implements OnInit {
 
   refresh(response: UpdatedPost): void {
     
+  }
+
+  addAttachment(attachment: String): void {
+    this.attachmentBase64 = attachment;
   }
 }
