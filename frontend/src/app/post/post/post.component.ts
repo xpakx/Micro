@@ -230,6 +230,6 @@ export class PostComponent implements OnInit {
   }
 
   get getAttachmentUrl(): String {
-    return this.post.attachmentUrl ? `${this.apiServerUrl}/attachment/${this.post.attachmentUrl}` : '';
+    return this.post.attachmentUrl ? `${this.apiServerUrl}/attachments/${this.post.attachmentUrl}` : '';
   }
 }

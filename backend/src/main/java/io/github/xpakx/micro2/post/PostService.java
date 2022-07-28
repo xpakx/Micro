@@ -74,7 +74,7 @@ public class PostService {
 
     public ByteArrayResource getAttachment(String name) throws IOException {
         return new ByteArrayResource(Files.readAllBytes(Paths.get(
-                "./avatars/"+name
+                "./attachments/"+name
         )));
     }
 

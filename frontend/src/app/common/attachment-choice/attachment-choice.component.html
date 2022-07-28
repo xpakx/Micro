@@ -1,1 +1,10 @@
-<p>attachment-choice works!</p>
+<div class="settings-row">
+    <h2 class="setting-title">Choose attachment</h2>
+
+    <input class="hidden" type="file" (change)="selectFile($event)" #fileSelect>
+    <button class="icon-button" (click)="openFileSelection()">
+        Select file…
+    </button>
+
+    <button class="icon-button" (click)="chooseFile()">Apply</button>
+</div>
