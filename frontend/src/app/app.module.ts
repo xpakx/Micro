@@ -49,6 +49,7 @@ import { CommentSearchComponent } from './comment/comment-search/comment-search.
 import { SettingsComponent } from './user/settings/settings.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { TagifyPipe } from './common/tagify.pipe';
+import { AttachmentChoiceComponent } from './common/attachment-choice/attachment-choice.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -97,7 +98,8 @@ export function tokenGetter() {
     SearchViewComponent,
     CommentSearchComponent,
     SettingsComponent,
-    TagifyPipe
+    TagifyPipe,
+    AttachmentChoiceComponent
   ],
   imports: [
     BrowserModule,

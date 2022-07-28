@@ -5,7 +5,7 @@
             <input #postInput class="quick-post-input" placeholder="Write post" formControlName="content"/>
         </form>
         <div class="post-options">
-            <button class="option-button"><fa-icon [icon]="faAttach"></fa-icon></button>
+            <button class="option-button" (click)="switchAttachmentDialog()"><fa-icon [icon]="faAttach"></fa-icon></button>
             <button class="option-button" (click)="switchEmojiDialog()"><fa-icon [icon]="faSmile"></fa-icon></button>
             <button class="send-button" (click)="sendPost()"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
@@ -13,3 +13,4 @@
 </div>
 
 <app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
+<app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>

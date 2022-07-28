@@ -22,7 +22,9 @@ export class PostFormComponent implements OnInit {
   @Input("init") init?: String;
   @Output("newPost") newPostEvent: EventEmitter<PostWithComments> = new EventEmitter<PostWithComments>();
   showEmojiDialog: boolean = false;
+  showAttachmentDialog: boolean = false;
   @ViewChild("postInput") postElem?: ElementRef;
+  attachmentBase64: String = "";
 
   constructor(private service: PostService, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
@@ -114,5 +116,13 @@ export class PostFormComponent implements OnInit {
       let newText: String = oldText.slice(0, position) + emoji + oldText.slice(position)
       this.form.controls['content'].setValue(newText);
     }
+  }
+
+  switchAttachmentDialog(): void {
+    this.showAttachmentDialog = !this.showAttachmentDialog;
+  }
+
+  addAttachment(attachment: String): void {
+    this.attachmentBase64 = attachment;
   }
 }
