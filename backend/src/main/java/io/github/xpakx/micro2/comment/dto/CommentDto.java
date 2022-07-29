@@ -22,6 +22,7 @@ public class CommentDto {
     private LocalDateTime createdAt;
     private Integer likeCount;
     private Integer dislikeCount;
+    private String attachmentUrl;
 
     public static CommentDto fromComment(Comment comm) {
         CommentDto transformed = new CommentDto();
@@ -31,6 +32,7 @@ public class CommentDto {
         transformed.setCreatedAt(comm.getCreatedAt());
         transformed.setLikeCount(comm.getLikeCount());
         transformed.setDislikeCount(comm.getDislikeCount());
+        transformed.setAttachmentUrl(comm.getAttachmentUrl());
         return transformed;
     }
 }

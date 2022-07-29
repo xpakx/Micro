@@ -54,7 +54,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 "SELECT c.id AS id, c.content AS content, c.created_at AS created_at, c.edited AS edited, c.deleted_by_user AS deleted_by_user, " +
                         "c.deleted_by_post_author AS deleted_by_post_author, c.like_count AS like_count, c.dislike_count AS dislike_count, " +
                         "u.username AS user_username, u.gender AS user_gender, u.avatar_url AS user_avatar_url, u.confirmed AS user_confirmed, " +
-                        "c.post_id AS post_id " +
+                        "c.post_id AS post_id, c.attachment_url AS attachment_url " +
                         "FROM comment c " +
                         "LEFT JOIN user_account u ON c.user_id = u.id " +
                         "WHERE c.id IN (SELECT c2.id FROM comment c2 WHERE c2.post_id = c.post_id ORDER BY c2.created_at DESC LIMIT 2) " +
@@ -88,6 +88,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         Post post = new Post();
         post.setId(((BigInteger) object[12]).longValue());
         comment.setPost(post);
+        comment.setAttachmentUrl((String) object[13]);
         return comment;
     }
 

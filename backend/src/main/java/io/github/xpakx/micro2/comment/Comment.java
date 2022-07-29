@@ -50,4 +50,6 @@ public class Comment {
     @JsonIgnore
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     private List<Mention> mentions;
+
+    private String attachmentUrl;
 }

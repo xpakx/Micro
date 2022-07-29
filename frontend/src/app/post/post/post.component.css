@@ -109,3 +109,13 @@ button {
 .fav {
     color: #bbd4f6;
 }
+
+.attachment {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.attachment-img {
+    max-width: 80%;
+}
