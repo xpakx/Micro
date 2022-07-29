@@ -35,7 +35,7 @@ export class FullCommentFormComponent implements OnInit {
 
   editComment(): void {
     if(this.form.valid && this.comment) {
-      this.service.updateComment({message: this.form.controls['content'].value}, this.comment.id)
+      this.service.updateComment({message: this.form.controls['content'].value, encodedAttachment: ""}, this.comment.id)
       .subscribe({
         next: (response: UpdatedComment) => this.refresh(response),
         error: (error: HttpErrorResponse) => this.showError(error)

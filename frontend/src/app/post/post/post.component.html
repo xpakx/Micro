@@ -30,7 +30,7 @@
         </form>
 
         <div class="response-options">
-            <button class="option-button"><fa-icon [icon]="faAttach"></fa-icon></button>
+            <button class="option-button" (click)="switchAttachmentDialog()"><fa-icon [icon]="faAttach"></fa-icon></button>
             <button class="option-button" (click)="switchEmojiDialog()"><fa-icon [icon]="faSmile"></fa-icon></button>
             <button class="send-button" (click)="reply()" [class.disabled-button]="quickReply.invalid"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
@@ -50,3 +50,4 @@
 
 <app-modal-delete *ngIf="showDeleteModal" text="post" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>
 <app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
+<app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>

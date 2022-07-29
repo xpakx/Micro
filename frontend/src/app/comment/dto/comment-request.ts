@@ -1,3 +1,4 @@
 export interface CommentRequest {
-    message: String
+    message: String,
+    encodedAttachment: String
 }

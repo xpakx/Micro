@@ -9,5 +9,6 @@ export interface CommentDetails {
     deletedByPostAuthor: boolean,
     user: CommentAuthor,
     likeCount: number,
-    dislikeCount: number
+    dislikeCount: number,
+    attachmentUrl: String
 }

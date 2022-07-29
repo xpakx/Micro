@@ -43,6 +43,8 @@ export class PostComponent implements OnInit {
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
   @ViewChild("responseInput") responseElem?: ElementRef;
+  showAttachmentDialog: boolean = false;
+  attachmentBase64: String = "";
 
 
   private apiServerUrl = environment.apiServerUrl;
@@ -59,7 +61,7 @@ export class PostComponent implements OnInit {
 
   reply(): void {
     if(this.quickReply.valid && this.post) {
-      this.commentService.newComment({message: this.quickReply.controls['content'].value}, this.post.id)
+      this.commentService.newComment({message: this.quickReply.controls['content'].value, encodedAttachment: this.attachmentBase64}, this.post.id)
       .subscribe({
         next: (response: UpdatedComment) => this.addNewComment(response),
         error: (error: HttpErrorResponse) => this.showError(error)
@@ -85,6 +87,7 @@ export class PostComponent implements OnInit {
         deletedByPostAuthor: false,
         likeCount: 0,
         dislikeCount: 0,
+        attachmentUrl: response.attachmentUrl,
         user: {
           username: response.username,
           gender: 'male'
@@ -231,5 +234,13 @@ export class PostComponent implements OnInit {
 
   get getAttachmentUrl(): String {
     return this.post.attachmentUrl ? `${this.apiServerUrl}/attachments/${this.post.attachmentUrl}` : '';
+  }
+
+  addAttachment(attachment: String): void {
+    this.attachmentBase64 = attachment;
+  }
+
+  switchAttachmentDialog(): void {
+    this.showAttachmentDialog = !this.showAttachmentDialog;
   }
 }
