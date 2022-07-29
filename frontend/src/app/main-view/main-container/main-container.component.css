@@ -4,6 +4,7 @@
 
 .main-actions {
     width: 250px;
+    flex-shrink: 0;
 }
 
 .main-content {
@@ -13,5 +14,6 @@
 
 .main-hot {
     width: 400px;
+    flex-shrink: 0;
     margin-right: 20px;
 }
