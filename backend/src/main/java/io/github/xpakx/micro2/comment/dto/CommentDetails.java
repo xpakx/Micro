@@ -23,4 +23,5 @@ public interface CommentDetails {
     boolean isDeletedByPostAuthor();
     Integer getLikeCount();
     Integer getDislikeCount();
+    String getAttachmentUrl();
 }
