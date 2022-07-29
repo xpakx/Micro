@@ -11,12 +11,17 @@ import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
+import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +51,24 @@ public class CommentService {
         newComment.setDeletedByUser(false);
         newComment.setDeletedByPostAuthor(false);
         newComment.setMentions(mentionService.addMentions(request.getMessage(), user, post, newComment));
+        if(request.getEncodedAttachment() != null && request.getEncodedAttachment().length() > 0) {
+            byte[] imageByte = Base64.decodeBase64(
+                    request.getEncodedAttachment().contains(",") ? request.getEncodedAttachment().split(",")[1] : request.getEncodedAttachment()
+            );
+            try {
+                File dir = new File("./attachments");
+                String path = dir.getAbsolutePath();
+                String filename = username + "_" + LocalDateTime.now().toString();
+                FileOutputStream f = new FileOutputStream(
+                        path + "/" + filename);
+                f.write(imageByte);
+                f.flush();
+                f.close();
+                newComment.setAttachmentUrl(filename);
+            } catch (IOException ex) {
+                throw new FileSaveException();
+            }
+        }
         return CommentDto.fromComment(commentRepository.save(newComment));
     }
 
