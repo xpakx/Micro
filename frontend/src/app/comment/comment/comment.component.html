@@ -12,6 +12,10 @@
 
     <div markdown class="comment-content">{{comment.comment.content | tagify}}</div>
 
+    <div class="attachment" *ngIf="comment.comment.attachmentUrl">
+        <img class="attachment-img" [src]="getAttachmentUrl"/>
+    </div>
+
     <div class="option-bar">
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
         <button class="option-button" *ngIf="author && !comment.comment.deletedByUser && !comment.comment.deletedByPostAuthor" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>

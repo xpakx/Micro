@@ -5,6 +5,7 @@ import { faCheckCircle, faEdit, faPlus, faReply, faTrashAlt } from '@fortawesome
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
+import { environment } from 'src/environments/environment';
 import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
 import { CommentWithData } from '../dto/comment-with-data';
@@ -23,6 +24,7 @@ export class CommentComponent implements OnInit {
   faDelete = faTrashAlt;
   faEdit = faEdit;
   showDeleteModal: boolean = false;
+  private apiServerUrl = environment.apiServerUrl;
 
   constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router) { }
 
@@ -101,5 +103,9 @@ export class CommentComponent implements OnInit {
 
   toUser(username: String) {
     this.router.navigate([`user/${username}`])
+  }
+
+  get getAttachmentUrl(): String {
+    return this.comment.comment.attachmentUrl ? `${this.apiServerUrl}/attachments/${this.comment.comment.attachmentUrl}` : '';
   }
 }
