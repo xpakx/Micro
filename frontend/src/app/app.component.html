@@ -20,11 +20,11 @@
             <button class="icon-button" (click)="search()"><fa-icon [icon]="faSearch"></fa-icon></button>
             <button class="icon-button button-with-counter" (click)="toMentions()">
                 <fa-icon [icon]="faNotif"></fa-icon>
-                <div class="counter" *ngIf="mentionsCount>0"> {{ mentionsCount }}</div>
+                <div class="counter" *ngIf="userService.mentionCount>0"> {{ userService.mentionCount }}</div>
             </button>
             <button class="icon-button button-with-counter" (click)="toMessages()">
                 <fa-icon [icon]="faMessage"></fa-icon>
-                <div class="counter" *ngIf="messagesCount>0"> {{ messagesCount }}</div>
+                <div class="counter" *ngIf="userService.messageCount>0"> {{ userService.messageCount }}</div>
             </button>
             <app-avatar></app-avatar>
         </div>

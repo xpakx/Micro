@@ -6,6 +6,7 @@ import { MentionCount } from './mention/dto/mention-count';
 import { MentionService } from './mention/mention.service';
 import { MessageCount } from './message/dto/message-count';
 import { MessageService } from './message/message.service';
+import { AuthorizedUserService } from './user/authorized-user.service';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,11 @@ export class AppComponent implements OnInit {
   faSearch = faSearch;
   faNotif = faBell;
   faMessage = faEnvelope;
-  mentionsCount: number = 0;
-  messagesCount: number = 0;
   searchForm: UntypedFormGroup;
   smallWindow: boolean = false;
   showSearch: boolean = false;
 
-  constructor(private router: Router, private mentionService: MentionService, private messageService: MessageService, private fb: UntypedFormBuilder) { 
+  constructor(private router: Router, protected userService: AuthorizedUserService, private fb: UntypedFormBuilder) { 
     this.searchForm = this.fb.group({
       search: ['']
     });
@@ -39,23 +38,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.logged) {
-      this.mentionService.getMentionsCount().subscribe({
-        next: (response: MentionCount) => this.updateMentions(response.count)
-      });
-
-
-      this.messageService.getMessagesCount().subscribe({
-        next: (response: MessageCount) => this.updateMessages(response.count)
-      });
+      this.userService.logged = true;
+      this.userService.startNotifRefresh();
     }
-  }
-
-  updateMentions(count: number): void {
-    this.mentionsCount = count;
-  }
-
-  updateMessages(count: number): void {
-    this.messagesCount = count;
   }
 
   toMain() {
