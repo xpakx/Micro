@@ -318,6 +318,6 @@ public class PostService {
     }
 
     public Page<PostDetails> searchPosts(String search, Integer page) {
-        return postRepository.findByContentIsContainingIgnoreCase(search, PageRequest.of(page, 20));
+        return postRepository.findByContentIsContainingIgnoreCaseAndDeletedIsFalse(search, PageRequest.of(page, 20));
     }
 }
