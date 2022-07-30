@@ -23,5 +23,8 @@ public interface CommentDetails {
     boolean isDeletedByPostAuthor();
     Integer getLikeCount();
     Integer getDislikeCount();
+
+    @Value("#{target.deletedByUser || target.deletedByPostAuthor ? '' : target.attachmentUrl}")
+
     String getAttachmentUrl();
 }
