@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { CommentDetails } from '../dto/comment-details';
 
 @Component({
@@ -9,6 +10,7 @@ import { CommentDetails } from '../dto/comment-details';
 })
 export class CommentSearchComponent implements OnInit {
   @Input('comment') comment!: CommentDetails;
+  private apiServerUrl = environment.apiServerUrl;
 
   constructor(private router: Router) { }
 
@@ -22,5 +24,9 @@ export class CommentSearchComponent implements OnInit {
 
   toUser(username: String) {
     this.router.navigate([`user/${username}`])
+  }
+
+  get getAttachmentUrl(): String {
+    return this.comment.attachmentUrl ? `${this.apiServerUrl}/attachments/${this.comment.attachmentUrl}` : '';
   }
 }

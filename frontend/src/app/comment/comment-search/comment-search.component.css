@@ -53,3 +53,13 @@ button {
     font-size: 12px;
     color: #b1b9c4;
 }
+
+.attachment {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.attachment-img {
+    max-width: 80%;
+}

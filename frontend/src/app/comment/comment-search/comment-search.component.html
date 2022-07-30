@@ -8,6 +8,9 @@
 
     <div markdown class="post-content">{{comment.content | tagify}}</div>
 
+    <div class="attachment" *ngIf="comment.attachmentUrl">
+        <img class="attachment-img" [src]="getAttachmentUrl"/>
+    </div>
 
     <button class="more-comments" (click)="toComment(comment.id)">
         More
