@@ -90,7 +90,8 @@ export class PostComponent implements OnInit {
         attachmentUrl: response.attachmentUrl,
         user: {
           username: response.username,
-          gender: 'male'
+          gender: 'male',
+          avatarUrl: ''
         }
       }
     }
