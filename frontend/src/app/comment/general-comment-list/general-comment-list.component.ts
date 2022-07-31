@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Page } from 'src/app/common/dto/page';
-import { CommentDetails } from '../dto/comment-details';
 import { CommentWithData } from '../dto/comment-with-data';
 
 @Component({

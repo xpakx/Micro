@@ -7,7 +7,6 @@ import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
 import { environment } from 'src/environments/environment';
 import { CommentService } from '../comment.service';
-import { CommentDetails } from '../dto/comment-details';
 import { CommentWithData } from '../dto/comment-with-data';
 
 @Component({

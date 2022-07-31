@@ -2,10 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faBell, faEnvelope, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { MentionCount } from './mention/dto/mention-count';
-import { MentionService } from './mention/mention.service';
-import { MessageCount } from './message/dto/message-count';
-import { MessageService } from './message/message.service';
 import { AuthorizedUserService } from './user/authorized-user.service';
 
 @Component({

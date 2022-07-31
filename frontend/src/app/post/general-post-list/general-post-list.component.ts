@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Page } from 'src/app/common/dto/page';
-import { PostDetails } from '../dto/post-details';
 import { PostWithComments } from '../dto/post-with-comments';
 
 @Component({

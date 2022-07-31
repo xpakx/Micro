@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
-import { UpdatedPost } from 'src/app/post/dto/updated-post';
 import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
 import { UpdatedComment } from '../dto/updated-comment';
