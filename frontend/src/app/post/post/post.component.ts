@@ -11,6 +11,7 @@ import { Page } from 'src/app/common/dto/page';
 import { PostLike } from 'src/app/like/dto/post-like';
 import { Unlike } from 'src/app/like/dto/unlike';
 import { PostLikeService } from 'src/app/like/post-like.service';
+import { AuthorizedUserService } from 'src/app/user/authorized-user.service';
 import { environment } from 'src/environments/environment';
 import { PostDetails } from '../dto/post-details';
 import { PostService } from '../post.service';
@@ -50,7 +51,8 @@ export class PostComponent implements OnInit {
   private apiServerUrl = environment.apiServerUrl;
 
   constructor(private commentService: CommentService, private fb: UntypedFormBuilder, private router: Router,
-    private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService) {
+    private likeService: PostLikeService, private postService: PostService, private commentListService: CommentListService, 
+    protected userService: AuthorizedUserService) {
     this.quickReply = this.fb.group({
       content: ['', Validators.required]
     }); 

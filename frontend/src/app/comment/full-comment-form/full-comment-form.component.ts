@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
+import { AuthorizedUserService } from 'src/app/user/authorized-user.service';
 import { CommentService } from '../comment.service';
 import { CommentDetails } from '../dto/comment-details';
 import { UpdatedComment } from '../dto/updated-comment';
@@ -20,7 +21,7 @@ export class FullCommentFormComponent implements OnInit {
   faAttach = faPaperclip;
   faSend = faPaperPlane;
 
-  constructor(private service: CommentService, private fb: UntypedFormBuilder) {
+  constructor(private service: CommentService, private fb: UntypedFormBuilder, protected userService: AuthorizedUserService) {
     this.form = this.fb.group({
       content: ['', Validators.required]
     }); 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AvatarData } from './dto/avatar-data';
 import { ChangeGenderRequest } from './dto/change-gender-request';
 import { ChangePasswordRequest } from './dto/change-password-request';
 import { UserDto } from './dto/user-dto';
@@ -26,5 +27,9 @@ export class SettingsService {
     let formData: FormData = new FormData();
     formData.append('file', file);
     return this.http.put(`${this.apiServerUrl}/avatar`, formData);
+  }
+
+  public getAvatar(): Observable<AvatarData> {
+    return this.http.get<AvatarData>(`${this.apiServerUrl}/avatar`);
   }
 }

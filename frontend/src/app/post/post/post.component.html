@@ -23,7 +23,7 @@
     </div>
 
     <div class="quick-response" *ngIf="!sidebar">
-        <app-avatar gender="male"></app-avatar>
+        <app-avatar [gender]="userService.gender" [url]="userService.avatarUrl"></app-avatar>
 
         <form class="quick-response-form" id="form" [formGroup]="quickReply">
             <input #responseInput class="quick-response-input" placeholder="Write response to {{post.user.username}}" formControlName="content"/>

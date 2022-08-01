@@ -5,6 +5,8 @@ import { MentionCount } from '../mention/dto/mention-count';
 import { MentionService } from '../mention/mention.service';
 import { MessageCount } from '../message/dto/message-count';
 import { MessageService } from '../message/message.service';
+import { AvatarData } from './dto/avatar-data';
+import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,10 @@ export class AuthorizedUserService {
   notifSubscription?: Subscription;
   messageCount: number = 0;
   mentionCount: number = 0;
+  avatarUrl: String = "";
+  gender: String = "";
 
-  constructor(private mentionService: MentionService, private messageService: MessageService) { }
+  constructor(private mentionService: MentionService, private messageService: MessageService, private settingsService: SettingsService) { }
 
   saveData(response: Token) {
     localStorage.setItem("token", response.token);
@@ -57,5 +61,16 @@ export class AuthorizedUserService {
   
   updateMentions(count: number): void {
     this.mentionCount = count;
+  }
+
+  getAvatarData(): any {
+    this.settingsService.getAvatar().subscribe({
+      next: (response: AvatarData) => this.updateAvatar(response)
+    });
+  }
+  
+  updateAvatar(response: AvatarData): void {
+    this.avatarUrl = response.avatarUrl;
+    this.gender = response.gender;
   }
 }

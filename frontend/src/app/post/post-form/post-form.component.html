@@ -1,6 +1,6 @@
 <div class="quick-post-container">
     <div class="quick-post">
-        <app-avatar></app-avatar>
+        <app-avatar [gender]="userService.gender" [url]="userService.avatarUrl"></app-avatar>
         <form class="quick-post-form" id="form" [formGroup]="form">
             <input #postInput class="quick-post-input" placeholder="Write post" formControlName="content"/>
         </form>

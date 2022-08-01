@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
     if(this.logged) {
       this.userService.logged = true;
       this.userService.startNotifRefresh();
+      this.userService.getAvatarData();
     }
   }
 
