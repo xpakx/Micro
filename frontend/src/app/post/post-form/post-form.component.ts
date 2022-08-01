@@ -109,6 +109,7 @@ export class PostFormComponent implements OnInit {
 
   switchEmojiDialog(): void {
     this.showEmojiDialog = !this.showEmojiDialog;
+    this.showAttachmentDialog = false;
   }
 
   addEmoji(emoji: String): void {
@@ -122,6 +123,7 @@ export class PostFormComponent implements OnInit {
 
   switchAttachmentDialog(): void {
     this.showAttachmentDialog = !this.showAttachmentDialog;
+    this.showEmojiDialog = false;
   }
 
   addAttachment(attachment: String): void {

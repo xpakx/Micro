@@ -224,6 +224,7 @@ export class PostComponent implements OnInit {
 
   switchEmojiDialog(): void {
     this.showEmojiDialog = !this.showEmojiDialog;
+    this.showAttachmentDialog = false;
   }
 
   addEmoji(emoji: String): void {
@@ -245,5 +246,6 @@ export class PostComponent implements OnInit {
 
   switchAttachmentDialog(): void {
     this.showAttachmentDialog = !this.showAttachmentDialog;
+    this.showEmojiDialog = false;
   }
 }
