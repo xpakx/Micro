@@ -26,12 +26,15 @@ export class AuthorizedUserService {
     localStorage.setItem("username", response.username);
     this.logged = true;
     this.startNotifRefresh();
+    this.getAvatarData();
   }
 
   clearData() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     this.logged = false;
+    this.avatarUrl = "";
+    this.gender = "";
   }
 
   startNotifRefresh(): void {
