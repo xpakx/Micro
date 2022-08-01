@@ -10,7 +10,8 @@
             <button class="send-button" (click)="sendPost()"><fa-icon [icon]="faSend"></fa-icon></button>
         </div>
     </div>
+
+    <app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
 </div>
 
-<app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
 <app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>

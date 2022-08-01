@@ -1,4 +1,5 @@
-<p>Emoji</p>
-<div class="emojis">
-    <button *ngFor="let emoji of emojiTable" (click)="addEmoji(emoji)">{{emoji}}</button>
+<div class="emoji-bar">
+    <div class="emojis">
+        <button class="emoji-button" *ngFor="let emoji of emojiTable" (click)="addEmoji(emoji)">{{emoji}}</button>
+    </div>
 </div>
