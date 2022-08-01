@@ -36,7 +36,8 @@
         </div>
     </div>
     <app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
-
+    <app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>
+    
 
     <button class="more-comments" *ngIf="!minimal && !sidebar && comments && !comments.last" (click)="nextPage()">
         Load more comments
@@ -51,4 +52,3 @@
 
 
 <app-modal-delete *ngIf="showDeleteModal" text="post" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>
-<app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>

@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-attachment-choice',
@@ -9,11 +10,11 @@ export class AttachmentChoiceComponent implements OnInit {
   @Output("attachment") attachmentEvent = new EventEmitter<String>();
   file?: File;
   @ViewChild('fileSelect', {static: true}) fileSelect?: ElementRef;
+  faFile = faFile;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {  }
 
   selectFile(event: Event) {
     const element = event.currentTarget as HTMLInputElement;

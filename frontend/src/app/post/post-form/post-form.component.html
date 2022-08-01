@@ -12,6 +12,6 @@
     </div>
 
     <app-emoji-choice *ngIf="showEmojiDialog" (emoji)="addEmoji($event)"></app-emoji-choice>
+    <app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>
 </div>
 
-<app-attachment-choice *ngIf="showAttachmentDialog" (attachment)="addAttachment($event)"></app-attachment-choice>

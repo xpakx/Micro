@@ -1,0 +1,47 @@
+.emoji-bar {
+    padding: 5px 15px;
+}
+
+.emojis {
+    display: flex;
+    flex-direction: row;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none;
+}
+
+h2 {
+    font-size: 15px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.select-button {
+    background-color: #dbe6fe;
+    color: #437ef8;
+}
+
+.file-button {
+    background-color: #a1aab7;
+    color: #f6f8fa;
+    margin-right: 5px;
+}
+
+fa-icon {
+    margin-right: 5px;
+}

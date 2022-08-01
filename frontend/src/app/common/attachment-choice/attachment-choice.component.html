@@ -1,10 +1,13 @@
-<div class="settings-row">
-    <h2 class="setting-title">Choose attachment</h2>
+<div class="attachment-bar">
+    <h2 class="attachment-title">Choose attachment</h2>
 
     <input class="hidden" type="file" (change)="selectFile($event)" #fileSelect>
-    <button class="icon-button" (click)="openFileSelection()">
-        Select file…
-    </button>
-
-    <button class="icon-button" (click)="chooseFile()">Apply</button>
+    <div class="buttons">
+        <button class="file-button" (click)="openFileSelection()">
+            <fa-icon [icon]="faFile"></fa-icon> 
+            {{ file ? 'Change file…' : 'Select file…' }}
+        </button>
+    
+        <button class="select-button" (click)="chooseFile()">Apply</button>
+    </div>
 </div>
