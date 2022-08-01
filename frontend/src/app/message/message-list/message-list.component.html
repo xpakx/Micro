@@ -6,7 +6,7 @@
     </div>
     <div class="mention-list-container">
         <div class="mention" *ngFor="let message of messages" [class.unread]="!message.read">
-            <app-avatar [gender]="message.sender.gender"></app-avatar> <span class="username">{{ message.sender.username }}</span> 
+            <app-avatar [gender]="message.sender.gender" [url]="message.sender.avatarUrl"></app-avatar> <span class="username">{{ message.sender.username }}</span> 
             wrote a <a (click)="toMessage(message)">message</a> to you
         </div>
     </div>        
