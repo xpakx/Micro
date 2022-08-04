@@ -137,6 +137,6 @@ public class CommentService {
     }
 
     public Page<CommentDetails> searchComments(String search, Integer page) {
-        return commentRepository.findByContentIsContainingIgnoreCaseAndDeletedByUserIsFalseAndDeletedByPostAuthorIsFalse(search, PageRequest.of(page, 20));
+        return commentRepository.findByContentIsContainingIgnoreCaseAndDeletedByUserIsFalseAndDeletedByPostAuthorIsFalseAndDeletedByModeratorIsFalse(search, PageRequest.of(page, 20));
     }
 }
