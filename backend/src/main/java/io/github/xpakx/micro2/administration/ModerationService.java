@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.administration;
 
 import io.github.xpakx.micro2.administration.dto.ModerationDetails;
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
+import io.github.xpakx.micro2.administration.dto.ReportRequest;
 import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.comment.CommentRepository;
 import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
@@ -119,5 +120,37 @@ public class ModerationService {
                 username,
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
+    }
+
+    public Moderation reportPost(ReportRequest request, Long postId, String username) {
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        Moderation moderation = new Moderation();
+        moderation.setModerated(false);
+        moderation.setDeleted(false);
+        moderation.setCreatedAt(LocalDateTime.now());
+        moderation.setReason(request.getReason());
+        moderation.setReportedBy(user);
+        moderation.setPost(post);
+        moderation.setAuthor(post.getUser());
+        return moderationRepository.save(moderation);
+    }
+
+    public Moderation reportComment(ReportRequest request, Long commentId, String username) {
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+        Moderation moderation = new Moderation();
+        moderation.setModerated(false);
+        moderation.setDeleted(false);
+        moderation.setCreatedAt(LocalDateTime.now());
+        moderation.setReason(request.getReason());
+        moderation.setReportedBy(user);
+        moderation.setComment(comment);
+        moderation.setAuthor(comment.getUser());
+        return moderationRepository.save(moderation);
     }
 }

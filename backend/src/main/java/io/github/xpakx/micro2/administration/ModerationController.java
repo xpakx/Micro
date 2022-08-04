@@ -2,6 +2,7 @@ package io.github.xpakx.micro2.administration;
 
 import io.github.xpakx.micro2.administration.dto.ModerationDetails;
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
+import io.github.xpakx.micro2.administration.dto.ReportRequest;
 import io.github.xpakx.micro2.administration.dto.RoleRequest;
 import io.github.xpakx.micro2.comment.dto.CommentDto;
 import io.github.xpakx.micro2.comment.dto.CommentRequest;
@@ -80,6 +81,24 @@ public class ModerationController {
     public ResponseEntity<Page<ModerationDetails>> getMyReports(@RequestParam("page") Optional<Integer> page, Principal principal) {
         return new ResponseEntity<>(
                 service.getUserReports(page.orElse(0), principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/post/{postId}/report")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Moderation> reportPost(@RequestBody ReportRequest request, @PathVariable Long postId, Principal principal) {
+        return new ResponseEntity<>(
+                service.reportPost(request, postId, principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/comment/{commentId}/report")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Moderation> reportComment(@RequestBody ReportRequest request, @PathVariable Long commentId, Principal principal) {
+        return new ResponseEntity<>(
+                service.reportComment(request, commentId, principal.getName()),
                 HttpStatus.OK
         );
     }
