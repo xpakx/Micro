@@ -1,5 +1,6 @@
 package io.github.xpakx.micro2.administration;
 
+import io.github.xpakx.micro2.administration.dto.ModerationDetails;
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
 import io.github.xpakx.micro2.comment.Comment;
 import io.github.xpakx.micro2.comment.CommentRepository;
@@ -11,6 +12,9 @@ import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,5 +91,17 @@ public class ModerationService {
         moderation.setReason(request.getReason());
         moderation.setModerator(moderator);
         return moderationRepository.save(moderation);
+    }
+
+    public Page<ModerationDetails> getUnmoderated(Integer page) {
+        return moderationRepository.findAllByModeratedIsFalse(
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
+
+    public Page<ModerationDetails> getAll(Integer page) {
+        return moderationRepository.findAllBy(
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
     }
 }
