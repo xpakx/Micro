@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public interface CommentDetails {
     Long getId();
 
-    @Value("#{target.deletedByUser ? '[comment deleted by author]' : (target.deletedByPostAuthor ? '[comment deleted by post author]' : target.content)}")
+    @Value("#{target.deletedByUser ? '[comment deleted by author]' : (target.deletedByPostAuthor ? '[comment deleted by post author]' : (target.deletedByModerator ? '[comment deleted moderator]' : target.content))}")
     String getContent();
     UserMin getUser();
 
@@ -24,7 +24,7 @@ public interface CommentDetails {
     Integer getLikeCount();
     Integer getDislikeCount();
 
-    @Value("#{target.deletedByUser || target.deletedByPostAuthor ? '' : target.attachmentUrl}")
+    @Value("#{target.deletedByUser || target.deletedByPostAuthor || target.deletedByModerator ? '' : target.attachmentUrl}")
 
     String getAttachmentUrl();
 }
