@@ -104,4 +104,11 @@ public class ModerationService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
+
+    public Page<ModerationDetails> getForUser(Integer page, String username) {
+        return moderationRepository.findByModeratedTrueAndDeletedTrueAndAuthorUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
 }

@@ -3,6 +3,8 @@ package io.github.xpakx.micro2.administration;
 import io.github.xpakx.micro2.administration.dto.ModerationDetails;
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
 import io.github.xpakx.micro2.administration.dto.RoleRequest;
+import io.github.xpakx.micro2.comment.dto.CommentDto;
+import io.github.xpakx.micro2.comment.dto.CommentRequest;
 import io.github.xpakx.micro2.user.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -60,6 +62,15 @@ public class ModerationController {
     public ResponseEntity<Page<ModerationDetails>> getUnmoderated(@RequestParam("page") Optional<Integer> page) {
         return new ResponseEntity<>(
                 service.getUnmoderated(page.orElse(0)),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/moderation/my")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<ModerationDetails>> addNewComment(@RequestParam("page") Optional<Integer> page, Principal principal) {
+        return new ResponseEntity<>(
+                service.getForUser(page.orElse(0), principal.getName()),
                 HttpStatus.OK
         );
     }

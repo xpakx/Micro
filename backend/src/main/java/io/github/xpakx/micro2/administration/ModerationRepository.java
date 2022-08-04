@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ModerationRepository extends PagingAndSortingRepository<Moderation, Long> {
     Page<ModerationDetails> findAllByModeratedIsFalse(Pageable pageable);
     Page<ModerationDetails> findAllBy(Pageable pageable);
+
+    Page<ModerationDetails> findByModeratedTrueAndDeletedTrueAndAuthorUsername(String username, Pageable pageable);
+
 }
