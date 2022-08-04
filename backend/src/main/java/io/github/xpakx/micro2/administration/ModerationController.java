@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -19,11 +16,20 @@ import java.security.Principal;
 public class ModerationController {
     private final ModerationService service;
 
-    @DeleteMapping("moderation/post/{postId}")
+    @PostMapping("moderation/post/{postId}")
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD')")
-    public ResponseEntity<Moderation> deleteRole(@RequestBody ModerationRequest request, @PathVariable Long postId, Principal principal) {
+    public ResponseEntity<Moderation> moderatePost(@RequestBody ModerationRequest request, @PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
                 service.moderatePost(request, postId, principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("moderation/comment/{commentId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD')")
+    public ResponseEntity<Moderation> moderateComment(@RequestBody ModerationRequest request, @PathVariable Long commentId, Principal principal) {
+        return new ResponseEntity<>(
+                service.moderateComment(request, commentId, principal.getName()),
                 HttpStatus.OK
         );
     }

@@ -38,6 +38,7 @@ public class Comment {
     boolean edited;
     boolean deletedByUser;
     boolean deletedByPostAuthor;
+    boolean deletedByModerator;
     Integer likeCount;
     Integer dislikeCount;
 

@@ -1,6 +1,9 @@
 package io.github.xpakx.micro2.administration;
 
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
+import io.github.xpakx.micro2.comment.Comment;
+import io.github.xpakx.micro2.comment.CommentRepository;
+import io.github.xpakx.micro2.comment.error.CommentNotFoundException;
 import io.github.xpakx.micro2.post.Post;
 import io.github.xpakx.micro2.post.PostRepository;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
@@ -19,6 +22,7 @@ public class ModerationService {
     private final ModerationRepository moderationRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Moderation moderatePost(ModerationRequest request, Long postId, String username) {
@@ -28,6 +32,12 @@ public class ModerationService {
                 .orElseThrow(PostNotFoundException::new);
         post.setDeleted(true);
         post = postRepository.save(post);
+        Moderation moderation = getModerationObject(request, moderator);
+        moderation.setPost(post);
+        return moderationRepository.save(moderation);
+    }
+
+    private Moderation getModerationObject(ModerationRequest request, UserAccount moderator) {
         LocalDateTime now = LocalDateTime.now();
         Moderation moderation = new Moderation();
         moderation.setModerated(true);
@@ -36,7 +46,19 @@ public class ModerationService {
         moderation.setReason(request.getReason());
         moderation.setAuthor(moderator);
         moderation.setModerator(moderator);
-        moderation.setPost(post);
+        return moderation;
+    }
+
+    @Transactional
+    public Moderation moderateComment(ModerationRequest request, Long commentId, String username) {
+        UserAccount moderator = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+        comment.setDeletedByModerator(true);
+        comment = commentRepository.save(comment);
+        Moderation moderation = getModerationObject(request, moderator);
+        moderation.setComment(comment);
         return moderationRepository.save(moderation);
     }
 }
