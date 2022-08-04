@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class ModerationRequest {
     private String reason;
+    private boolean delete;
 }

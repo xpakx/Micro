@@ -24,6 +24,7 @@ public class Moderation {
     private Long id;
 
     private boolean moderated;
+    private boolean deleted;
     private LocalDateTime createdAt;
     private LocalDateTime moderatedAt;
     private String reason;

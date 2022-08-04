@@ -41,6 +41,7 @@ public class ModerationService {
         LocalDateTime now = LocalDateTime.now();
         Moderation moderation = new Moderation();
         moderation.setModerated(true);
+        moderation.setDeleted(true);
         moderation.setModeratedAt(now);
         moderation.setCreatedAt(now);
         moderation.setReason(request.getReason());
@@ -68,14 +69,18 @@ public class ModerationService {
                 .orElseThrow(UserNotFoundException::new);
         Moderation moderation = moderationRepository.findById(modId)
                 .orElseThrow();
-        if(moderation.getComment() != null) {
-            Comment comment = moderation.getComment();
-            comment.setDeletedByModerator(true);
-            commentRepository.save(comment);
-        } else if(moderation.getPost() != null) {
-            Post post = moderation.getPost();
-            post.setDeleted(true);
-            postRepository.save(post);
+        moderation.setDeleted(true);
+        if(request.isDelete()) {
+            if (moderation.getComment() != null) {
+                Comment comment = moderation.getComment();
+                comment.setDeletedByModerator(true);
+                commentRepository.save(comment);
+            } else if (moderation.getPost() != null) {
+                Post post = moderation.getPost();
+                post.setDeleted(true);
+                postRepository.save(post);
+            }
+            moderation.setDeleted(false);
         }
         moderation.setModerated(true);
         moderation.setModeratedAt(LocalDateTime.now());
