@@ -38,6 +38,7 @@ public class ModerationService {
         post = postRepository.save(post);
         Moderation moderation = getModerationObject(request, moderator);
         moderation.setPost(post);
+        moderation.setAuthor(post.getUser());
         return moderationRepository.save(moderation);
     }
 
@@ -49,8 +50,8 @@ public class ModerationService {
         moderation.setModeratedAt(now);
         moderation.setCreatedAt(now);
         moderation.setReason(request.getReason());
-        moderation.setAuthor(moderator);
         moderation.setModerator(moderator);
+        moderation.setReportedBy(moderator);
         return moderation;
     }
 
@@ -64,6 +65,7 @@ public class ModerationService {
         comment = commentRepository.save(comment);
         Moderation moderation = getModerationObject(request, moderator);
         moderation.setComment(comment);
+        moderation.setAuthor(comment.getUser());
         return moderationRepository.save(moderation);
     }
 

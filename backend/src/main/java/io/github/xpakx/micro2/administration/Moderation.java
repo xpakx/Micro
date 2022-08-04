@@ -45,4 +45,8 @@ public class Moderation {
     @JsonIgnore
     @ManyToOne
     private UserAccount moderator;
+
+    @JsonIgnore
+    @ManyToOne
+    private UserAccount reportedBy;
 }
