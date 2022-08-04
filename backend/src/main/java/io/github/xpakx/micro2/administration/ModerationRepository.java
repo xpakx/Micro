@@ -13,4 +13,6 @@ public interface ModerationRepository extends PagingAndSortingRepository<Moderat
 
     Page<ModerationDetails> findByModeratedTrueAndDeletedTrueAndAuthorUsername(String username, Pageable pageable);
 
+    Page<ModerationDetails> findByReportedByUsername(String username, Pageable pageable);
+
 }

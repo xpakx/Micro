@@ -113,4 +113,11 @@ public class ModerationService {
                 PageRequest.of(page, 20, Sort.by("createdAt").descending())
         );
     }
+
+    public Page<ModerationDetails> getUserReports(Integer page, String username) {
+        return moderationRepository.findByReportedByUsername(
+                username,
+                PageRequest.of(page, 20, Sort.by("createdAt").descending())
+        );
+    }
 }

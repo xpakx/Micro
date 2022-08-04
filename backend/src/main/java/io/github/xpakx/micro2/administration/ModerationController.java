@@ -68,9 +68,18 @@ public class ModerationController {
 
     @GetMapping("/moderation/my")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<ModerationDetails>> addNewComment(@RequestParam("page") Optional<Integer> page, Principal principal) {
+    public ResponseEntity<Page<ModerationDetails>> getMyModerated(@RequestParam("page") Optional<Integer> page, Principal principal) {
         return new ResponseEntity<>(
                 service.getForUser(page.orElse(0), principal.getName()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/moderation/my/reports")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<ModerationDetails>> getMyReports(@RequestParam("page") Optional<Integer> page, Principal principal) {
+        return new ResponseEntity<>(
+                service.getUserReports(page.orElse(0), principal.getName()),
                 HttpStatus.OK
         );
     }
