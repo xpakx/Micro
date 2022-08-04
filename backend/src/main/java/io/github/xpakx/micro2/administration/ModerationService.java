@@ -61,4 +61,26 @@ public class ModerationService {
         moderation.setComment(comment);
         return moderationRepository.save(moderation);
     }
+
+    @Transactional
+    public Moderation moderate(ModerationRequest request, Long modId, String username) {
+        UserAccount moderator = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        Moderation moderation = moderationRepository.findById(modId)
+                .orElseThrow();
+        if(moderation.getComment() != null) {
+            Comment comment = moderation.getComment();
+            comment.setDeletedByModerator(true);
+            commentRepository.save(comment);
+        } else if(moderation.getPost() != null) {
+            Post post = moderation.getPost();
+            post.setDeleted(true);
+            postRepository.save(post);
+        }
+        moderation.setModerated(true);
+        moderation.setModeratedAt(LocalDateTime.now());
+        moderation.setReason(request.getReason());
+        moderation.setModerator(moderator);
+        return moderationRepository.save(moderation);
+    }
 }

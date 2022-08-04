@@ -33,4 +33,13 @@ public class ModerationController {
                 HttpStatus.OK
         );
     }
+
+    @PostMapping("moderation/{modId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD')")
+    public ResponseEntity<Moderation> moderate(@RequestBody ModerationRequest request, @PathVariable Long modId, Principal principal) {
+        return new ResponseEntity<>(
+                service.moderate(request, modId, principal.getName()),
+                HttpStatus.OK
+        );
+    }
 }
