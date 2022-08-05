@@ -1,1 +1,12 @@
-<p>report-form works!</p>
+
+<h2 class="title">Report {{ reportPost ? 'post' : 'comment'}}</h2>
+
+<form id="form" [formGroup]="form">
+    <div>
+        <label for="name">Reason</label>
+    </div>
+    <input id="reason" formControlName="reason"/>
+</form>
+
+
+<button class="report-button" (click)="send()">Report</button>

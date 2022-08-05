@@ -14,7 +14,7 @@ export class ModerationService {
   constructor(private http: HttpClient) { }
   
   public reportPost(request: ReportRequest, postId: number): Observable<Moderation> {
-    return this.http.post<Moderation>(`${this.apiServerUrl}/posts/${postId}/report`, request);
+    return this.http.post<Moderation>(`${this.apiServerUrl}/post/${postId}/report`, request);
   }
   
   public reportComment(request: ReportRequest, commentId: number): Observable<Moderation> {

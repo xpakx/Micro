@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faCheckCircle, faEdit, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEdit, faFlag, faPaperclip, faPaperPlane, faPlus, faSmile, faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentListService } from 'src/app/comment/comment-list.service';
 import { CommentService } from 'src/app/comment/comment.service';
 import { CommentWithData } from 'src/app/comment/dto/comment-with-data';
@@ -38,11 +38,13 @@ export class PostComponent implements OnInit {
   faSend = faPaperPlane;
   faDelete = faTrashAlt;
   faEdit = faEdit;
+  faReport = faFlag;
   quickReply: UntypedFormGroup;
   message: String = "";
   invalid: boolean = false;
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
+  showReportDialog: boolean = false;
   @ViewChild("responseInput") responseElem?: ElementRef;
   showAttachmentDialog: boolean = false;
   attachmentBase64: String = "";
@@ -247,5 +249,13 @@ export class PostComponent implements OnInit {
   switchAttachmentDialog(): void {
     this.showAttachmentDialog = !this.showAttachmentDialog;
     this.showEmojiDialog = false;
+  }
+
+  openReportDialog(): void {
+    this.showReportDialog = true;
+  }
+
+  closeReportDialog(): void {
+    this.showReportDialog = false;
   }
 }
