@@ -3,10 +3,6 @@ package io.github.xpakx.micro2.administration;
 import io.github.xpakx.micro2.administration.dto.ModerationDetails;
 import io.github.xpakx.micro2.administration.dto.ModerationRequest;
 import io.github.xpakx.micro2.administration.dto.ReportRequest;
-import io.github.xpakx.micro2.administration.dto.RoleRequest;
-import io.github.xpakx.micro2.comment.dto.CommentDto;
-import io.github.xpakx.micro2.comment.dto.CommentRequest;
-import io.github.xpakx.micro2.user.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -85,7 +81,7 @@ public class ModerationController {
         );
     }
 
-    @GetMapping("/post/{postId}/report")
+    @PostMapping("/post/{postId}/report")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Moderation> reportPost(@RequestBody ReportRequest request, @PathVariable Long postId, Principal principal) {
         return new ResponseEntity<>(
@@ -94,7 +90,7 @@ public class ModerationController {
         );
     }
 
-    @GetMapping("/comment/{commentId}/report")
+    @PostMapping("/comment/{commentId}/report")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Moderation> reportComment(@RequestBody ReportRequest request, @PathVariable Long commentId, Principal principal) {
         return new ResponseEntity<>(

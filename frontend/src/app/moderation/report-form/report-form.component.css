@@ -1,0 +1,20 @@
+button {
+    cursor: pointer;
+    border: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 7px 5px;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 15px;
+}
+
+.report-button {
+    background-color: #dbe6fe;
+    color: #437ef8;
+}
