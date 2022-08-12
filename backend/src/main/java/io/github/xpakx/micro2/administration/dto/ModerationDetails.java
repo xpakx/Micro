@@ -15,8 +15,8 @@ public interface ModerationDetails {
     LocalDateTime getModeratedAt();
     String getReason();
 
-    PostWithOnlyId getPost();
-    CommentWithOnlyId getComment();
+    PostWithIdAndContent getPost();
+    CommentWithIdAndContent getComment();
     UserMin getAuthor();
     UserMin getModerator();
 }
