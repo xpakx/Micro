@@ -52,6 +52,7 @@ import { TagifyPipe } from './common/tagify.pipe';
 import { AttachmentChoiceComponent } from './common/attachment-choice/attachment-choice.component';
 import { ReportFormComponent } from './moderation/report-form/report-form.component';
 import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
+import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -103,7 +104,8 @@ export function tokenGetter() {
     TagifyPipe,
     AttachmentChoiceComponent,
     ReportFormComponent,
-    MyReportsComponent
+    MyReportsComponent,
+    MyModeratedComponent
   ],
   imports: [
     BrowserModule,

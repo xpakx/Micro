@@ -26,4 +26,8 @@ export class ModerationService {
   public getMyReports(page?: number | undefined): Observable<Page<ModerationDetails>> {
     return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/my/reports${page ? '?page='+page : ''}`);
   }
+  
+  public getMyModerated(page?: number | undefined): Observable<Page<ModerationDetails>> {
+    return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/my${page ? '?page='+page : ''}`);
+  }
 }

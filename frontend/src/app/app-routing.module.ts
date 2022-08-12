@@ -19,6 +19,7 @@ import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { MessageListComponent } from './message/message-list/message-list.component';
+import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.component';
 import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
@@ -53,6 +54,7 @@ const routes: Routes = [
   { path: 'search', component: SearchViewComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'my/reports', component: MyReportsComponent },
+  { path: 'my/moderated', component: MyModeratedComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
   { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },
