@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCheckCircle, faEdit, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEdit, faFlag, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
@@ -22,8 +22,10 @@ export class CommentComponent implements OnInit {
   faReply = faReply;
   faDelete = faTrashAlt;
   faEdit = faEdit;
+  faReport = faFlag;
   showDeleteModal: boolean = false;
   private apiServerUrl = environment.apiServerUrl;
+  showReportDialog: boolean = false;
 
   constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router) { }
 
@@ -106,5 +108,13 @@ export class CommentComponent implements OnInit {
 
   get getAttachmentUrl(): String {
     return this.comment.comment.attachmentUrl ? `${this.apiServerUrl}/attachments/${this.comment.comment.attachmentUrl}` : '';
+  }
+
+  openReportDialog(): void {
+    this.showReportDialog = true;
+  }
+
+  closeReportDialog(): void {
+    this.showReportDialog = false;
   }
 }

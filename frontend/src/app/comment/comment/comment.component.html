@@ -20,7 +20,9 @@
         <button class="reply-button"><fa-icon [icon]="faReply"></fa-icon> Reply</button>
         <button class="option-button" *ngIf="author && !comment.comment.deletedByUser && !comment.comment.deletedByPostAuthor" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
         <button class="option-button" *ngIf="author && !comment.comment.deletedByUser && !comment.comment.deletedByPostAuthor" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
+        <button class="option-button" (click)="openReportDialog()"><fa-icon [icon]="faReport"></fa-icon></button>
     </div>
 </div>
 
+<app-report-form *ngIf="showReportDialog" [post]="false" [id]="comment.comment.id" (close)="closeReportDialog()"></app-report-form>
 <app-modal-delete *ngIf="showDeleteModal" text="comment" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>
