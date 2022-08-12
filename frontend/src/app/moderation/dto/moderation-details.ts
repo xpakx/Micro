@@ -8,8 +8,8 @@ export interface ModerationDetails {
     createdAt: Date;
     moderatedAt: Date;
     reason: String;
-    post: EntityWithIdAndContent;
-    comment: EntityWithIdAndContent;
+    post?: EntityWithIdAndContent;
+    comment?: EntityWithIdAndContent;
     author: UserMin;
     moderator: UserMin;
 }
