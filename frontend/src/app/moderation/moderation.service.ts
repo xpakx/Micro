@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Page } from '../common/dto/page';
 import { Moderation } from './dto/moderation';
+import { ModerationDetails } from './dto/moderation-details';
 import { ReportRequest } from './dto/report-request';
 
 @Injectable({
@@ -19,5 +21,9 @@ export class ModerationService {
   
   public reportComment(request: ReportRequest, commentId: number): Observable<Moderation> {
     return this.http.post<Moderation>(`${this.apiServerUrl}/comment/${commentId}/report`, request);
+  }
+  
+  public getMyReports(page?: number | undefined): Observable<Page<ModerationDetails>> {
+    return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/my/reports${page ? '?page='+page : ''}`);
   }
 }

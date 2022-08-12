@@ -19,6 +19,7 @@ import { TagViewComponent } from './main-view/tag-view/tag-view.component';
 import { UserViewComponent } from './main-view/user-view/user-view.component';
 import { MentionListComponent } from './mention/mention-list/mention-list.component';
 import { MessageListComponent } from './message/message-list/message-list.component';
+import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
 import { SettingsComponent } from './user/settings/settings.component';
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: 'message/:id', component: MessageViewComponent },
   { path: 'search', component: SearchViewComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'my/reports', component: MyReportsComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
   { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },
