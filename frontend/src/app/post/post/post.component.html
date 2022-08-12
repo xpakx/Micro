@@ -19,7 +19,7 @@
             <button class="option-button" (click)="fav()"><fa-icon [icon]="faStar" [class.fav]="inFav"></fa-icon></button>
             <button class="option-button" *ngIf="author" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
             <button class="option-button" *ngIf="author" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
-            <button class="option-button" (click)="openReportDialog()"><fa-icon [icon]="faReport"></fa-icon></button>
+            <button class="option-button" (click)="switchReportDialog()"><fa-icon [icon]="faReport"></fa-icon></button>
         </div>
     </div>
 

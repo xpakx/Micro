@@ -251,8 +251,8 @@ export class PostComponent implements OnInit {
     this.showEmojiDialog = false;
   }
 
-  openReportDialog(): void {
-    this.showReportDialog = true;
+  switchReportDialog(): void {
+    this.showReportDialog = !this.showReportDialog;
   }
 
   closeReportDialog(): void {
