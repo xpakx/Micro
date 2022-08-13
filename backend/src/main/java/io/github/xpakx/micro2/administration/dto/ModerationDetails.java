@@ -1,7 +1,5 @@
 package io.github.xpakx.micro2.administration.dto;
 
-import io.github.xpakx.micro2.comment.dto.CommentWithOnlyId;
-import io.github.xpakx.micro2.post.dto.PostWithOnlyId;
 import io.github.xpakx.micro2.user.dto.UserMin;
 
 import java.time.LocalDateTime;
