@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthorizedUserService } from 'src/app/user/authorized-user.service';
 import { AuthenticationService } from '../authentication.service';
 import { Token } from '../dto/token';
@@ -15,7 +16,7 @@ export class RegisterFormComponent implements OnInit {
   public invalid: boolean = false;
   public message: string = '';
 
-  constructor(private service: AuthenticationService, private fb: UntypedFormBuilder, private loginService: AuthorizedUserService) {
+  constructor(private service: AuthenticationService, private fb: UntypedFormBuilder, private loginService: AuthorizedUserService, private router: Router) {
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -50,5 +51,6 @@ export class RegisterFormComponent implements OnInit {
 
   private saveToken(response: Token) {
     this.loginService.saveData(response);
+    this.router.navigate(['/']);
   }
 }
