@@ -53,6 +53,7 @@ import { AttachmentChoiceComponent } from './common/attachment-choice/attachment
 import { ReportFormComponent } from './moderation/report-form/report-form.component';
 import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
 import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.component';
+import { ReportComponent } from './moderation/report/report.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -105,7 +106,8 @@ export function tokenGetter() {
     AttachmentChoiceComponent,
     ReportFormComponent,
     MyReportsComponent,
-    MyModeratedComponent
+    MyModeratedComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
