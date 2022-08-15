@@ -1,1 +1,9 @@
-<p>report works!</p>
+<div class="report-container" *ngIf="report">
+    <div markdown class="report-content">{{ report.post ? report.post.content : report.comment?.content }}</div>
+    <div class="report-reason">{{ report.reason }}</div>
+
+
+    <button class="more" (click)="report.post ? toPost(report.post.id) : toComment(report.comment?.id)">
+        Go
+    </button>
+</div>

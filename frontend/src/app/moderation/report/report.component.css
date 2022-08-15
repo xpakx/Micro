@@ -1,0 +1,31 @@
+.report-container {
+    border: #ecf1f5 solid 1px;
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    padding-bottom: 0;
+}
+
+.report-content, .report-reason {
+    margin: 0 15px;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+}
+
+.more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f8fa;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #b1b9c4;
+}
