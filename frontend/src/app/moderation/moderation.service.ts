@@ -30,4 +30,12 @@ export class ModerationService {
   public getMyModerated(page?: number | undefined): Observable<Page<ModerationDetails>> {
     return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/my${page ? '?page='+page : ''}`);
   }
+
+  public getAll(page?: number | undefined): Observable<Page<ModerationDetails>> {
+    return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/all${page ? '?page='+page : ''}`);
+  }
+
+  public getUnmoderated(page?: number | undefined): Observable<Page<ModerationDetails>> {
+    return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/unmoderated${page ? '?page='+page : ''}`);
+  }
 }
