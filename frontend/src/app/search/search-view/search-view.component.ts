@@ -4,6 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentListService } from 'src/app/comment/comment-list.service';
 import { CommentDetails } from 'src/app/comment/dto/comment-details';
+import { SearchCommentDetails } from 'src/app/comment/dto/search-comment-details';
 import { Page } from 'src/app/common/dto/page';
 import { PostDetails } from 'src/app/post/dto/post-details';
 import { PostListService } from 'src/app/post/post-list.service';
@@ -16,7 +17,7 @@ import { PostListService } from 'src/app/post/post-list.service';
 export class SearchViewComponent implements OnInit {
   showPosts: boolean = true;
   posts?: Page<PostDetails>;
-  comments?: Page<CommentDetails>;
+  comments?: Page<SearchCommentDetails>;
   searchForm: UntypedFormGroup;
   searchString: String = '';
 
@@ -62,19 +63,19 @@ export class SearchViewComponent implements OnInit {
 
   toCommentPage(page: number) {
     this.commentService.search(this.searchString, page).subscribe({
-      next: (response: Page<CommentDetails>) => this.updateComments(response),
+      next: (response: Page<SearchCommentDetails>) => this.updateComments(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
   private getComments(search: String) {
     this.commentService.search(search).subscribe({
-      next: (response: Page<CommentDetails>) => this.updateComments(response),
+      next: (response: Page<SearchCommentDetails>) => this.updateComments(response),
       error: (error: HttpErrorResponse) => this.showError(error)
     });
   }
 
-  updateComments(response: Page<CommentDetails>): void {
+  updateComments(response: Page<SearchCommentDetails>): void {
     this.comments = response;
     this.showPosts = false;
   }

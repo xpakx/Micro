@@ -12,7 +12,7 @@
         <img class="attachment-img" [src]="getAttachmentUrl"/>
     </div>
 
-    <button class="more-comments" (click)="toComment(comment.id)">
+    <button class="more-comments" (click)="toComment(comment.post.id, comment.id)">
         More
     </button>
 </div>

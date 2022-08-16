@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { CommentDetails } from './dto/comment-details';
 import { CommentWithData } from './dto/comment-with-data';
+import { SearchCommentDetails } from './dto/search-comment-details';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class CommentListService {
     return this.http.get<CommentDetails>(`${this.apiServerUrl}/comments/${commentId}`);
   }
 
-  public search(search: String, page?: number | undefined):  Observable<Page<CommentDetails>> {
-    return this.http.get<Page<CommentDetails>>(`${this.apiServerUrl}/comments/search?search=${search}${page ? '&page='+page : ''}`);
+  public search(search: String, page?: number | undefined):  Observable<Page<SearchCommentDetails>> {
+    return this.http.get<Page<SearchCommentDetails>>(`${this.apiServerUrl}/comments/search?search=${search}${page ? '&page='+page : ''}`);
   }
 }
