@@ -22,9 +22,9 @@ export class ReportComponent implements OnInit {
 
   }
 
-  toComment(id?: number): void {
-    if(id) {
-      this.router.navigate([`/comment/${id}`]);
+  toComment(postId?: number, commentId?: number): void {
+    if(postId && commentId) {
+      this.router.navigate([`/post/${postId}#${commentId}`]);
     }
   }
 }

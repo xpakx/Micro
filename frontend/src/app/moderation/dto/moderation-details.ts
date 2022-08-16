@@ -1,4 +1,5 @@
 import { UserMin } from "src/app/mention/dto/user-min";
+import { CommentWithIdAndContent } from "./comment-with-id-and-content";
 import { EntityWithIdAndContent } from "./entity-with-id-and-content";
 
 export interface ModerationDetails {
@@ -9,7 +10,7 @@ export interface ModerationDetails {
     moderatedAt: Date;
     reason: String;
     post?: EntityWithIdAndContent;
-    comment?: EntityWithIdAndContent;
+    comment?: CommentWithIdAndContent;
     author: UserMin;
     moderator: UserMin;
 }

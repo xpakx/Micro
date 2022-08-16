@@ -3,7 +3,7 @@
     <div class="report-reason">{{ report.reason }}</div>
 
 
-    <button class="more" (click)="report.post ? toPost(report.post.id) : toComment(report.comment?.id)">
+    <button class="more" (click)="report.post ? toPost(report.post.id) : toComment(report.comment?.post?.id, report.comment?.id)">
         Go
     </button>
 </div>
