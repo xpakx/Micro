@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentSearchDetails;
 import io.github.xpakx.micro2.comment.dto.CommentWithUserData;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,7 @@ public class CommentPublicViewController {
     }
 
     @GetMapping("/comments/search")
-    public ResponseEntity<Page<CommentDetails>> search(@RequestParam("page") Optional<Integer> page, @RequestParam("search") String searchTerm) {
+    public ResponseEntity<Page<CommentSearchDetails>> search(@RequestParam("page") Optional<Integer> page, @RequestParam("search") String searchTerm) {
         return new ResponseEntity<>(
                 service.searchComments(searchTerm, page.orElse(0)),
                 HttpStatus.OK

@@ -136,7 +136,7 @@ public class CommentService {
                 .orElseThrow(CommentNotFoundException::new);
     }
 
-    public Page<CommentDetails> searchComments(String search, Integer page) {
+    public Page<CommentSearchDetails> searchComments(String search, Integer page) {
         return commentRepository.findByContentIsContainingIgnoreCaseAndDeletedByUserIsFalseAndDeletedByPostAuthorIsFalseAndDeletedByModeratorIsFalse(search, PageRequest.of(page, 20));
     }
 }

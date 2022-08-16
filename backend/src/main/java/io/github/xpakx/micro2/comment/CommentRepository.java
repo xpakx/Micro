@@ -1,6 +1,7 @@
 package io.github.xpakx.micro2.comment;
 
 import io.github.xpakx.micro2.comment.dto.CommentDetails;
+import io.github.xpakx.micro2.comment.dto.CommentSearchDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,5 +16,5 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Page<CommentDetails> findAllBy(Pageable pageable);
     boolean existsByPostIdAndCreatedAtIsGreaterThan(Long postId, LocalDateTime createdAt);
     Optional<CommentDetails> findProjectedById(Long id);
-    Page<CommentDetails> findByContentIsContainingIgnoreCaseAndDeletedByUserIsFalseAndDeletedByPostAuthorIsFalseAndDeletedByModeratorIsFalse(String content, Pageable pageable);
+    Page<CommentSearchDetails> findByContentIsContainingIgnoreCaseAndDeletedByUserIsFalseAndDeletedByPostAuthorIsFalseAndDeletedByModeratorIsFalse(String content, Pageable pageable);
 }
