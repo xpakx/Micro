@@ -1,6 +1,6 @@
 <div class="post-container sidebar-container" *ngIf="comment">
     <div class="author-bar">
-        <app-avatar [gender]="comment.user.gender"></app-avatar>
+        <app-avatar [gender]="comment.user.gender" [url]="comment.user.avatarUrl"></app-avatar>
         <div class="author-name" (click)="toUser(comment.user.username)">{{comment.user.username}}</div>
         <div class="post-date">commented at {{comment.createdAt | date: 'yyyy MMM dd HH:mm'}}</div>
         <div class="edited" *ngIf="comment.edited">edited</div>
