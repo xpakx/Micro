@@ -12,6 +12,11 @@
     margin: 0 15px;
 }
 
+.report-reason {
+    border-top: #ecf1f5 solid 1px;
+    font-style: italic;
+}
+
 button {
     cursor: pointer;
     background-color: transparent;
