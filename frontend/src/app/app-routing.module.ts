@@ -21,6 +21,7 @@ import { MentionListComponent } from './mention/mention-list/mention-list.compon
 import { MessageListComponent } from './message/message-list/message-list.component';
 import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.component';
 import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
+import { ModerationPanelComponent } from './moderation/moderation-panel/moderation-panel.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { SearchViewComponent } from './search/search-view/search-view.component';
 import { SettingsComponent } from './user/settings/settings.component';
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'my/reports', component: MyReportsComponent },
   { path: 'my/moderated', component: MyModeratedComponent },
+  { path: 'moderation', component: ModerationPanelComponent },
 
   { path: '', outlet: 'left-sidebar', component: LeftSidebarComponent },
   { path: 'my/**', outlet: 'left-sidebar', component: MySidebarComponent },

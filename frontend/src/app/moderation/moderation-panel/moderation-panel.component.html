@@ -1,0 +1,12 @@
+
+<div class="buttons">
+    <button class="icon-button" (click)="switchUnmoderated()">{{ onlyUnmoderated ? 'all' : 'unmoderated'}}</button>
+</div>
+
+<div class="reports-container">
+    <div class="reports-list-container">
+        <div class="report" *ngFor="let report of reports" [class.unread]="!report.moderated">
+            <app-report [report]="report"></app-report>
+        </div>
+    </div>        
+</div>
