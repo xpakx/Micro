@@ -9,6 +9,7 @@ import { ModerationDetails } from '../dto/moderation-details';
 })
 export class ReportComponent implements OnInit {
   @Input("report") report?: ModerationDetails;
+  @Input("moderation") mod = false;
 
   constructor(private router: Router) { }
 

@@ -6,7 +6,7 @@
 <div class="reports-container" *ngIf="reports">
     <div class="reports-list-container">
         <div class="report" *ngFor="let report of reports.content" [class.unread]="!report.moderated">
-            <app-report [report]="report"></app-report>
+            <app-report [report]="report" [moderation]="true"></app-report>
         </div>
     </div>        
 </div>
