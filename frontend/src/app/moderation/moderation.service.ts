@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Page } from '../common/dto/page';
 import { Moderation } from './dto/moderation';
 import { ModerationDetails } from './dto/moderation-details';
+import { ModerationRequest } from './dto/moderation-request';
 import { ReportRequest } from './dto/report-request';
 
 @Injectable({
@@ -37,5 +38,17 @@ export class ModerationService {
 
   public getUnmoderated(page?: number | undefined): Observable<Page<ModerationDetails>> {
     return this.http.get<Page<ModerationDetails>>(`${this.apiServerUrl}/moderation/unmoderated${page ? '?page='+page : ''}`);
+  }
+  
+  public moderate(request: ModerationRequest, modId: number): Observable<Moderation> {
+    return this.http.post<Moderation>(`${this.apiServerUrl}/moderation/${modId}`, request);
+  }
+  
+  public moderatePost(request: ModerationRequest, postId: number): Observable<Moderation> {
+    return this.http.post<Moderation>(`${this.apiServerUrl}/moderation/post/${postId}`, request);
+  }
+  
+  public moderateComment(request: ModerationRequest, commentId: number): Observable<Moderation> {
+    return this.http.post<Moderation>(`${this.apiServerUrl}/moderation/comment/${commentId}`, request);
   }
 }
