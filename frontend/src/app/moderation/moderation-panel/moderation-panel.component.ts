@@ -9,7 +9,7 @@ import { ModerationService } from '../moderation.service';
   styleUrls: ['./moderation-panel.component.css']
 })
 export class ModerationPanelComponent implements OnInit {
-  reports: ModerationDetails[] = [];
+  reports?: Page<ModerationDetails>;
   onlyUnmoderated: boolean = true;
   
   constructor(private modService: ModerationService) { }
@@ -18,20 +18,20 @@ export class ModerationPanelComponent implements OnInit {
     this.getUnmoderated();
   }
 
-  private getUnmoderated() {
+  private getUnmoderated(page?: number | undefined) {
     this.modService.getUnmoderated().subscribe({
       next: (response: Page<ModerationDetails>) => this.onSuccess(response, true)
     });
   }
 
-  private getAll() {
+  private getAll(page?: number | undefined) {
     this.modService.getAll().subscribe({
       next: (response: Page<ModerationDetails>) => this.onSuccess(response, true)
     });
   }
 
   onSuccess(response: Page<ModerationDetails>, onlyUnmoderated: boolean): void {
-    this.reports = response.content;
+    this.reports = response;
     this.onlyUnmoderated = onlyUnmoderated;
   }
 
@@ -41,6 +41,14 @@ export class ModerationPanelComponent implements OnInit {
       this.getUnmoderated();
     } else {
       this.getAll();
+    }
+  }
+
+  toPage(page: number): void {
+    if(this.onlyUnmoderated) {
+      this.getUnmoderated(page);
+    } else {
+      this.getAll(page);
     }
   }
 }
