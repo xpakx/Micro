@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -54,6 +54,7 @@ import { ReportFormComponent } from './moderation/report-form/report-form.compon
 import { MyReportsComponent } from './moderation/my-reports/my-reports.component';
 import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.component';
 import { ReportComponent } from './moderation/report/report.component';
+import { ErrorInterceptor } from './error/error.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -124,7 +125,12 @@ export function tokenGetter() {
     FontAwesomeModule,
     MarkdownModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
