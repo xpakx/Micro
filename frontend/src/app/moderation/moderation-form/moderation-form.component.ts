@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faCircleRight, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Moderation } from '../dto/moderation';
 import { ModerationDetails } from '../dto/moderation-details';
+import { ModerationService } from '../moderation.service';
 
 export interface ModerationForm {
   reason: FormControl<String>;
@@ -18,15 +20,25 @@ export class ModerationFormComponent implements OnInit {
   faReject = faCircleRight;
   faDelete = faTrashAlt;
 
-  constructor(private fb: FormBuilder) {this.form = this.fb.nonNullable.group({
-    reason: [new String(''), Validators.required]
-  }); }
+  constructor(private fb: FormBuilder, private modService: ModerationService) {
+    this.form = this.fb.nonNullable.group({
+      reason: [new String(''), Validators.required]
+    }); 
+}
 
   ngOnInit(): void {
 
   }
 
   moderate(toDelete: boolean): void {
+    if(this.report) {
+      this.modService.moderate({reason: this.form.controls.reason.value, delete: toDelete}, this.report.id).subscribe({
+        next: (response: Moderation) => this.onSuccess(response)
+      });
+    }
+  }
 
+  onSuccess(response: Moderation): void {
+    //TODO
   }
 }
