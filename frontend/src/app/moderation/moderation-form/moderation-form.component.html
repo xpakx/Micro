@@ -1,0 +1,14 @@
+
+<div class="form-container">
+    <form id="form" [formGroup]="form" class="moderation-form">
+        <input class="reason" formControlName="reason" placeholder="Reason" />
+    </form>
+
+    <button class="reject-button" [class.blocked]="!form.valid" (click)="moderate(false)">
+        <fa-icon [icon]="faReject"></fa-icon> Reject
+    </button>
+
+    <button class="delete-button" [class.blocked]="!form.valid" (click)="moderate(true)">
+        <fa-icon [icon]="faDelete"></fa-icon> Delete
+    </button>
+</div>

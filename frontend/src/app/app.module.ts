@@ -56,6 +56,7 @@ import { MyModeratedComponent } from './moderation/my-moderated/my-moderated.com
 import { ReportComponent } from './moderation/report/report.component';
 import { ErrorInterceptor } from './error/error.interceptor';
 import { ModerationPanelComponent } from './moderation/moderation-panel/moderation-panel.component';
+import { ModerationFormComponent } from './moderation/moderation-form/moderation-form.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -110,7 +111,8 @@ export function tokenGetter() {
     MyReportsComponent,
     MyModeratedComponent,
     ReportComponent,
-    ModerationPanelComponent
+    ModerationPanelComponent,
+    ModerationFormComponent
   ],
   imports: [
     BrowserModule,
