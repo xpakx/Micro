@@ -11,7 +11,7 @@ import { ModerationService } from '../moderation.service';
 export class MyModeratedComponent implements OnInit {
 
   constructor(private modService: ModerationService) { }
-  reports: ModerationDetails[] = [];
+  reports?: Page<ModerationDetails>;
 
   ngOnInit(): void {
     this.modService.getMyModerated().subscribe({
@@ -20,6 +20,12 @@ export class MyModeratedComponent implements OnInit {
   }
 
   onSuccess(response: Page<ModerationDetails>): void {
-    this.reports = response.content;
+    this.reports = response;
+  }
+
+  toPage(page: number): void {
+    this.modService.getMyModerated(page).subscribe({
+      next: (response: Page<ModerationDetails>) => this.onSuccess(response)
+    });
   }
 }
