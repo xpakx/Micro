@@ -1,7 +1,11 @@
-<div class="reports-container">
+<div class="reports-container" *ngIf="reports">
     <div class="reports-list-container">
-        <div class="report" *ngFor="let report of reports" [class.unread]="!report.moderated">
+        <div class="report" *ngFor="let report of reports.content" [class.unread]="!report.moderated">
             <app-report [report]="report"></app-report>
         </div>
     </div>        
 </div>
+
+<app-pagination  *ngIf="reports" (page)="toPage($event)" 
+[pages]="reports.totalPages" [curr]="reports.number" [last]="reports.last" [first]="reports.first">
+</app-pagination>

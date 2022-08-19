@@ -9,7 +9,7 @@ import { ModerationService } from '../moderation.service';
   styleUrls: ['./my-reports.component.css']
 })
 export class MyReportsComponent implements OnInit {
-  reports: ModerationDetails[] = [];
+  reports?: Page<ModerationDetails>;
 
   constructor(private modService: ModerationService) { }
 
@@ -20,7 +20,13 @@ export class MyReportsComponent implements OnInit {
   }
 
   onSuccess(response: Page<ModerationDetails>): void {
-    this.reports = response.content;
+    this.reports = response;
+  }
+
+  toPage(page: number): void {
+    this.modService.getMyReports(page).subscribe({
+      next: (response: Page<ModerationDetails>) => this.onSuccess(response)
+    });
   }
 
 }
