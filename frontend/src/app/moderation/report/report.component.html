@@ -3,10 +3,14 @@
     <div class="report-reason">{{ report.reason }}</div>
 
     <div class="mod-container">
-        <button class="mod-button" *ngIf="mod" (click)="switchFormVisibility()">Moderate</button>
+        <button class="mod-button" *ngIf="mod" (click)="switchFormVisibility()" [class.moderated]="report.moderated">
+            <fa-icon [icon]="faModerated" *ngIf="report.moderated" class="mod-icon" [class.deleted-icon]="report.deleted"></fa-icon>
+            Moderate
+        </button>
     </div>
+
     <app-moderation-form *ngIf="showForm" [report]="report"></app-moderation-form>
-    
+
     <button class="more" (click)="report.post ? toPost(report.post.id) : toComment(report.comment?.post?.id, report.comment?.id)">
         Go
     </button>

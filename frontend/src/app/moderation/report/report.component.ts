@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { faCertificate } from '@fortawesome/free-solid-svg-icons';
 import { ModerationDetails } from '../dto/moderation-details';
 
 @Component({
@@ -11,6 +12,7 @@ export class ReportComponent implements OnInit {
   @Input("report") report?: ModerationDetails;
   @Input("moderation") mod = false;
   showForm: boolean = false;
+  faModerated = faCertificate;
 
   constructor(private router: Router) { }
 

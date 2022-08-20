@@ -46,7 +46,20 @@ button {
     font-weight: 600;
 }
 
+.moderated {
+    background-color: gainsboro;
+}
+
 .mod-container {
     display: flex;
     justify-content: center;
+}
+
+.mod-icon {
+    color: greenyellow;
+    margin-right: 5px;
+}
+
+.deleted-icon {
+    color: red;
 }
