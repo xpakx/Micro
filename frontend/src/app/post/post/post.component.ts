@@ -89,6 +89,7 @@ export class PostComponent implements OnInit {
         edited: false,
         deletedByUser: false,
         deletedByPostAuthor: false,
+        deletedByModerator: false,
         likeCount: 0,
         dislikeCount: 0,
         attachmentUrl: response.attachmentUrl,

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public interface CommentDetails {
     Long getId();
 
-    @Value("#{target.deletedByUser ? '[comment deleted by author]' : (target.deletedByPostAuthor ? '[comment deleted by post author]' : (target.deletedByModerator ? '[comment deleted moderator]' : target.content))}")
+    @Value("#{target.deletedByUser ? '[comment deleted by author]' : (target.deletedByPostAuthor ? '[comment deleted by post author]' : (target.deletedByModerator ? '[comment deleted by moderator]' : target.content))}")
     String getContent();
     UserMin getUser();
 
@@ -21,6 +21,7 @@ public interface CommentDetails {
     boolean isEdited();
     boolean isDeletedByUser();
     boolean isDeletedByPostAuthor();
+    boolean isDeletedByModerator();
     Integer getLikeCount();
     Integer getDislikeCount();
 

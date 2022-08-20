@@ -1,4 +1,4 @@
-<div class="comment-container" *ngIf="comment" [class.deleted]="comment.comment.deletedByUser || comment.comment.deletedByPostAuthor">
+<div class="comment-container" *ngIf="comment" [class.deleted]="comment.comment.deletedByUser || comment.comment.deletedByPostAuthor || comment.comment.deletedByModerator">
     <div class="author-bar">
         <app-avatar [gender]="comment.comment.user.gender" [url]="comment.comment.user.avatarUrl"></app-avatar>
         <div class="author-name" (click)="toUser(comment.comment.user.username)">{{comment.comment.user.username}}</div>
