@@ -34,3 +34,19 @@ button {
     font-size: 12px;
     color: #b1b9c4;
 }
+
+.mod-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #dbe6fe;
+    color: #437ef8;
+    padding: 7px 15px;
+    font-weight: 600;
+}
+
+.mod-container {
+    display: flex;
+    justify-content: center;
+}

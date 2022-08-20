@@ -2,10 +2,11 @@
     <div markdown class="report-content">{{ report.post ? report.post.content : report.comment?.content }}</div>
     <div class="report-reason">{{ report.reason }}</div>
 
-    <button class="mod-button" *ngIf="mod" (click)="switchFormVisibility()">Moderate</button>
+    <div class="mod-container">
+        <button class="mod-button" *ngIf="mod" (click)="switchFormVisibility()">Moderate</button>
+    </div>
     <app-moderation-form *ngIf="showForm" [report]="report"></app-moderation-form>
-
-
+    
     <button class="more" (click)="report.post ? toPost(report.post.id) : toComment(report.comment?.post?.id, report.comment?.id)">
         Go
     </button>
