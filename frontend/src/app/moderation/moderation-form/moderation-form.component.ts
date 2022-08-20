@@ -27,7 +27,9 @@ export class ModerationFormComponent implements OnInit {
 }
 
   ngOnInit(): void {
-
+    if(this.report) {
+      this.form.setValue({ reason: this.report.reason });
+    } 
   }
 
   moderate(toDelete: boolean): void {
