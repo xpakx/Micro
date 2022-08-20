@@ -26,7 +26,7 @@ export class ModerationPanelComponent implements OnInit {
 
   private getAll(page?: number | undefined) {
     this.modService.getAll().subscribe({
-      next: (response: Page<ModerationDetails>) => this.onSuccess(response, true)
+      next: (response: Page<ModerationDetails>) => this.onSuccess(response, false)
     });
   }
 
