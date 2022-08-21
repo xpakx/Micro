@@ -35,7 +35,12 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token)
                 .username(userDetails.getUsername())
+                .moderator(isModerator(userDetails))
                 .build();
+    }
+
+    private boolean isModerator(UserDetails userDetails) {
+        return userDetails.getAuthorities().stream().anyMatch((a) -> a.getAuthority().equals("ROLE_MOD") || a.getAuthority().equals("ROLE_MOD"));
     }
 
     private void authenticate(String username, String password) {
