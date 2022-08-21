@@ -18,6 +18,7 @@ export class AuthorizedUserService {
   mentionCount: number = 0;
   avatarUrl: String = "";
   gender: String = "";
+  isMod: boolean = false;
 
   constructor(private mentionService: MentionService, private messageService: MessageService, private settingsService: SettingsService) { }
 
@@ -25,13 +26,25 @@ export class AuthorizedUserService {
     localStorage.setItem("token", response.token);
     localStorage.setItem("username", response.username);
     this.logged = true;
+    this.isMod = response.moderator;
+    if(response.moderator) {
+      localStorage.setItem("isMod", "true");
+    }
     this.startNotifRefresh();
     this.getAvatarData();
+  }
+
+  reload(): void {
+    let mod = localStorage.getItem("isMod");
+    if(mod) {
+      this.isMod = true;
+    }
   }
 
   clearData() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("isMod");
     this.logged = false;
     this.avatarUrl = "";
     this.gender = "";

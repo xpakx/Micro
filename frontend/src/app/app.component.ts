@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     if(this.logged) {
       this.userService.logged = true;
+      this.userService.reload();
       this.userService.startNotifRefresh();
       this.userService.getAvatarData();
     }
