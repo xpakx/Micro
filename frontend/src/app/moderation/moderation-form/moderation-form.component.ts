@@ -40,6 +40,19 @@ export class ModerationFormComponent implements OnInit {
     }
   }
 
+
+  moderatePost(id: number) {
+    this.modService.moderatePost({reason: this.form.controls.reason.value, delete: true}, id).subscribe({
+      next: (response: Moderation) => this.onSuccess(response)
+    })
+  }
+
+  moderateComment(id: number) {
+    this.modService.moderateComment({reason: this.form.controls.reason.value, delete: true}, id).subscribe({
+      next: (response: Moderation) => this.onSuccess(response),
+    })
+  }
+
   onSuccess(response: Moderation): void {
     //TODO
   }
