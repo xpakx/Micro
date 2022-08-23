@@ -16,6 +16,8 @@ export interface ModerationForm {
 })
 export class ModerationFormComponent implements OnInit {
   @Input("report") report?: ModerationDetails;
+  @Input("post") postId?: number;
+  @Input("comment") commentId?: number;
   form: FormGroup<ModerationForm>;
   faReject = faCircleRight;
   faDelete = faTrashAlt;
@@ -32,13 +34,25 @@ export class ModerationFormComponent implements OnInit {
     } 
   }
 
+
   moderate(toDelete: boolean): void {
+    if(this.postId) {
+      this.moderatePost(this.postId);
+    } else if(this.commentId) {
+      this.moderateComment(this.commentId);
+    } else {
+      this.moderateReport(toDelete);
+    }
+  }
+
+  moderateReport(toDelete: boolean): void {
     if(this.report) {
       this.modService.moderate({reason: this.form.controls.reason.value, delete: toDelete}, this.report.id).subscribe({
         next: (response: Moderation) => this.onSuccess(response)
       });
     }
   }
+  
 
 
   moderatePost(id: number) {
