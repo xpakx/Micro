@@ -40,7 +40,7 @@ public class AuthenticationService {
     }
 
     private boolean isModerator(UserDetails userDetails) {
-        return userDetails.getAuthorities().stream().anyMatch((a) -> a.getAuthority().equals("ROLE_MOD") || a.getAuthority().equals("ROLE_MOD"));
+        return userDetails.getAuthorities().stream().anyMatch((a) -> a.getAuthority().equals("ROLE_MOD") || a.getAuthority().equals("ROLE_ADMIN"));
     }
 
     private void authenticate(String username, String password) {
