@@ -45,6 +45,7 @@ export class PostComponent implements OnInit {
   showDeleteModal: boolean = false;
   showEmojiDialog: boolean = false;
   showReportDialog: boolean = false;
+  showModDialog: boolean = false;
   @ViewChild("responseInput") responseElem?: ElementRef;
   showAttachmentDialog: boolean = false;
   attachmentBase64: String = "";
@@ -258,5 +259,9 @@ export class PostComponent implements OnInit {
 
   closeReportDialog(): void {
     this.showReportDialog = false;
+  }
+
+  switchModDialog(): void {
+    this.showModDialog = !this.showModDialog;
   }
 }

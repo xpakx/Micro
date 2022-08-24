@@ -4,7 +4,7 @@
         <input class="reason" formControlName="reason" placeholder="Reason" />
     </form>
 
-    <button class="reject-button" [class.blocked]="!form.valid" (click)="moderate(false)">
+    <button class="reject-button" [class.blocked]="!form.valid" (click)="moderate(false)" *ngIf="!postId && !commentId">
         <fa-icon [icon]="faReject"></fa-icon> Reject
     </button>
 

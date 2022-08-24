@@ -20,6 +20,7 @@
             <button class="option-button" *ngIf="author" (click)="askForDelete()"><fa-icon [icon]="faDelete"></fa-icon></button>
             <button class="option-button" *ngIf="author" (click)="edit()"><fa-icon [icon]="faEdit"></fa-icon></button>
             <button class="option-button" (click)="switchReportDialog()"><fa-icon [icon]="faReport"></fa-icon></button>
+            <button class="option-button mod-option" *ngIf="userService.isMod" (click)="switchModDialog()"><fa-icon [icon]="faDelete"></fa-icon></button>
         </div>
     </div>
 
@@ -55,3 +56,4 @@
 
 
 <app-modal-delete *ngIf="showDeleteModal" text="post" (deleteEvent)="delete()" (closeEvent)="closeDeleteModal()"></app-modal-delete>
+<app-moderation-form [post]="post.id" *ngIf="showModDialog"></app-moderation-form>
