@@ -5,6 +5,7 @@ import { faCheckCircle, faEarthAsia, faEdit, faFlag, faPlus, faReply, faTrashAlt
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
+import { AuthorizedUserService } from 'src/app/user/authorized-user.service';
 import { environment } from 'src/environments/environment';
 import { CommentService } from '../comment.service';
 import { CommentWithData } from '../dto/comment-with-data';
@@ -26,8 +27,10 @@ export class CommentComponent implements OnInit {
   showDeleteModal: boolean = false;
   private apiServerUrl = environment.apiServerUrl;
   showReportDialog: boolean = false;
+  showModDialog: boolean = false;
 
-  constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router) { }
+  constructor(private likeService: CommentLikeService, private commentService: CommentService, private router: Router,
+    protected userService: AuthorizedUserService) { }
 
   ngOnInit(): void {
   }
@@ -116,5 +119,9 @@ export class CommentComponent implements OnInit {
 
   closeReportDialog(): void {
     this.showReportDialog = false;
+  }
+
+  switchModDialog(): void {
+    this.showModDialog = !this.showModDialog;
   }
 }
