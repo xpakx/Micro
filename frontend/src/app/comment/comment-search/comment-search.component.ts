@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { CommentDetails } from '../dto/comment-details';
 import { SearchCommentDetails } from '../dto/search-comment-details';
 
 @Component({

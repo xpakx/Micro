@@ -3,7 +3,6 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faPaperclip, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { AuthorizedUserService } from 'src/app/user/authorized-user.service';
-import { PostDetails } from '../dto/post-details';
 import { PostWithComments } from '../dto/post-with-comments';
 import { UpdatedPost } from '../dto/updated-post';
 import { PostService } from '../post.service';

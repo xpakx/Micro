@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCheckCircle, faEarthAsia, faEdit, faFlag, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEdit, faFlag, faPlus, faReply, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { CommentLikeService } from 'src/app/like/comment-like.service';
 import { CommentLike } from 'src/app/like/dto/comment-like';
 import { Unlike } from 'src/app/like/dto/unlike';
