@@ -9,21 +9,28 @@ import io.github.xpakx.micro2.post.dto.*;
 import io.github.xpakx.micro2.post.error.PostNotFoundException;
 import io.github.xpakx.micro2.post.error.PostTooOldToEditException;
 import io.github.xpakx.micro2.tag.TagService;
+import io.github.xpakx.micro2.user.SettingsService;
 import io.github.xpakx.micro2.user.UserAccount;
 import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -32,13 +39,29 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final TagService tagService;
     private final MentionService mentionService;
+
+    private final Path root = Paths.get("attachments");
+    Logger logger = LoggerFactory.getLogger(SettingsService.class);
+
+    @PostConstruct
+    public void init() {
+        try {
+            if(!Files.exists(root)) {
+                Files.createDirectory(root);
+            } else if(!Files.isDirectory(root)) {
+                logger.error("Cannot create directory for file upload!");
+            }
+        } catch (IOException e) {
+            logger.error("Cannot create directory for file upload!");
+        }
+    }
 
     public PostDto addPost(PostRequest request, String username) {
         Post newPost = new Post();
@@ -58,14 +81,11 @@ public class PostService {
                     request.getEncodedAttachment().contains(",") ? request.getEncodedAttachment().split(",")[1] : request.getEncodedAttachment()
             );
             try {
-                File dir = new File("./attachments");
-                String path = dir.getAbsolutePath();
-                String filename = username + "_" + LocalDateTime.now().toString();
-                FileOutputStream f = new FileOutputStream(
-                        path + "/" + filename);
-                f.write(imageByte);
-                f.flush();
-                f.close();
+                String filename = username + "_" + LocalDateTime.now();
+                Files.deleteIfExists(this.root.resolve(filename));
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByte);
+                Files.copy(imageStream, this.root.resolve(filename));
+                imageStream.close();
                 newPost.setAttachmentUrl(filename);
             } catch (IOException ex) {
                 throw new FileSaveException();

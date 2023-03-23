@@ -14,26 +14,32 @@ import io.github.xpakx.micro2.user.UserRepository;
 import io.github.xpakx.micro2.user.error.FileSaveException;
 import io.github.xpakx.micro2.user.error.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final MentionService mentionService;
+    private final Path root = Paths.get("attachments");
 
     public CommentDto addComment(CommentRequest request, String username, Long postId) {
         Comment newComment = new Comment();
@@ -56,14 +62,11 @@ public class CommentService {
                     request.getEncodedAttachment().contains(",") ? request.getEncodedAttachment().split(",")[1] : request.getEncodedAttachment()
             );
             try {
-                File dir = new File("./attachments");
-                String path = dir.getAbsolutePath();
-                String filename = username + "_" + LocalDateTime.now().toString();
-                FileOutputStream f = new FileOutputStream(
-                        path + "/" + filename);
-                f.write(imageByte);
-                f.flush();
-                f.close();
+                String filename = username + "_" + LocalDateTime.now();
+                Files.deleteIfExists(this.root.resolve(filename));
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByte);
+                Files.copy(imageStream, this.root.resolve(filename));
+                imageStream.close();
                 newComment.setAttachmentUrl(filename);
             } catch (IOException ex) {
                 throw new FileSaveException();
